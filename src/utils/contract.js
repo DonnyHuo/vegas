@@ -1,7 +1,32 @@
 import { ethers } from "ethers";
 
 import { setAddress } from "../store/slice";
-import store from "../store";
+import { store } from "../store";
+
+export async function setupListeners() {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+  provider.on("network", (newNetwork, oldNetwork) => {
+    if (oldNetwork) {
+      console.log("网络已切换：", {
+        oldNetwork: oldNetwork.name,
+        newNetwork: newNetwork.name
+      });
+    }
+  });
+
+  window.ethereum.on("accountsChanged", (accounts) => {
+    if (accounts.length === 0) {
+      console.log("钱包已断开");
+    } else {
+      console.log("账户已切换：", accounts[0]);
+    }
+  });
+
+  window.ethereum.on("chainChanged", (chainId) => {
+    console.log("链 ID 已切换：", parseInt(chainId, 16));
+  });
+}
 
 export async function connectWallet() {
   if (window.ethereum) {

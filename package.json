@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-vant/icons": "^0.1.0",
     "@reduxjs/toolkit": "^2.6.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -18,8 +19,12 @@
     "react-dom": "^19.0.0",
     "react-i18next": "^15.4.1",
     "react-redux": "^9.2.0",
+    "react-router-dom": "^7.2.0",
     "react-scripts": "5.0.1",
+    "react-toastify": "^11.0.5",
+    "react-vant": "latest",
     "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
     "tailwindcss": "^3.4.3",
     "web-vitals": "^2.1.0"
   },

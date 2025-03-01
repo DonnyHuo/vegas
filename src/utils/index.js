@@ -1,7 +1,5 @@
 import copyMessage from "copy-to-clipboard";
 
-// import { useClipboard } from "@vueuse/core";
-
 export const copy = async (msg) => {
   copyMessage(msg);
 };
@@ -66,5 +64,6 @@ export {
   getWriteContract,
   getContractLoad,
   getWriteContractLoad,
-  connectWallet
+  connectWallet,
+  setupListeners
 } from "./contract";
