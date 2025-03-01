@@ -109,7 +109,12 @@ const Home = () => {
 
   const [stakeValue, setStakeValue] = useState("");
 
+  const [rewardTokenInfo, setRewardTokenInfo] = useState({});
+
   const canStake = useMemo(() => {
+    if (stakeValue * 1 > rewardTokenInfo?.balance) {
+      return false;
+    }
     if ((stakeValue * 1) % 100 !== 0) {
       return false;
     }
@@ -120,7 +125,7 @@ const Home = () => {
       return false;
     }
     return true;
-  }, [stakeValue, staked]);
+  }, [rewardTokenInfo?.balance, stakeValue, staked]);
 
   const stakeFun = async () => {
     setStakeLoading(true);
@@ -146,21 +151,30 @@ const Home = () => {
 
   const [userInfo, setUserInfo] = useState({});
 
-  const [rewardTokenInfo, setRewardTokenInfo] = useState({});
-
   const getRewardTokenInfo = async () => {
     const decimals = await getContract(usdtAddress, erc20Abi, "decimals");
     const symbol = await getContract(usdtAddress, erc20Abi, "symbol");
+    const balanceOf = await getContract(
+      usdtAddress,
+      erc20Abi,
+      "balanceOf",
+      address
+    );
+
+    const balance = ethers.utils.formatUnits(balanceOf, decimals) * 1;
 
     setRewardTokenInfo({
       symbol,
-      decimals
+      decimals,
+      balance
     });
   };
 
   useEffect(() => {
-    getRewardTokenInfo();
-  }, []);
+    if (address) {
+      getRewardTokenInfo();
+    }
+  }, [address]);
 
   const getUserInfo = useCallback(async () => {
     await getContract(stakingContractAddress, stakeAbi, "getUserInfo", address)
@@ -306,7 +320,12 @@ const Home = () => {
         {t("welcome")}
       </div>
       <div className="mt-[40px]">
-        <div className="mb-2 text-[14px] text-[#111] font-medium">质押金额</div>
+        <div className="mb-2 text-[14px] text-[#111] font-medium flex items-center justify-between">
+          <span>质押金额</span>
+          <span>
+            {rewardTokenInfo?.balance} {rewardTokenInfo?.symbol}
+          </span>
+        </div>
         <input
           value={stakeValue}
           className="w-full h-[40px] border border-solid border-[#999] rounded-[8px] px-2 focus:border-[#333] text-[14px]"
