@@ -1,8 +1,5 @@
 .home {
-  @apply px-[20px] py-[10px];
-  min-height: 100vh;
-  /* background-image: url('./assets/img/bg.png'); */
-  background-repeat: no-repeat;
+  @apply px-[20px] py-[10px] min-h-screen max-w-[500px] mx-auto bg-[#f7f7f7];
 
 }
 

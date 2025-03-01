@@ -269,10 +269,20 @@ const Home = () => {
       <div className="flex items-center justify-between">
         <div>
           {i18n.language === "en" && (
-            <button onClick={() => changeLanguage("zh")}>中文</button>
+            <button
+              className="text-[14px]"
+              onClick={() => changeLanguage("zh")}
+            >
+              中文
+            </button>
           )}
           {i18n.language === "zh" && (
-            <button onClick={() => changeLanguage("en")}>English</button>
+            <button
+              className="text-[14px]"
+              onClick={() => changeLanguage("en")}
+            >
+              English
+            </button>
           )}
         </div>
         <div>
@@ -381,7 +391,9 @@ const Home = () => {
           </span>
           <div className="flex items-center justify-between mt-[10px]">
             {/* <GuideO fontSize={"20px"} /> */}
-            <div className="w-11/12 truncate text-[#999]">{inviteLink}</div>
+            <div className="w-11/12 truncate text-[#999] text-[14px]">
+              {inviteLink}
+            </div>
             <Copy
               onClick={() => {
                 copy(inviteLink);

@@ -28,10 +28,9 @@ const useWalletListener = () => {
     // 监听账户切换
     const handleAccountsChanged = (accounts) => {
       if (accounts.length === 0) {
-        console.log("钱包已断开");
+        store.dispatch(setAddress(""));
       } else {
         store.dispatch(setAddress(accounts[0]));
-        console.log("账户已切换：", accounts[0]);
       }
     };
     window.ethereum.on("accountsChanged", handleAccountsChanged);
