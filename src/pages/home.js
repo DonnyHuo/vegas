@@ -302,7 +302,7 @@ const Home = () => {
           )}
         </div>
       </div>
-      <div className="text-center mt-[40px]">{t("welcome")}</div>
+      <div className="text-center mt-[40px] font-medium">{t("welcome")}</div>
       <div className="mt-[40px]">
         <div className="mb-2 text-[14px] text-[#111] font-medium">质押金额</div>
         <input
