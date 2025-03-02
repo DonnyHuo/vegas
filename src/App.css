@@ -9,6 +9,9 @@
   background-position: center; */
   /* background-color: rgba(0, 0, 0, 0.9);
   background-blend-mode: overlay; */
+  .Toastify__toast {
+    font-family: Montserrat;
+  }
   
 }
 

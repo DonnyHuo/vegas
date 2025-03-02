@@ -24,5 +24,7 @@
   "cancel": "取消",
   "confirm": "確認",
   "bindSuccess": "綁定成功",
-  "bindFail": "綁定失敗"
+  "bindFail": "綁定失敗",
+  "claimTips": "*只有待領取獎勵>=100 {{name}} 才可以領取",
+  "shareTips": "只有注入資金才可邀請."
 }

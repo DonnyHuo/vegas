@@ -24,5 +24,7 @@
   "cancel": "Cancel",
   "confirm": "Confirm",
   "bindSuccess": "Binding Successful",
-  "bindFail": "Binding Failed"
+  "bindFail": "Binding Failed",
+  "claimTips": "*Only when the pending rewards are >=100 {{name}} can they be claimed.",
+  "shareTips": "Only by injecting funds can you invite."
 }

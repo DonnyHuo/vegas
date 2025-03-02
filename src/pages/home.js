@@ -91,23 +91,23 @@ const Home = () => {
 
   const [stakeLoading, setStakeLoading] = useState(false);
 
-  // const [staked, setStaked] = useState(false);
+  const [staked, setStaked] = useState(false);
 
-  // const getUsers = useCallback(async () => {
-  //   const amounts = await getContract(
-  //     stakingContractAddress,
-  //     stakeAbi,
-  //     "users",
-  //     address
-  //   );
-  //   setStaked(amounts.totalStaked.toString() * 1 > 0);
-  // }, [stakingContractAddress, address]);
+  const getUsers = useCallback(async () => {
+    const amounts = await getContract(
+      stakingContractAddress,
+      stakeAbi,
+      "users",
+      address
+    );
+    setStaked(amounts.totalStaked.toString() * 1 > 0);
+  }, [stakingContractAddress, address]);
 
-  // useEffect(() => {
-  //   if (address) {
-  //     getUsers();
-  //   }
-  // }, [address, getUsers]);
+  useEffect(() => {
+    if (address) {
+      getUsers();
+    }
+  }, [address, getUsers]);
 
   const [stakeValue, setStakeValue] = useState("");
 
@@ -232,15 +232,14 @@ const Home = () => {
 
   const claimFun = async () => {
     setClaimLoading(true);
-    await getWriteContractLoad(
-      stakingContractAddress,
-      stakeAbi,
-      "claimedRewards"
-    )
+    await getWriteContractLoad(stakingContractAddress, stakeAbi, "claimRewards")
       .then((res) => {
         toast.success(t("claimSuccess"));
       })
-      .catch(() => toast.error(t("claimFail")))
+      .catch((err) => {
+        console.log(err);
+        toast.error(t("claimFail"));
+      })
       .finally(() => {
         setClaimLoading(false);
       });
@@ -383,6 +382,9 @@ const Home = () => {
               </div>
               <Copy
                 onClick={() => {
+                  if (!staked) {
+                    return toast.error(t("shareTips"));
+                  }
                   copy(inviteLink);
                   toast.success(t("copySuccess"));
                 }}
@@ -396,19 +398,22 @@ const Home = () => {
           <div className="flex items-center justify-between text-[12px] mt-[20px]">
             <span>{t("claimedReward")}</span>
             <span>
-              {userInfo?.claimedRewards} {userInfo?.rewardToken}
+              {Number(userInfo?.claimedRewards ?? 0).toFixed(6)}{" "}
+              {userInfo?.rewardToken}
             </span>
           </div>
           <div className="flex items-center justify-between text-[12px] mt-[10px]">
             <span>{t("pendingReward")}</span>
             <span>
-              {userInfo?.pendingRewards} {userInfo?.rewardToken}
+              {Number(userInfo?.pendingRewards ?? 0).toFixed(6)}{" "}
+              {userInfo?.rewardToken}
             </span>
           </div>
           <div className="flex items-center justify-between text-[12px] mt-[10px]">
             <span>{t("totalReward")}</span>
             <span>
-              {userInfo?.totalRewards} {userInfo?.rewardToken}
+              {Number(userInfo?.totalRewards ?? 0).toFixed(6)}{" "}
+              {userInfo?.rewardToken}
             </span>
           </div>
           <div className="flex items-center justify-between text-[12px] mt-[10px]">
@@ -422,7 +427,7 @@ const Home = () => {
             round
             type="default"
             loading={claimLoading}
-            disabled={!userInfo.pendingRewards}
+            disabled={!(userInfo.pendingRewards * 1 >= 100)}
             onClick={claimFun}
           >
             <span className="flex items-center justify-center gap-2">
@@ -430,11 +435,14 @@ const Home = () => {
               <span>{t("claimReward")}</span>
             </span>
           </Button>
+          <div className="text-[12px] text-[#666] mt-1">
+            {t("claimTips", { name: userInfo?.rewardToken })}
+          </div>
         </div>
 
         <ToastContainer
           position="top-center"
-          autoClose={100000}
+          autoClose={1000}
           hideProgressBar
           newestOnTop={false}
           closeOnClick={false}
@@ -444,7 +452,7 @@ const Home = () => {
           pauseOnHover={false}
           theme="dark"
           closeButton={false}
-          className={"text-[14px] font-bold !text-[#98e23c]"}
+          className={"text-[14px] font-bold !text-[#98e23c] !font-Montserrat"}
         />
 
         <Dialog
