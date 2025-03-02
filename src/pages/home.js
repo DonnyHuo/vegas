@@ -17,7 +17,9 @@ import { GiftO, FireO } from "@react-vant/icons";
 
 import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
+import Card from "../../src/assets/img/card.png";
 import { ReactComponent as Copy } from "../../src/assets/img/copy.svg";
+import { ReactComponent as CopyMainColor } from "../../src/assets/img/copyMainColor.svg";
 import useWalletListener from "../../src/hooks/useWalletListener";
 
 const Home = () => {
@@ -170,6 +172,11 @@ const Home = () => {
   useEffect(() => {
     if (address) {
       getRewardTokenInfo();
+      const timer = setInterval(() => {
+        getRewardTokenInfo();
+      });
+
+      return () => clearInterval(timer);
     }
   }, [address]);
 
@@ -276,15 +283,15 @@ const Home = () => {
   }, [bindLoading]);
 
   return (
-    <div className="home">
-      <div className="flex items-center justify-between">
+    <div className="home-content">
+      <div className="flex items-center justify-between text-[#98e23c] bg-black px-[20px] py-[10px]">
         <div>
           {i18n.language === "en" && (
             <button
               className="text-[14px]"
               onClick={() => changeLanguage("zh")}
             >
-              中文
+              繁体中文
             </button>
           )}
           {i18n.language === "zh" && (
@@ -300,7 +307,7 @@ const Home = () => {
           {address ? (
             <div className="flex items-center gap-1 text-[14px]">
               <span>{shortStr(address)}</span>
-              <Copy
+              <CopyMainColor
                 onClick={() => {
                   copy(address);
                   toast.success(t("copySuccess"));
@@ -309,150 +316,156 @@ const Home = () => {
               />
             </div>
           ) : (
-            <button onClick={connectWallet}>{t("connectWallet")}</button>
+            <button className="text-[14px]" onClick={connectWallet}>
+              {t("connectWallet")}
+            </button>
           )}
         </div>
       </div>
-      <div className="text-center text-[18px] mt-[40px] font-medium">
-        {t("welcome")}
-      </div>
-      <div className="mt-[40px]">
-        <div className="mb-2 text-[14px] text-white font-medium flex items-center justify-between">
-          <span>{t("betAmount")}</span>
-          <span className="font-[300]">
-            {t("balance")}:{rewardTokenInfo?.balance} {rewardTokenInfo?.symbol}
-          </span>
+
+      <div className="home">
+        <div className="text-center text-[18px] mt-[40px]">
+          <span className="font-bold">{t("welcome")}</span>
+          <img src={Card} className="w-[200px] mx-auto" alt="" />
         </div>
-        <input
-          value={stakeValue}
-          className="w-full h-[40px] border border-solid bg-transparent border-[#666] rounded-[8px] px-2 focus:border-white text-[14px] text-white"
-          placeholder=">=500"
-          type="text"
-          onChange={(e) => setStakeValue(e.target.value)}
-        />
-        <div className="mt-[20px]">
-          {allowance ? (
-            <Button
-              className="w-full"
-              round
-              type="primary"
-              loading={stakeLoading}
-              onClick={stakeFun}
-              disabled={!canStake}
-            >
-              <span className="flex items-center justify-center gap-2">
-                <FireO fontSize={"20px"} />
-                <span>{t("bet")}</span>
-              </span>
-            </Button>
-          ) : (
-            <Button
-              className="w-full"
-              round
-              type="primary"
-              loading={approveLoading}
-              onClick={approveFun}
-            >
-              {t("approve")}
-            </Button>
-          )}
-        </div>
-      </div>
-      <div className="mt-[30px] pt-[30px] border-0 border-t border-solid border-[#555555]">
-        <span className="text-[14px] text-white font-medium">
-          {t("rewardInfo")}
-        </span>
-        <div className="flex items-center justify-between text-[14px] mt-[20px]">
-          <span>{t("claimedReward")}</span>
-          <span>
-            {userInfo?.claimedRewards} {userInfo?.rewardToken}
-          </span>
-        </div>
-        <div className="flex items-center justify-between text-[14px] mt-[10px]">
-          <span>{t("pendingReward")}</span>
-          <span>
-            {userInfo?.pendingRewards} {userInfo?.rewardToken}
-          </span>
-        </div>
-        <div className="flex items-center justify-between text-[14px] mt-[10px]">
-          <span>{t("totalReward")}</span>
-          <span>
-            {userInfo?.totalRewards} {userInfo?.rewardToken}
-          </span>
-        </div>
-        <div className="flex items-center justify-between text-[14px] mt-[10px]">
-          <span>{t("rewardLimit")}</span>
-          <span>
-            {userInfo?.rewardLimit} {userInfo?.rewardToken}
-          </span>
-        </div>
-        <Button
-          className="w-full !mt-[20px] "
-          round
-          type="primary"
-          loading={claimLoading}
-          disabled={!userInfo.pendingRewards}
-          onClick={claimFun}
-        >
-          <span className="flex items-center justify-center gap-2">
-            <GiftO fontSize={"20px"} />
-            <span>{t("claimReward")}</span>
-          </span>
-        </Button>
-      </div>
-      {address && (
-        <div className="mt-[30px] pt-[30px] border-0 border-t border-solid border-[#555555]">
-          <span className="text-[14px] text-white font-medium">
-            {t("inviteFriendReward")}
-          </span>
-          <div className="flex items-center justify-between mt-[10px]">
-            {/* <GuideO fontSize={"20px"} /> */}
-            <div className="w-11/12 truncate text-[#d5d5d5] text-[14px]">
-              {inviteLink}
-            </div>
-            <Copy
-              onClick={() => {
-                copy(inviteLink);
-                toast.success(t("copySuccess"));
-              }}
-              className="w-4 h-4"
-            />
+        <div className="mt-[40px] p-[20px] bg-white rounded-lg border border-solid border-[#eeeeee]">
+          <div className="mb-2 text-[14px] font-medium flex items-center justify-between">
+            <span className="font-bold">{t("betAmount")}</span>
+            <span className="font-[300] text-[12px]">
+              {t("balance")}:{rewardTokenInfo?.balance}{" "}
+              {rewardTokenInfo?.symbol}
+            </span>
+          </div>
+          <input
+            value={stakeValue}
+            className="w-full h-[40px] border border-solid bg-transparent border-[#999] rounded-[8px] px-2 focus:border-black text-[14px]"
+            placeholder=">=500"
+            type="text"
+            onChange={(e) => setStakeValue(e.target.value)}
+          />
+          <div className="mt-[20px]">
+            {allowance ? (
+              <Button
+                className="w-full bg-black text-[#98e23c]"
+                round
+                type="default"
+                loading={stakeLoading}
+                onClick={stakeFun}
+                disabled={!canStake}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <FireO fontSize={"20px"} />
+                  <span>{t("bet")}</span>
+                </span>
+              </Button>
+            ) : (
+              <Button
+                className="w-full bg-black text-[#98e23c] font-medium"
+                round
+                type="default"
+                loading={approveLoading}
+                onClick={approveFun}
+              >
+                {t("approve")}
+              </Button>
+            )}
           </div>
         </div>
-      )}
-      <ToastContainer
-        position="top-center"
-        autoClose={1000}
-        hideProgressBar
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable
-        pauseOnHover={false}
-        theme="light"
-        closeButton={false}
-        className={"text-[12px]"}
-      />
-
-      <Dialog
-        visible={visible}
-        showCancelButton
-        confirmButtonText={confirmButtonText}
-        cancelButtonText={t("cancel")}
-        onConfirm={() => {
-          bindReferrerFun();
-        }}
-        onCancel={() => {
-          removeParam("invite");
-          setVisible(false);
-        }}
-      >
-        <div className="p-[20px] text-center text-[14px]">
-          {t("acceptInvitation", { address: shortStr(invite) })}
-          {/* 收否接受来自{shortStr(invite)}的邀请 */}
+        {address && (
+          <div className="mt-[20px] p-[20px] bg-white rounded-lg border border-solid border-[#eeeeee]">
+            <span className="text-[14px] font-bold">
+              {t("inviteFriendReward")}
+            </span>
+            <div className="flex items-center justify-between mt-[10px]">
+              {/* <GuideO fontSize={"20px"} /> */}
+              <div className="w-11/12 truncate text-[#747373] text-[12px]">
+                {inviteLink}
+              </div>
+              <Copy
+                onClick={() => {
+                  copy(inviteLink);
+                  toast.success(t("copySuccess"));
+                }}
+                className="w-4 h-4"
+              />
+            </div>
+          </div>
+        )}
+        <div className="mt-[20px] p-[20px] bg-white rounded-lg border border-solid border-[#eeeeee]">
+          <span className="text-[14px] font-bold">{t("rewardInfo")}</span>
+          <div className="flex items-center justify-between text-[12px] mt-[20px]">
+            <span>{t("claimedReward")}</span>
+            <span>
+              {userInfo?.claimedRewards} {userInfo?.rewardToken}
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-[12px] mt-[10px]">
+            <span>{t("pendingReward")}</span>
+            <span>
+              {userInfo?.pendingRewards} {userInfo?.rewardToken}
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-[12px] mt-[10px]">
+            <span>{t("totalReward")}</span>
+            <span>
+              {userInfo?.totalRewards} {userInfo?.rewardToken}
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-[12px] mt-[10px]">
+            <span>{t("rewardLimit")}</span>
+            <span>
+              {userInfo?.rewardLimit} {userInfo?.rewardToken}
+            </span>
+          </div>
+          <Button
+            className="w-full !mt-[20px] bg-black text-[#98e23c]"
+            round
+            type="default"
+            loading={claimLoading}
+            disabled={!userInfo.pendingRewards}
+            onClick={claimFun}
+          >
+            <span className="flex items-center justify-center gap-2">
+              <GiftO fontSize={"20px"} />
+              <span>{t("claimReward")}</span>
+            </span>
+          </Button>
         </div>
-      </Dialog>
+
+        <ToastContainer
+          position="top-center"
+          autoClose={100000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+          theme="dark"
+          closeButton={false}
+          className={"text-[14px] font-bold !text-[#98e23c]"}
+        />
+
+        <Dialog
+          visible={visible}
+          showCancelButton
+          confirmButtonText={confirmButtonText}
+          cancelButtonText={t("cancel")}
+          onConfirm={() => {
+            bindReferrerFun();
+          }}
+          onCancel={() => {
+            removeParam("invite");
+            setVisible(false);
+          }}
+        >
+          <div className="p-[20px] text-center text-[14px]">
+            {t("acceptInvitation", { address: shortStr(invite) })}
+            {/* 收否接受来自{shortStr(invite)}的邀请 */}
+          </div>
+        </Dialog>
+      </div>
     </div>
   );
 };
