@@ -331,7 +331,7 @@ const Home = () => {
           <div className="mb-2 text-[14px] font-medium flex items-center justify-between">
             <span className="font-bold">{t("betAmount")}</span>
             <span className="font-[300] text-[12px]">
-              {t("balance")}:{rewardTokenInfo?.balance}{" "}
+              {t("balance")}:{Number(rewardTokenInfo?.balance ?? 0).toFixed(2)}{" "}
               {rewardTokenInfo?.symbol}
             </span>
           </div>
