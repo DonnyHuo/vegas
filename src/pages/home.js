@@ -17,7 +17,7 @@ import { GiftO, FireO } from "@react-vant/icons";
 
 import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
-import Card from "../../src/assets/img/card.png";
+import Card from "../../src/assets/img/card.jpeg";
 import { ReactComponent as Copy } from "../../src/assets/img/copy.svg";
 import { ReactComponent as CopyMainColor } from "../../src/assets/img/copyMainColor.svg";
 import useWalletListener from "../../src/hooks/useWalletListener";
@@ -325,7 +325,7 @@ const Home = () => {
       <div className="home">
         <div className="text-center text-[18px] mt-[40px]">
           <span className="font-bold">{t("welcome")}</span>
-          <img src={Card} className="w-[200px] mx-auto" alt="" />
+          <img src={Card} className="mt-[10px]" alt="" />
         </div>
         <div className="mt-[40px] p-[20px] bg-white rounded-lg border border-solid border-[#eeeeee]">
           <div className="mb-2 text-[14px] font-medium flex items-center justify-between">
