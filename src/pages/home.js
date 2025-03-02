@@ -76,12 +76,12 @@ const Home = () => {
       ethers.constants.MaxUint256
     )
       .then(() => {
-        toast.success("授权成功");
+        toast.success(t("approveSuccess"));
         setTimeout(() => {
           getAllowance();
         }, 2000);
       })
-      .catch(() => toast.error("授权失败"))
+      .catch(() => toast.error(t("approveFail")))
       .finally(() => {
         setApproveLoading(false);
       });
@@ -89,23 +89,23 @@ const Home = () => {
 
   const [stakeLoading, setStakeLoading] = useState(false);
 
-  const [staked, setStaked] = useState(false);
+  // const [staked, setStaked] = useState(false);
 
-  const getUsers = useCallback(async () => {
-    const amounts = await getContract(
-      stakingContractAddress,
-      stakeAbi,
-      "users",
-      address
-    );
-    setStaked(amounts.totalStaked.toString() * 1 > 0);
-  }, [stakingContractAddress, address]);
+  // const getUsers = useCallback(async () => {
+  //   const amounts = await getContract(
+  //     stakingContractAddress,
+  //     stakeAbi,
+  //     "users",
+  //     address
+  //   );
+  //   setStaked(amounts.totalStaked.toString() * 1 > 0);
+  // }, [stakingContractAddress, address]);
 
-  useEffect(() => {
-    if (address) {
-      getUsers();
-    }
-  }, [address, getUsers]);
+  // useEffect(() => {
+  //   if (address) {
+  //     getUsers();
+  //   }
+  // }, [address, getUsers]);
 
   const [stakeValue, setStakeValue] = useState("");
 
@@ -118,14 +118,11 @@ const Home = () => {
     if ((stakeValue * 1) % 100 !== 0) {
       return false;
     }
-    if (!staked && stakeValue * 1 < 500) {
-      return false;
-    }
-    if (staked && stakeValue * 1 < 100) {
+    if (stakeValue * 1 < 500) {
       return false;
     }
     return true;
-  }, [rewardTokenInfo?.balance, stakeValue, staked]);
+  }, [rewardTokenInfo?.balance, stakeValue]);
 
   const stakeFun = async () => {
     setStakeLoading(true);
@@ -138,11 +135,11 @@ const Home = () => {
     )
       .then((res) => {
         console.log(res);
-        toast.success("质押成功");
+        toast.success(t("betSuccess"));
         setStakeValue("");
       })
       .catch(() => {
-        toast.error("质押失败");
+        toast.error(t("betFail"));
       })
       .finally(() => {
         setStakeLoading(false);
@@ -234,9 +231,9 @@ const Home = () => {
       "claimedRewards"
     )
       .then((res) => {
-        toast.success("领取成功");
+        toast.success(t("claimSuccess"));
       })
-      .catch(() => toast.error("领取失败"))
+      .catch(() => toast.error(t("claimFail")))
       .finally(() => {
         setClaimLoading(false);
       });
@@ -260,10 +257,10 @@ const Home = () => {
       invite.toLocaleLowerCase()
     )
       .then(() => {
-        toast.success("绑定成功");
+        toast.success(t("bindSuccess"));
         removeParam("invite");
       })
-      .catch(() => toast.error("绑定失败"))
+      .catch(() => toast.error(t("bindFail")))
       .finally(() => {
         setVisible(false);
         setBindLoading(false);
@@ -274,7 +271,7 @@ const Home = () => {
     if (bindLoading) {
       return <Loading color="#3f45ff" size="20px" />;
     } else {
-      return "确认";
+      return t("confirm");
     }
   }, [bindLoading]);
 
@@ -306,13 +303,13 @@ const Home = () => {
               <Copy
                 onClick={() => {
                   copy(address);
-                  toast.success("复制成功");
+                  toast.success(t("copySuccess"));
                 }}
                 className="w-4 h-4"
               />
             </div>
           ) : (
-            <button onClick={connectWallet}>Connect Wallet</button>
+            <button onClick={connectWallet}>{t("connectWallet")}</button>
           )}
         </div>
       </div>
@@ -320,23 +317,19 @@ const Home = () => {
         {t("welcome")}
       </div>
       <div className="mt-[40px]">
-        <div className="mb-2 text-[14px] text-[#111] font-medium flex items-center justify-between">
-          <span>质押金额</span>
-          <span>
-            {rewardTokenInfo?.balance} {rewardTokenInfo?.symbol}
+        <div className="mb-2 text-[14px] text-white font-medium flex items-center justify-between">
+          <span>{t("betAmount")}</span>
+          <span className="font-[300]">
+            {t("balance")}:{rewardTokenInfo?.balance} {rewardTokenInfo?.symbol}
           </span>
         </div>
         <input
           value={stakeValue}
-          className="w-full h-[40px] border border-solid border-[#999] rounded-[8px] px-2 focus:border-[#333] text-[14px]"
-          placeholder="请输入您要质押的数量"
+          className="w-full h-[40px] border border-solid bg-transparent border-[#666] rounded-[8px] px-2 focus:border-white text-[14px] text-white"
+          placeholder=">=500"
           type="text"
           onChange={(e) => setStakeValue(e.target.value)}
         />
-        <div className="text-[12px] text-[#999] mt-1">
-          <p>{`1、首次质押 >=500(100的倍数)`}</p>
-          <p>{`2、二次质押 >=100(100的倍数)`}</p>
-        </div>
         <div className="mt-[20px]">
           {allowance ? (
             <Button
@@ -349,7 +342,7 @@ const Home = () => {
             >
               <span className="flex items-center justify-center gap-2">
                 <FireO fontSize={"20px"} />
-                <span>质押</span>
+                <span>{t("bet")}</span>
               </span>
             </Button>
           ) : (
@@ -360,33 +353,35 @@ const Home = () => {
               loading={approveLoading}
               onClick={approveFun}
             >
-              授权
+              {t("approve")}
             </Button>
           )}
         </div>
       </div>
-      <div className="mt-[30px] pt-[30px] border-0 border-t border-solid border-[#e1e0e0]">
-        <span className="text-[14px] text-[#111] font-medium">奖励信息</span>
+      <div className="mt-[30px] pt-[30px] border-0 border-t border-solid border-[#555555]">
+        <span className="text-[14px] text-white font-medium">
+          {t("rewardInfo")}
+        </span>
         <div className="flex items-center justify-between text-[14px] mt-[20px]">
-          <span>已领取奖励</span>
+          <span>{t("claimedReward")}</span>
           <span>
             {userInfo?.claimedRewards} {userInfo?.rewardToken}
           </span>
         </div>
         <div className="flex items-center justify-between text-[14px] mt-[10px]">
-          <span>待领取奖励</span>
+          <span>{t("pendingReward")}</span>
           <span>
             {userInfo?.pendingRewards} {userInfo?.rewardToken}
           </span>
         </div>
         <div className="flex items-center justify-between text-[14px] mt-[10px]">
-          <span>总奖励</span>
+          <span>{t("totalReward")}</span>
           <span>
             {userInfo?.totalRewards} {userInfo?.rewardToken}
           </span>
         </div>
         <div className="flex items-center justify-between text-[14px] mt-[10px]">
-          <span>奖励上限</span>
+          <span>{t("rewardLimit")}</span>
           <span>
             {userInfo?.rewardLimit} {userInfo?.rewardToken}
           </span>
@@ -401,24 +396,24 @@ const Home = () => {
         >
           <span className="flex items-center justify-center gap-2">
             <GiftO fontSize={"20px"} />
-            <span>领取奖励</span>
+            <span>{t("claimReward")}</span>
           </span>
         </Button>
       </div>
       {address && (
-        <div className="mt-[30px] pt-[30px] border-0 border-t border-solid border-[#e1e0e0]">
-          <span className="text-[14px] text-[#111] font-medium">
-            邀请好友获得奖励
+        <div className="mt-[30px] pt-[30px] border-0 border-t border-solid border-[#555555]">
+          <span className="text-[14px] text-white font-medium">
+            {t("inviteFriendReward")}
           </span>
           <div className="flex items-center justify-between mt-[10px]">
             {/* <GuideO fontSize={"20px"} /> */}
-            <div className="w-11/12 truncate text-[#999] text-[14px]">
+            <div className="w-11/12 truncate text-[#d5d5d5] text-[14px]">
               {inviteLink}
             </div>
             <Copy
               onClick={() => {
                 copy(inviteLink);
-                toast.success("复制成功");
+                toast.success(t("copySuccess"));
               }}
               className="w-4 h-4"
             />
@@ -444,6 +439,7 @@ const Home = () => {
         visible={visible}
         showCancelButton
         confirmButtonText={confirmButtonText}
+        cancelButtonText={t("cancel")}
         onConfirm={() => {
           bindReferrerFun();
         }}
@@ -453,7 +449,8 @@ const Home = () => {
         }}
       >
         <div className="p-[20px] text-center text-[14px]">
-          收否接受来自{shortStr(invite)}的邀请
+          {t("acceptInvitation", { address: shortStr(invite) })}
+          {/* 收否接受来自{shortStr(invite)}的邀请 */}
         </div>
       </Dialog>
     </div>

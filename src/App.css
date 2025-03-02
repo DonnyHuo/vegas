@@ -1,5 +1,12 @@
 .home {
-  @apply px-[20px] py-[10px] min-h-screen max-w-[500px] mx-auto bg-[#f7f7f7];
-
+  @apply px-[20px] py-[10px] min-h-screen max-w-[500px] mx-auto text-white;
+  background-image: url('../src/assets/img/bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  background-blend-mode: overlay;
+  font-family: Montserrat;
+  
 }
 
