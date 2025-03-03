@@ -281,6 +281,10 @@ const Home = () => {
     }
   }, [bindLoading]);
 
+  useEffect(() => {
+    connectWallet();
+  }, []);
+
   return (
     <div className="home-content">
       <div className="flex items-center justify-between text-[#98e23c] bg-black px-[20px] py-[10px]">
