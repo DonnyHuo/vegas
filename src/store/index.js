@@ -8,7 +8,7 @@ import rootReducer from "./slice";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["address"]
+  whitelist: []
   // blacklist: ["someReducer"],
 };
 
