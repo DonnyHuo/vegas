@@ -136,6 +136,7 @@ export function getContractLoad(contractAddress, abi, funcName, ...params) {
           provider
             .getTransactionReceipt(response.hash)
             .then((receipt) => {
+              console.log("receipt", receipt);
               if (receipt) {
                 if (receipt.logs.length) {
                   setTimeout(() => {
