@@ -254,13 +254,17 @@ const Home = () => {
   const [bindLoading, setBindLoading] = useState(false);
 
   const bindReferrerFun = async () => {
-    console.log("invite.toLocaleLowerCase()", invite.toLocaleLowerCase());
     setBindLoading(true);
+    const overrides = {
+      gasLimit: 300000
+      // gasPrice: ethers.utils.parseUnits("5", "gwei")
+    };
     await getWriteContractLoad(
       stakingContractAddress,
       stakeAbi,
       "bindReferrer",
-      invite.toLocaleLowerCase()
+      invite.toLocaleLowerCase(),
+      overrides
     )
       .then(() => {
         toast.success(t("bindSuccess"));
