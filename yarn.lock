@@ -1054,7 +1054,7 @@
     "@babel/plugin-transform-modules-commonjs" "^7.25.9"
     "@babel/plugin-transform-typescript" "^7.25.9"
 
-"@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.18.0", "@babel/runtime@^7.18.3", "@babel/runtime@^7.23.2", "@babel/runtime@^7.25.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.11.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.16.3", "@babel/runtime@^7.17.2", "@babel/runtime@^7.18.0", "@babel/runtime@^7.18.3", "@babel/runtime@^7.23.2", "@babel/runtime@^7.25.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
   version "7.26.9"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.26.9.tgz#aa4c6facc65b9cb3f87d75125ffd47781b475433"
   integrity sha512-aA63XwOkcl4xxQa3HjPMqOP6LiK0ZDv3mUPYEFXkpHbaFjtGggE1A61FjFzJnB+p7/oy2gA8E+rcBNl/zC1tMg==
@@ -3800,6 +3800,11 @@ cookie@^1.0.1:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-1.0.2.tgz#27360701532116bd3f1f9416929d176afe1e4610"
   integrity sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==
 
+copy-text-to-clipboard@^3.0.1:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/copy-text-to-clipboard/-/copy-text-to-clipboard-3.2.0.tgz#0202b2d9bdae30a49a53f898626dcc3b49ad960b"
+  integrity sha512-RnJFp1XR/LOBDckxTib5Qjr/PMfkatD0MUCQgdpqS8MdKiNUzBjAQBEN6oUy+jW7LI93BBG3DtMB2KOOKpGs2Q==
+
 copy-to-clipboard@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.3.3.tgz#55ac43a1db8ae639a4bd99511c148cdd1b83a1b0"
@@ -3818,6 +3823,11 @@ core-js-pure@^3.23.3:
   version "3.40.0"
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.40.0.tgz#d9a019e9160f9b042eeb6abb92242680089d486e"
   integrity sha512-AtDzVIgRrmRKQai62yuSIN5vNiQjcJakJb4fbhVw3ehxx7Lohphvw9SGNWKhLFqSxC4ilD0g/L1huAYFQU3Q6A==
+
+core-js@^3.11.0:
+  version "3.41.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.41.0.tgz#57714dafb8c751a6095d028a7428f1fb5834a776"
+  integrity sha512-SJ4/EHwS36QMJd6h/Rg+GyR4A5xE0FSI3eZ+iBVpfqf1x0eTSg1smWLHrA+2jQThZSh97fmSgFSU8B61nxosxA==
 
 core-js@^3.19.2:
   version "3.40.0"
@@ -7161,6 +7171,11 @@ multicast-dns@^7.2.5:
     dns-packet "^5.2.2"
     thunky "^1.0.2"
 
+mutation-observer@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/mutation-observer/-/mutation-observer-1.0.3.tgz#42e9222b101bca82e5ba9d5a7acf4a14c0f263d0"
+  integrity sha512-M/O/4rF2h776hV7qGMZUH3utZLO/jK7p8rnNgGkjKUw8zCGjRQPxB8z6+5l8+VjRUQ3dNYu4vjqXYLr+U8ZVNA==
+
 mz@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/mz/-/mz-2.7.0.tgz#95008057a56cafadc2bc63dde7f9ff6955948e32"
@@ -9988,6 +10003,16 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
+
+vconsole@^3.15.1:
+  version "3.15.1"
+  resolved "https://registry.yarnpkg.com/vconsole/-/vconsole-3.15.1.tgz#569a8ab15f353259527bbcf004f02946b4482cff"
+  integrity sha512-KH8XLdrq9T5YHJO/ixrjivHfmF2PC2CdVoK6RWZB4yftMykYIaXY1mxZYAic70vADM54kpMQF+dYmvl5NRNy1g==
+  dependencies:
+    "@babel/runtime" "^7.17.2"
+    copy-text-to-clipboard "^3.0.1"
+    core-js "^3.11.0"
+    mutation-observer "^1.0.3"
 
 void-elements@3.1.0:
   version "3.1.0"

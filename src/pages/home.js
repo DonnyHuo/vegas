@@ -255,10 +255,12 @@ const Home = () => {
 
   const bindReferrerFun = async () => {
     setBindLoading(true);
+
     const overrides = {
       gasLimit: 300000
       // gasPrice: ethers.utils.parseUnits("5", "gwei")
     };
+
     await getWriteContractLoad(
       stakingContractAddress,
       stakeAbi,
@@ -270,7 +272,10 @@ const Home = () => {
         toast.success(t("bindSuccess"));
         removeParam("invite");
       })
-      .catch(() => toast.error(t("bindFail")))
+      .catch((err) => {
+        console.log("err", err);
+        toast.error(t("bindFail"));
+      })
       .finally(() => {
         setVisible(false);
         setBindLoading(false);
