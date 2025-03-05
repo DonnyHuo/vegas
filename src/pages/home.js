@@ -102,9 +102,7 @@ const Home = () => {
       "users",
       address
     );
-
     setReferrer(amounts.referrer);
-
     setStaked(amounts.totalStaked.toString() * 1 > 0);
   }, [stakingContractAddress, address]);
 
@@ -262,14 +260,21 @@ const Home = () => {
     return referrer !== ethers.constants.AddressZero;
   }, [referrer]);
 
+  const [showTips, setShowTips] = useState(false);
+
   useEffect(() => {
-    if (invite && referrer) {
-      referrer === ethers.constants.AddressZero
-        ? setVisible(true)
-        : setVisibleTip(true);
-      // toast.error(t("alreadyAccepted"));
+    if (invite) {
+      if (staked) {
+        setShowTips(true);
+      } else {
+        if (referrer) {
+          referrer === ethers.constants.AddressZero
+            ? setVisible(true)
+            : setVisibleTip(true);
+        }
+      }
     }
-  }, [referrer, invite, t]);
+  }, [referrer, invite, t, staked]);
 
   const [bindLoading, setBindLoading] = useState(false);
 
@@ -536,6 +541,21 @@ const Home = () => {
         >
           <div className="p-[20px] text-center text-[14px] font-medium">
             {t("alreadyAccepted")}
+          </div>
+        </Dialog>
+
+        <Dialog
+          visible={showTips}
+          showCancelButton
+          showConfirmButton={false}
+          cancelButtonText={t("cancel")}
+          onCancel={() => {
+            removeParam("invite");
+            setShowTips(false);
+          }}
+        >
+          <div className="p-[20px] text-center text-[14px] font-medium">
+            {t("alreadyStaked")}
           </div>
         </Dialog>
       </div>

@@ -28,5 +28,6 @@
   "claimTips": "*只有待領取獎勵>=100 {{name}} 才可以領取",
   "shareTips": "只有注入資金才可邀請.",
   "myInviter": "我的邀請人",
-  "alreadyAccepted": "已經接受過邀請了."
+  "alreadyAccepted": "已經接受過邀請了.",
+  "alreadyStaked": "已經質押 不能接受邀請."
 }

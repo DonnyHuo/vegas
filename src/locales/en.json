@@ -28,5 +28,6 @@
   "claimTips": "*Only when the pending rewards are >=100 {{name}} can they be claimed.",
   "shareTips": "Only by injecting funds can you invite.",
   "myInviter": "My Inviter",
-  "alreadyAccepted": "Already accepted the invitation."
+  "alreadyAccepted": "Already accepted the invitation.",
+  "alreadyStaked": "Already staked, can no longer accept invitations."
 }
