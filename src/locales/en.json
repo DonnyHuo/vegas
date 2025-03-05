@@ -26,5 +26,7 @@
   "bindSuccess": "Binding Successful",
   "bindFail": "Binding Failed",
   "claimTips": "*Only when the pending rewards are >=100 {{name}} can they be claimed.",
-  "shareTips": "Only by injecting funds can you invite."
+  "shareTips": "Only by injecting funds can you invite.",
+  "myInviter": "My Inviter",
+  "alreadyAccepted": "Already accepted the invitation."
 }

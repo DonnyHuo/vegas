@@ -91,6 +91,8 @@ const Home = () => {
 
   const [stakeLoading, setStakeLoading] = useState(false);
 
+  const [referrer, setReferrer] = useState("");
+
   const [staked, setStaked] = useState(false);
 
   const getUsers = useCallback(async () => {
@@ -100,6 +102,9 @@ const Home = () => {
       "users",
       address
     );
+
+    setReferrer(amounts.referrer);
+
     setStaked(amounts.totalStaked.toString() * 1 > 0);
   }, [stakingContractAddress, address]);
 
@@ -249,7 +254,22 @@ const Home = () => {
     return `${window.location.origin}?invite=${address}`;
   }, [address]);
 
-  const [visible, setVisible] = useState(invite);
+  const [visible, setVisible] = useState(false);
+
+  const [visibleTip, setVisibleTip] = useState(false);
+
+  const referrerShow = useMemo(() => {
+    return referrer !== ethers.constants.AddressZero;
+  }, [referrer]);
+
+  useEffect(() => {
+    if (invite && referrer) {
+      referrer === ethers.constants.AddressZero
+        ? setVisible(true)
+        : setVisibleTip(true);
+      // toast.error(t("alreadyAccepted"));
+    }
+  }, [referrer, invite, t]);
 
   const [bindLoading, setBindLoading] = useState(false);
 
@@ -385,24 +405,41 @@ const Home = () => {
         </div>
         {address && (
           <div className="mt-[20px] p-[20px] bg-white rounded-lg border border-solid border-[#eeeeee]">
-            <span className="text-[14px] font-bold">
-              {t("inviteFriendReward")}
-            </span>
-            <div className="flex items-center justify-between mt-[10px]">
-              {/* <GuideO fontSize={"20px"} /> */}
-              <div className="w-11/12 truncate text-[#747373] text-[12px]">
-                {inviteLink}
+            {referrerShow && (
+              <div className="mb-[20px]">
+                <span className="text-[14px] font-bold">{t("myInviter")}</span>
+                <div className="text-[12px] flex items-center justify-between mt-2">
+                  <span className="w-11/12 truncate">{referrer}</span>
+                  <Copy
+                    onClick={() => {
+                      copy(referrer);
+                      toast.success(t("copySuccess"));
+                    }}
+                    className="w-4 h-4"
+                  />
+                </div>
               </div>
-              <Copy
-                onClick={() => {
-                  if (!staked) {
-                    return toast.error(t("shareTips"));
-                  }
-                  copy(inviteLink);
-                  toast.success(t("copySuccess"));
-                }}
-                className="w-4 h-4"
-              />
+            )}
+            <div>
+              <span className="text-[14px] font-bold">
+                {t("inviteFriendReward")}
+              </span>
+              <div className="flex items-center justify-between mt-2">
+                {/* <GuideO fontSize={"20px"} /> */}
+                <div className="w-11/12 truncate text-[#747373] text-[12px]">
+                  {inviteLink}
+                </div>
+                <Copy
+                  onClick={() => {
+                    if (!staked) {
+                      return toast.error(t("shareTips"));
+                    }
+                    copy(inviteLink);
+                    toast.success(t("copySuccess"));
+                  }}
+                  className="w-4 h-4"
+                />
+              </div>
             </div>
           </div>
         )}
@@ -484,6 +521,21 @@ const Home = () => {
           <div className="p-[20px] text-center text-[14px]">
             {t("acceptInvitation", { address: shortStr(invite) })}
             {/* 收否接受来自{shortStr(invite)}的邀请 */}
+          </div>
+        </Dialog>
+
+        <Dialog
+          visible={visibleTip}
+          showCancelButton
+          showConfirmButton={false}
+          cancelButtonText={t("cancel")}
+          onCancel={() => {
+            removeParam("invite");
+            setVisibleTip(false);
+          }}
+        >
+          <div className="p-[20px] text-center text-[14px] font-medium">
+            {t("alreadyAccepted")}
           </div>
         </Dialog>
       </div>
