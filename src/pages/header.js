@@ -20,7 +20,7 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="w-screen flex items-center justify-between text-[#98e23c] bg-black px-[20px] py-[10px]">
+    <div className="w-full flex items-center justify-between text-[#98e23c] bg-black px-[20px] py-[10px]">
       <div>
         {i18n.language === "en" && (
           <button className="text-[14px]" onClick={() => changeLanguage("zh")}>
