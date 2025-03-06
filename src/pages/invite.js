@@ -66,7 +66,7 @@ const Invite = () => {
                 stakedAmount
                 totalRefferRewards
                 claimedRewards
-                contributions{
+                contributions(orderBy: timestamp, orderDirection: desc,first:20){
                     id 
                     contributor{
                         id
@@ -156,27 +156,24 @@ const Invite = () => {
         </div>
       )}
 
-      <div className="w-full border border-solid border-black mt-[20px] rounded-lg p-[20px] bg-white">
-        <span className="text-[16px] font-bold mt-[20px]">
-          {t("myInviter")}
-        </span>
-        <div className="text-[14px] flex items-center justify-between mt-2">
-          {referrerShow ? (
-            <>
-              <span className="w-11/12 truncate">{referrer}</span>
-              <Copy
-                onClick={() => {
-                  copy(referrer);
-                  toast.success(t("copySuccess"));
-                }}
-                className="w-4 h-4"
-              />
-            </>
-          ) : (
-            "-"
-          )}
+      {referrerShow && (
+        <div className="w-full border border-solid border-black mt-[20px] rounded-lg p-[20px] bg-white">
+          <span className="text-[16px] font-bold mt-[20px]">
+            {t("myInviter")}
+          </span>
+
+          <div className="text-[14px] flex items-center justify-between mt-2">
+            <span className="w-11/12 truncate">{referrer}</span>
+            <Copy
+              onClick={() => {
+                copy(referrer);
+                toast.success(t("copySuccess"));
+              }}
+              className="w-4 h-4"
+            />
+          </div>
         </div>
-      </div>
+      )}
       <div className="w-full border border-solid border-black my-[20px] rounded-lg p-[20px] bg-white">
         <div className="text-[16px] font-bold mb-[20px]">
           {t("invitationRewardRecord")}
