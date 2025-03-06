@@ -94,7 +94,7 @@ const Invite = () => {
   }, [address]);
 
   return (
-    <div className="p-[20px] content-box">
+    <div className="p-[20px] content-box invite-bg">
       <div className="font-bold mt-[10px] mb-[20px] text-center text-[18px]">
         {t("welcome")}
       </div>
@@ -156,7 +156,7 @@ const Invite = () => {
         </div>
       )}
 
-      <div className="w-full border border-solid border-black mt-[20px] rounded-lg p-[20px]">
+      <div className="w-full border border-solid border-black mt-[20px] rounded-lg p-[20px] bg-white">
         <span className="text-[16px] font-bold mt-[20px]">
           {t("myInviter")}
         </span>
@@ -177,7 +177,7 @@ const Invite = () => {
           )}
         </div>
       </div>
-      <div className="w-full border border-solid border-black my-[20px] rounded-lg p-[20px]">
+      <div className="w-full border border-solid border-black my-[20px] rounded-lg p-[20px] bg-white">
         <div className="text-[16px] font-bold mb-[20px]">
           {t("invitationRewardRecord")}
         </div>
