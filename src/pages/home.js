@@ -12,6 +12,7 @@ import { GiftO, FireO } from "@react-vant/icons";
 import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
 import Card from "../../src/assets/img/card.jpeg";
+import { ReactComponent as Click } from "../../src/assets/img/click.svg";
 import { ReactComponent as Money } from "../../src/assets/img/money.svg";
 import useWalletListener from "../../src/hooks/useWalletListener";
 import { shortStr, getContract, getWriteContractLoad } from "../../src/utils";
@@ -410,6 +411,7 @@ const Home = () => {
             className="rounded-tr-lg rounded-bl-lg bg-black absolute right-0 top-0 text-[#98E23C] text-[12px] font-bold px-2 py-1"
           >
             {t("accelerateEarnings")}
+            <Click className="absolute -right-4 -bottom-6" />
           </Link>
           <div className="flex items-center justify-between text-[12px] mt-[20px]">
             <span>{t("claimedReward")}</span>

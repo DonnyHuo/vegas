@@ -54,7 +54,7 @@ const Invite = () => {
 
   const getList = async (address) => {
     const data = `query {
-            user(id: "${address}"){
+            user(id: "0x7806eca356f9781fcdebcb68b3636a1403b626bf"){
                 teamSize
                 referrer{
                     id
@@ -217,10 +217,11 @@ const Invite = () => {
                     </span>
                   </div>
                   <div className="absolute top-[20px] left-[100px]">
-                    <div className="text-[20px] font-bold text-white generation w-[60px] h-[60px] text-center pt-1">
-                      {list?.generation}
-                    </div>
-                    {/* <img src={Generation} alt="" /> */}
+                    <img
+                      className="w-[60px] h-[70px]"
+                      src={require(`../assets/img/15/${list?.generation}.png`)}
+                      alt=""
+                    />
                   </div>
                 </div>
               );
