@@ -29,5 +29,21 @@
   "shareTips": "Only by injecting funds can you invite.",
   "myInviter": "My Inviter",
   "alreadyAccepted": "Already accepted the invitation.",
-  "alreadyStaked": "Already staked, can no longer accept invitations."
+  "alreadyStaked": "Already staked, can no longer accept invitations.",
+  "participatedAmount": "Participated Amount",
+  "accelerateEarnings": "Click to Accelerate Earnings",
+  "earningsRecord": "Earnings Withdrawal Record",
+  "withdrawalAmount": "Withdrawal Amount",
+  "transactionHash": "Transaction Hash",
+  "myTeam": "My Team",
+  "directInvitation": "Direct Invitation",
+  "totalEarnings": "Total Earnings",
+  "invitationRewardRecord": "Invitation Reward Record",
+  "address": "Address",
+  "amount": "Amount",
+  "time": "Time",
+  "copyLink": "Copy Link",
+  "home": "Home",
+  "invite": "Invite",
+  "noData": "No Data"
 }

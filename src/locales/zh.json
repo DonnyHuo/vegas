@@ -29,5 +29,21 @@
   "shareTips": "只有注入資金才可邀請.",
   "myInviter": "我的邀請人",
   "alreadyAccepted": "已經接受過邀請了.",
-  "alreadyStaked": "已經質押 不能接受邀請."
+  "alreadyStaked": "已經質押 不能接受邀請.",
+  "participatedAmount": "已參與金額",
+  "accelerateEarnings": "點我加速收益",
+  "earningsRecord": "收益領取記錄",
+  "withdrawalAmount": "領取金額",
+  "transactionHash": "交易哈希",
+  "myTeam": "我的團隊",
+  "directInvitation": "直接邀請",
+  "totalEarnings": "累計收益",
+  "invitationRewardRecord": "獲得邀請獎勵記錄",
+  "address": "地址",
+  "amount": "金額",
+  "time": "時間",
+  "copyLink": "複製連結",
+  "home": "首頁",
+  "invite": "邀請",
+  "noData": "無數據"
 }

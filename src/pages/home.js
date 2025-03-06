@@ -1,15 +1,9 @@
-import {
-  shortStr,
-  connectWallet,
-  copy,
-  getContract,
-  getWriteContractLoad
-} from "../../src/utils";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Dialog, Loading } from "react-vant";
 
@@ -18,16 +12,14 @@ import { GiftO, FireO } from "@react-vant/icons";
 import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
 import Card from "../../src/assets/img/card.jpeg";
-import { ReactComponent as Copy } from "../../src/assets/img/copy.svg";
-import { ReactComponent as CopyMainColor } from "../../src/assets/img/copyMainColor.svg";
+import { ReactComponent as Money } from "../../src/assets/img/money.svg";
 import useWalletListener from "../../src/hooks/useWalletListener";
+import { shortStr, getContract, getWriteContractLoad } from "../../src/utils";
+import { fetchData } from "../http/request";
 
 const Home = () => {
   useWalletListener();
-  const { t, i18n } = useTranslation();
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
+  const { t } = useTranslation();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -248,17 +240,9 @@ const Home = () => {
       });
   };
 
-  const inviteLink = useMemo(() => {
-    return `${window.location.origin}?invite=${address}`;
-  }, [address]);
-
   const [visible, setVisible] = useState(false);
 
   const [visibleTip, setVisibleTip] = useState(false);
-
-  const referrerShow = useMemo(() => {
-    return referrer !== ethers.constants.AddressZero;
-  }, [referrer]);
 
   const [showTips, setShowTips] = useState(false);
 
@@ -315,68 +299,78 @@ const Home = () => {
     }
   }, [bindLoading]);
 
+  const [rewardList, setRewardList] = useState([]);
+
+  const getRewardList = async (address) => {
+    const data = `query {
+        rewardClaimeds(
+          where: {user: "${address}"}
+          orderBy: blockTimestamp
+          orderDirection: desc
+          first: 10
+        ) {
+          user
+          amount
+          transactionHash
+          blockTimestamp
+        }
+      }`;
+
+    const res = await fetchData(data);
+    setRewardList(res.rewardClaimeds);
+  };
+
+  const [stakedAmount, setStakedAmount] = useState(0);
+
+  const getStaked = async (address) => {
+    const data = `query {
+      user(id: "${address}"){
+          stakedAmount
+      }   
+    }`;
+    const res = await fetchData(data);
+
+    const stakedAmount = res.user?.stakedAmount;
+
+    setStakedAmount(stakedAmount ? stakedAmount / 10 ** 18 : 0);
+  };
+
   useEffect(() => {
-    connectWallet();
-  }, []);
+    if (address) {
+      getRewardList(address);
+      getStaked(address);
+    }
+  }, [address]);
 
   return (
-    <div className="home-content">
-      <div className="flex items-center justify-between text-[#98e23c] bg-black px-[20px] py-[10px]">
-        <div>
-          {i18n.language === "en" && (
-            <button
-              className="text-[14px]"
-              onClick={() => changeLanguage("zh")}
-            >
-              繁体中文
-            </button>
-          )}
-          {i18n.language === "zh" && (
-            <button
-              className="text-[14px]"
-              onClick={() => changeLanguage("en")}
-            >
-              English
-            </button>
-          )}
-        </div>
-        <div>
-          {address ? (
-            <div className="flex items-center gap-1 text-[14px]">
-              <span>{shortStr(address)}</span>
-              <CopyMainColor
-                onClick={() => {
-                  copy(address);
-                  toast.success(t("copySuccess"));
-                }}
-                className="w-4 h-4"
-              />
-            </div>
-          ) : (
-            <button className="text-[14px]" onClick={connectWallet}>
-              {t("connectWallet")}
-            </button>
-          )}
-        </div>
-      </div>
-
+    <div className="content-box">
       <div className="home">
-        <div className="text-center text-[18px] mt-[40px]">
-          <span className="font-bold">{t("welcome")}</span>
-          <img src={Card} className="mt-[10px]" alt="" />
+        <div className="text-center text-[18px]">
+          <div className="font-bold mt-[10px] mb-[20px]">{t("welcome")}</div>
+          <img className="rounded-[24px]" src={Card} alt="" />
         </div>
-        <div className="mt-[40px] p-[20px] bg-white rounded-lg border border-solid border-[#eeeeee]">
+        <div className="relative bg-black mt-[20px] rounded-[12px] text-[#98E23C] font-bold px-[24px] py-[12px]">
+          <div className="text-[16px]">{t("participatedAmount")}</div>
+          <div className="text-[20px]">{stakedAmount} USDT</div>
+          <div className="absolute right-0 -top-8">
+            <Money />
+          </div>
+        </div>
+        <div className="mt-[20px] p-[20px] bg-white rounded-lg border border-solid border-black">
           <div className="mb-2 text-[14px] font-medium flex items-center justify-between">
-            <span className="font-bold">{t("betAmount")}</span>
-            <span className="font-[300] text-[12px]">
-              {t("balance")}:{Number(rewardTokenInfo?.balance ?? 0).toFixed(2)}{" "}
-              {rewardTokenInfo?.symbol}
+            <span className="font-bold text-[16px]">{t("betAmount")}</span>{" "}
+            <span className="text-[12px] ">
+              <span className="text-[#767676]">{t("balance")}:</span>{" "}
+              <span className="text-black">
+                {Number(rewardTokenInfo?.balance ?? 0).toFixed(2)}{" "}
+                {rewardTokenInfo?.symbol}
+              </span>
             </span>
           </div>
           <input
             value={stakeValue}
-            className="w-full h-[40px] border border-solid bg-transparent border-[#999] rounded-[8px] px-2 focus:border-black text-[14px]"
-            placeholder=">=500"
+            className="w-full h-[40px] border border-solid bg-transparent border-[#999] rounded-[55px] px-4 focus:border-black text-[14px]"
+            placeholder="≥500"
             type="text"
             onChange={(e) => setStakeValue(e.target.value)}
           />
@@ -408,73 +402,49 @@ const Home = () => {
             )}
           </div>
         </div>
-        {address && (
-          <div className="mt-[20px] p-[20px] bg-white rounded-lg border border-solid border-[#eeeeee]">
-            {referrerShow && (
-              <div className="mb-[20px]">
-                <span className="text-[14px] font-bold">{t("myInviter")}</span>
-                <div className="text-[12px] flex items-center justify-between mt-2">
-                  <span className="w-11/12 truncate">{referrer}</span>
-                  <Copy
-                    onClick={() => {
-                      copy(referrer);
-                      toast.success(t("copySuccess"));
-                    }}
-                    className="w-4 h-4"
-                  />
-                </div>
-              </div>
-            )}
-            <div>
-              <span className="text-[14px] font-bold">
-                {t("inviteFriendReward")}
-              </span>
-              <div className="flex items-center justify-between mt-2">
-                {/* <GuideO fontSize={"20px"} /> */}
-                <div className="w-11/12 truncate text-[#747373] text-[12px]">
-                  {inviteLink}
-                </div>
-                <Copy
-                  onClick={() => {
-                    if (!staked) {
-                      return toast.error(t("shareTips"));
-                    }
-                    copy(inviteLink);
-                    toast.success(t("copySuccess"));
-                  }}
-                  className="w-4 h-4"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-        <div className="mt-[20px] p-[20px] bg-white rounded-lg border border-solid border-[#eeeeee]">
-          <span className="text-[14px] font-bold">{t("rewardInfo")}</span>
+
+        <div className="relative mt-[20px] p-[20px] bg-white rounded-lg border border-solid border-black">
+          <span className="text-[16px] font-bold">{t("rewardInfo")}</span>
+          <Link
+            to="/invite"
+            className="rounded-tr-lg rounded-bl-lg bg-black absolute right-0 top-0 text-[#98E23C] text-[12px] font-bold px-2 py-1"
+          >
+            {t("accelerateEarnings")}
+          </Link>
           <div className="flex items-center justify-between text-[12px] mt-[20px]">
             <span>{t("claimedReward")}</span>
             <span>
-              {Number(userInfo?.claimedRewards ?? 0).toFixed(6)}{" "}
+              <span className="text-[#27B53D] text-[18px] font-bold">
+                {Number(userInfo?.claimedRewards ?? 0).toFixed(6)}
+              </span>{" "}
               {userInfo?.rewardToken}
             </span>
           </div>
           <div className="flex items-center justify-between text-[12px] mt-[10px]">
             <span>{t("pendingReward")}</span>
-            <span>
-              {Number(userInfo?.pendingRewards ?? 0).toFixed(6)}{" "}
+            <span className="">
+              <span className="text-[#27B53D] text-[18px] font-bold">
+                {Number(userInfo?.pendingRewards ?? 0).toFixed(6)}
+              </span>{" "}
               {userInfo?.rewardToken}
             </span>
           </div>
           <div className="flex items-center justify-between text-[12px] mt-[10px]">
             <span>{t("totalReward")}</span>
             <span>
-              {Number(userInfo?.totalRewards ?? 0).toFixed(6)}{" "}
+              <span className="text-[#27B53D] text-[18px] font-bold">
+                {Number(userInfo?.totalRewards ?? 0).toFixed(6)}
+              </span>{" "}
               {userInfo?.rewardToken}
             </span>
           </div>
           <div className="flex items-center justify-between text-[12px] mt-[10px]">
             <span>{t("rewardLimit")}</span>
             <span>
-              {userInfo?.rewardLimit} {userInfo?.rewardToken}
+              <span className="text-[#27B53D] text-[18px] font-bold">
+                {userInfo?.rewardLimit}
+              </span>{" "}
+              {userInfo?.rewardToken}
             </span>
           </div>
           <Button
@@ -490,9 +460,45 @@ const Home = () => {
               <span>{t("claimReward")}</span>
             </span>
           </Button>
-          <div className="text-[12px] text-[#666] mt-1">
+          <div className="text-[12px] text-[#9F9F9F] mt-[10px]">
             {t("claimTips", { name: userInfo?.rewardToken })}
           </div>
+        </div>
+
+        <div className="mt-[20px] p-[20px] bg-white rounded-lg border border-solid border-black">
+          <div className="text-black text-[16px] font-bold mb-[10px]">
+            {t("earningsRecord")}
+          </div>
+          {rewardList?.length ? (
+            rewardList?.map((list) => {
+              return (
+                <div
+                  className="py-2 border-0 border-b border-solid border-[#D8D8D8] last:border-b-0"
+                  key={list.transactionHash}
+                >
+                  <div className="flex items-center justify-between py-1">
+                    <span className="text-[14px]">{t("withdrawalAmount")}</span>
+                    <span>
+                      <span className="text-[#27B53D] font-bold">
+                        {list.amount / 10 ** 18}
+                      </span>{" "}
+                      <span className="text-[14px]">USDT</span>
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between py-1">
+                    <span className="text-[14px]">{t("transactionHash")}</span>
+                    <span className="text-[14px] text-[#767676]">
+                      {shortStr(list.transactionHash)}
+                    </span>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="flex items-center justify-center text-[14px] h-[100px]">
+              {t("noData")}
+            </div>
+          )}
         </div>
 
         <ToastContainer
