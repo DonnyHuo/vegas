@@ -25,7 +25,7 @@ const useWalletListener = () => {
       if (accounts.length === 0) {
         store.dispatch(setAddress(""));
       } else {
-        store.dispatch(setAddress(accounts[0]));
+        store.dispatch(setAddress(accounts[0].toLowerCase()));
       }
     };
     window.ethereum.on("accountsChanged", handleAccountsChanged);

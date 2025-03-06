@@ -54,7 +54,7 @@ const Invite = () => {
 
   const getList = async (address) => {
     const data = `query {
-            user(id: "0x7806eca356f9781fcdebcb68b3636a1403b626bf"){
+            user(id: "${address}"){
                 teamSize
                 referrer{
                     id

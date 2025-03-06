@@ -83,7 +83,7 @@ export async function connectWallet() {
       const signer = provider.getSigner();
       const address = await signer.getAddress();
 
-      store.dispatch(setAddress(address));
+      store.dispatch(setAddress(address.toLowerCase()));
 
       return { provider, signer };
     } catch (error) {
