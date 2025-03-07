@@ -21,7 +21,7 @@ const Invite = () => {
     (state) => state.stakingContractAddress
   );
 
-  const [referrer, setReferrer] = useState("");
+  const [referrer, setReferrer] = useState(ethers.constants.AddressZero);
 
   const [staked, setStaked] = useState(false);
 
@@ -127,34 +127,34 @@ const Invite = () => {
           USDT
         </div>
       </div>
-      {address && (
-        <div className="h-[140px] mt-[40px] p-[20px] bg-black rounded-lg border border-solid border-black">
-          <div>
-            <div className="h-[60px] text-[20px] font-bold text-white flex items-end justify-between">
-              {t("inviteFriendReward")}
-              <Hello className="-mt-[60px] flex-shrink-0" />
-            </div>
-            <div className="flex items-center justify-between mt-3 gap-[20px]">
-              {/* <GuideO fontSize={"20px"} /> */}
-              <div className="truncate text-white text-[14px]">
-                {inviteLink}
-              </div>
-              <button
-                className="text-white border border-solid border-white rounded-[8px] text-[12px] flex-shrink-0 px-2 py-1"
-                onClick={() => {
-                  if (!staked) {
-                    return toast.error(t("shareTips"));
-                  }
-                  copy(inviteLink);
-                  toast.success(t("copySuccess"));
-                }}
-              >
-                {t("copyLink")}
-              </button>
-            </div>
+
+      <div className="h-[140px] mt-[40px] p-[20px] bg-black rounded-lg border border-solid border-black">
+        <div>
+          <div className="h-[60px] text-[20px] font-bold text-white flex items-end justify-between">
+            {t("inviteFriendReward")}
+            <Hello className="-mt-[60px] flex-shrink-0" />
+          </div>
+          <div className="flex items-center justify-between mt-3 gap-[20px]">
+            {/* <GuideO fontSize={"20px"} /> */}
+            <div className="truncate text-white text-[14px]">{inviteLink}</div>
+            <button
+              className="text-white border border-solid border-white rounded-[8px] text-[12px] flex-shrink-0 px-2 py-1"
+              onClick={() => {
+                if (!address) {
+                  return toast.error(t("connectWallet"));
+                }
+                if (!staked) {
+                  return toast.error(t("shareTips"));
+                }
+                copy(inviteLink);
+                toast.success(t("copySuccess"));
+              }}
+            >
+              {t("copyLink")}
+            </button>
           </div>
         </div>
-      )}
+      </div>
 
       {referrerShow && (
         <div className="w-full border border-solid border-black mt-[20px] rounded-lg p-[20px] bg-white">
@@ -178,7 +178,7 @@ const Invite = () => {
         <div className="text-[16px] font-bold mb-[20px]">
           {t("invitationRewardRecord")}
         </div>
-        {info ? (
+        {info?.contributions?.length ? (
           <>
             {info?.contributions?.map((list) => {
               return (

@@ -14,12 +14,10 @@ import stakeAbi from "../../src/assets/abi/stakingContract.json";
 import Card from "../../src/assets/img/card.jpeg";
 import { ReactComponent as Click } from "../../src/assets/img/click.svg";
 import { ReactComponent as Money } from "../../src/assets/img/money.svg";
-import useWalletListener from "../../src/hooks/useWalletListener";
 import { shortStr, getContract, getWriteContractLoad } from "../../src/utils";
 import { fetchData } from "../http/request";
 
 const Home = () => {
-  useWalletListener();
   const { t } = useTranslation();
 
   const [searchParams, setSearchParams] = useSearchParams();

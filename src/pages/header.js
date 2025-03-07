@@ -4,9 +4,12 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import { ReactComponent as CopyMainColor } from "../../src/assets/img/copyMainColor.svg";
+import useWalletListener from "../../src/hooks/useWalletListener";
 import { shortStr, connectWallet, copy } from "../../src/utils";
 
 const Header = () => {
+  useWalletListener();
+
   const { t, i18n } = useTranslation();
 
   const changeLanguage = (lng) => {
