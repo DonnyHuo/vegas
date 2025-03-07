@@ -27,7 +27,7 @@ const Header = () => {
       <div>
         {i18n.language === "en" && (
           <button className="text-[14px]" onClick={() => changeLanguage("zh")}>
-            繁体中文
+            简体中文
           </button>
         )}
         {i18n.language === "zh" && (
