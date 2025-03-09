@@ -13,10 +13,12 @@ body::-webkit-scrollbar {
 
 .content-box {
   @apply !pb-[50px];
-  .Toastify__toast {
-    font-family: Montserrat;
-  }
 }
+
+.Toastify .Toastify__toast {
+  font-family: Montserrat;
+}
+
 .home {
   @apply px-[20px] pt-[10px] pb-[30px] min-h-screen max-w-[500px] mx-auto text-black bg-white;
 }

@@ -372,7 +372,7 @@ const Home = () => {
     switchNetwork();
     setTimeout(() => {
       window.location.reload();
-    }, 1000);
+    });
   };
 
   return (
@@ -391,7 +391,9 @@ const Home = () => {
                 inactiveValue={1}
                 onChange={changeVersion}
               />
-              <span>{version === 1 ? "V1" : "V2"}</span>
+              <span className="text-[12px]">
+                {version === 1 ? <>{t("switchV1")}</> : <>{t("switchV2")}</>}
+              </span>
             </div>
           </div>
           <img className="rounded-[24px]" src={Card} alt="" />
@@ -399,7 +401,7 @@ const Home = () => {
         <div className="relative bg-black mt-[20px] rounded-[12px] text-[#98E23C] font-bold px-[24px] py-[12px]">
           <div className="text-[16px]">{t("participatedAmount")}</div>
           <div className="text-[20px]">
-            {stakedAmount} {userInfo?.rewardToken}
+            {stakedAmount} {rewardTokenInfo?.symbol}
           </div>
           <div className="absolute right-0 -top-8">
             <Money />

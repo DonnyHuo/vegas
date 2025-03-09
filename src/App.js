@@ -1,28 +1,40 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation
+} from "react-router-dom";
 import Footer from "../src/pages/footer";
 import Header from "../src/pages/header";
-import Home from "../src/pages/home";
-import Invite from "../src/pages/invite";
-// import { setupListeners } from "../src/utils";
+import routes from "./routers";
 
 import "./App.css";
 
 function App() {
   return (
-    <>
-      <Header />
-      <BrowserRouter>
-        <Routes>
-          {/* 定义路由 */}
-          <Route path="/" element={<Home />} />
-          <Route path="/invite" element={<Invite />} />
-          {/* 404 页面 */}
-          {/* <Route path="*" element={<NotFound />} /> */}
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    </>
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+
+  const currentRoute = routes.find((route) => route.path === location.pathname);
+
+  const showHeaderFooter = currentRoute ? currentRoute.showHeaderFooter : true;
+
+  return (
+    <div>
+      {showHeaderFooter && <Header />}
+      <Routes>
+        {routes.map((route, index) => (
+          <Route key={index} path={route.path} element={route.element} />
+        ))}
+      </Routes>
+      {showHeaderFooter && <Footer />}
+    </div>
   );
 }
 

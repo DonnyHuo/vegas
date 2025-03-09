@@ -45,5 +45,7 @@
   "copyLink": "Copy Link",
   "home": "Home",
   "invite": "Invite",
-  "noData": "No Data"
+  "noData": "No Data",
+  "switchV2": "Official Version",
+  "switchV1": "Beta Version"
 }

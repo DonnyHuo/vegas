@@ -45,5 +45,7 @@
   "copyLink": "复制链接",
   "home": "首页",
   "invite": "邀请",
-  "noData": "无数据"
+  "noData": "无数据",
+  "switchV2": "正式版",
+  "switchV1": "测试版"
 }

@@ -25,14 +25,16 @@ const Header = () => {
   return (
     <div className="w-full flex items-center justify-between text-[#98e23c] bg-black px-[20px] py-[10px]">
       <div>
-        {i18n.language === "en" && (
-          <button className="text-[14px]" onClick={() => changeLanguage("zh")}>
-            简体中文
-          </button>
-        )}
-        {i18n.language === "zh" && (
+        {["zh-CN"].includes(i18n.language) ? (
           <button className="text-[14px]" onClick={() => changeLanguage("en")}>
             English
+          </button>
+        ) : (
+          <button
+            className="text-[14px]"
+            onClick={() => changeLanguage("zh-CN")}
+          >
+            简体中文
           </button>
         )}
       </div>
