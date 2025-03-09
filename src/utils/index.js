@@ -65,5 +65,7 @@ export {
   getContractLoad,
   getWriteContractLoad,
   connectWallet,
-  setupListeners
+  setupListeners,
+  switchNetwork,
+  checkNetwork
 } from "./contract";

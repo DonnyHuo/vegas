@@ -1,3 +1,9 @@
+import {
+  shortStr,
+  getContract,
+  getWriteContractLoad,
+  switchNetwork
+} from "../../src/utils";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -5,17 +11,19 @@ import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Button, Dialog, Loading } from "react-vant";
+import { Button, Dialog, Loading, Switch } from "react-vant";
 
 import { GiftO, FireO } from "@react-vant/icons";
 
 import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
+import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
 import Card from "../../src/assets/img/card.jpeg";
 import { ReactComponent as Click } from "../../src/assets/img/click.svg";
 import { ReactComponent as Money } from "../../src/assets/img/money.svg";
-import { shortStr, getContract, getWriteContractLoad } from "../../src/utils";
 import { fetchData } from "../http/request";
+import { setVersion } from "../store/slice";
+import { store } from "../store";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -23,17 +31,22 @@ const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const removeParam = (key) => {
-    searchParams.delete(key); // 删除参数
-    setSearchParams(searchParams); // 更新 URL
+    searchParams.delete(key);
+    setSearchParams(searchParams);
   };
 
   const invite = searchParams.get("invite");
 
   const address = useSelector((state) => state.address);
+  const version = useSelector((state) => state.version);
 
-  const usdtAddress = useSelector((state) => state.usdtAddress);
-  const stakingContractAddress = useSelector(
-    (state) => state.stakingContractAddress
+  const usdtAddress = useSelector((state) =>
+    version === 2 ? state.usdtAddressV2 : state.usdtAddress
+  );
+  const stakingContractAddress = useSelector((state) =>
+    version === 2
+      ? state.stakingContractAddressV2
+      : state.stakingContractAddress
   );
 
   const [allowance, setAllowance] = useState(0);
@@ -55,7 +68,7 @@ const Home = () => {
     if (address) {
       getAllowance();
     }
-  }, [stakingContractAddress, address, usdtAddress]);
+  }, [stakingContractAddress, address, usdtAddress, version]);
 
   const [approveLoading, setApproveLoading] = useState(false);
 
@@ -89,19 +102,19 @@ const Home = () => {
   const getUsers = useCallback(async () => {
     const amounts = await getContract(
       stakingContractAddress,
-      stakeAbi,
+      version === 2 ? stakeAbiV2 : stakeAbi,
       "users",
       address
     );
     setReferrer(amounts.referrer);
     setStaked(amounts.totalStaked.toString() * 1 > 0);
-  }, [stakingContractAddress, address]);
+  }, [stakingContractAddress, address, version]);
 
   useEffect(() => {
     if (address) {
       getUsers();
     }
-  }, [address, getUsers]);
+  }, [address, getUsers, version]);
 
   const [stakeValue, setStakeValue] = useState("");
 
@@ -125,7 +138,7 @@ const Home = () => {
     const decimals = await getContract(usdtAddress, erc20Abi, "decimals");
     await getWriteContractLoad(
       stakingContractAddress,
-      stakeAbi,
+      version === 2 ? stakeAbiV2 : stakeAbi,
       "stake",
       ethers.utils.parseUnits(stakeValue, decimals)
     )
@@ -172,10 +185,15 @@ const Home = () => {
 
       return () => clearInterval(timer);
     }
-  }, [address]);
+  }, [address, version]);
 
   const getUserInfo = useCallback(async () => {
-    await getContract(stakingContractAddress, stakeAbi, "getUserInfo", address)
+    await getContract(
+      stakingContractAddress,
+      version === 2 ? stakeAbiV2 : stakeAbi,
+      "getUserInfo",
+      address
+    )
       .then((userInfo) => {
         setUserInfo({
           claimedRewards:
@@ -208,7 +226,8 @@ const Home = () => {
     address,
     rewardTokenInfo?.decimals,
     rewardTokenInfo?.symbol,
-    stakingContractAddress
+    stakingContractAddress,
+    version
   ]);
 
   useEffect(() => {
@@ -220,13 +239,17 @@ const Home = () => {
 
       return () => clearInterval(timer);
     }
-  }, [address, getUserInfo]);
+  }, [address, getUserInfo, version]);
 
   const [claimLoading, setClaimLoading] = useState(false);
 
   const claimFun = async () => {
     setClaimLoading(true);
-    await getWriteContractLoad(stakingContractAddress, stakeAbi, "claimRewards")
+    await getWriteContractLoad(
+      stakingContractAddress,
+      version === 2 ? stakeAbiV2 : stakeAbi,
+      "claimRewards"
+    )
       .then((res) => {
         toast.success(t("claimSuccess"));
       })
@@ -257,7 +280,7 @@ const Home = () => {
         }
       }
     }
-  }, [referrer, invite, t, staked]);
+  }, [referrer, invite, t, staked, version]);
 
   const [bindLoading, setBindLoading] = useState(false);
 
@@ -271,7 +294,7 @@ const Home = () => {
 
     await getWriteContractLoad(
       stakingContractAddress,
-      stakeAbi,
+      version === 2 ? stakeAbiV2 : stakeAbi,
       "bindReferrer",
       invite.toLocaleLowerCase(),
       overrides
@@ -339,13 +362,38 @@ const Home = () => {
       getRewardList(address);
       getStaked(address);
     }
-  }, [address]);
+  }, [address, version]);
+
+  const [versionState, setVersionState] = useState(version);
+
+  const changeVersion = (value) => {
+    setVersionState(value);
+    store.dispatch(setVersion(value));
+    switchNetwork();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
 
   return (
     <div className="content-box">
       <div className="home">
         <div className="text-center text-[18px]">
-          <div className="font-bold mt-[10px] mb-[20px]">{t("welcome")}</div>
+          <div className="font-bold mt-[10px] mb-[20px] flex items-center justify-between">
+            <span>{t("welcome")}</span>
+            <div className="flex items-center gap-2">
+              <Switch
+                size="20px"
+                activeColor={"#000000"}
+                inactiveColor={"#98E23C"}
+                defaultChecked={versionState}
+                activeValue={2}
+                inactiveValue={1}
+                onChange={changeVersion}
+              />
+              <span>{version === 1 ? "V1" : "V2"}</span>
+            </div>
+          </div>
           <img className="rounded-[24px]" src={Card} alt="" />
         </div>
         <div className="relative bg-black mt-[20px] rounded-[12px] text-[#98E23C] font-bold px-[24px] py-[12px]">

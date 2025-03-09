@@ -40,17 +40,35 @@ const TARGET_NETWORK = {
   blockExplorerUrls: ["https://bscscan.com"]
 };
 
-const checkNetwork = async () => {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const network = await provider.getNetwork();
-  return network.chainId === parseInt(TARGET_NETWORK.chainId, 16);
+const TARGET_NETWORK_TEST = {
+  chainId: "0x61",
+  chainName: "Binance Smart Chain Testnet",
+  nativeCurrency: {
+    name: "BNB",
+    symbol: "BNB",
+    decimals: 18
+  },
+  rpcUrls: ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
+  blockExplorerUrls: ["https://testnet.bscscan.com"]
 };
 
-const switchNetwork = async () => {
+export const checkNetwork = async () => {
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const network = await provider.getNetwork();
+  return store.getState().version === 2
+    ? network.chainId === parseInt(TARGET_NETWORK_TEST.chainId, 16)
+    : network.chainId === parseInt(TARGET_NETWORK.chainId, 16);
+};
+
+export const switchNetwork = async () => {
   try {
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
-      params: [{ chainId: TARGET_NETWORK.chainId }]
+      params: [
+        store.getState().version === 2
+          ? { chainId: TARGET_NETWORK_TEST.chainId }
+          : { chainId: TARGET_NETWORK.chainId }
+      ]
     });
     console.log("已切换到目标网络");
   } catch (error) {
@@ -58,7 +76,11 @@ const switchNetwork = async () => {
       try {
         await window.ethereum.request({
           method: "wallet_addEthereumChain",
-          params: [TARGET_NETWORK]
+          params: [
+            store.getState().version === 2
+              ? TARGET_NETWORK_TEST
+              : TARGET_NETWORK
+          ]
         });
         console.log("已添加并切换到目标网络");
       } catch (addError) {

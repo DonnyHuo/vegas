@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
+import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
 import { ReactComponent as Copy } from "../../src/assets/img/copy.svg";
 import { ReactComponent as Hello } from "../../src/assets/img/hello.svg";
 import { ReactComponent as Money2 } from "../../src/assets/img/money2.svg";
@@ -16,9 +17,12 @@ const Invite = () => {
   const { t } = useTranslation();
 
   const address = useSelector((state) => state.address);
+  const version = useSelector((state) => state.version);
 
-  const stakingContractAddress = useSelector(
-    (state) => state.stakingContractAddress
+  const stakingContractAddress = useSelector((state) =>
+    version === 2
+      ? state.stakingContractAddressV2
+      : state.stakingContractAddress
   );
 
   const [referrer, setReferrer] = useState(ethers.constants.AddressZero);
@@ -28,13 +32,13 @@ const Invite = () => {
   const getUsers = useCallback(async () => {
     const amounts = await getContract(
       stakingContractAddress,
-      stakeAbi,
+      version === 2 ? stakeAbiV2 : stakeAbi,
       "users",
       address
     );
     setReferrer(amounts.referrer);
     setStaked(amounts.totalStaked.toString() * 1 > 0);
-  }, [stakingContractAddress, address]);
+  }, [stakingContractAddress, address, version]);
 
   useEffect(() => {
     if (address) {
