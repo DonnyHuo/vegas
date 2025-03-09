@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 
+import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
 import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
 import { ReactComponent as Copy } from "../../src/assets/img/copy.svg";
@@ -17,7 +18,12 @@ const Invite = () => {
   const { t } = useTranslation();
 
   const address = useSelector((state) => state.address);
+
   const version = useSelector((state) => state.version);
+
+  const usdtAddress = useSelector((state) =>
+    version === 2 ? state.usdtAddressV2 : state.usdtAddress
+  );
 
   const stakingContractAddress = useSelector((state) =>
     version === 2
@@ -40,10 +46,18 @@ const Invite = () => {
     setStaked(amounts.totalStaked.toString() * 1 > 0);
   }, [stakingContractAddress, address, version]);
 
+  const [rewardToken, setRewardToken] = useState();
+
+  const getRewardTokenInfo = async () => {
+    const rewardToken = await getContract(usdtAddress, erc20Abi, "symbol");
+    setRewardToken(rewardToken);
+  };
+
   useEffect(() => {
     if (address) {
       getUsers();
     }
+    getRewardTokenInfo();
   }, [address, getUsers]);
 
   const referrerShow = useMemo(() => {
@@ -128,7 +142,7 @@ const Invite = () => {
         </div>
         <div className="text-[#98E23C] text-[28px] font-bold">
           {info?.totalRefferRewards ? info?.totalRefferRewards / 10 ** 18 : 0}{" "}
-          USDT
+          {rewardToken}
         </div>
       </div>
 
@@ -206,7 +220,7 @@ const Invite = () => {
                       <span className="text-[#27B53D] font-bold text-[18px]">
                         {list.amount / 10 ** 18}
                       </span>{" "}
-                      <span className="text-[14px]">USDT</span>
+                      <span className="text-[14px]">{rewardToken}</span>
                     </span>
                   </div>
                   <div className="flex items-center justify-between py-1">

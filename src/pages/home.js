@@ -398,7 +398,9 @@ const Home = () => {
         </div>
         <div className="relative bg-black mt-[20px] rounded-[12px] text-[#98E23C] font-bold px-[24px] py-[12px]">
           <div className="text-[16px]">{t("participatedAmount")}</div>
-          <div className="text-[20px]">{stakedAmount} USDT</div>
+          <div className="text-[20px]">
+            {stakedAmount} {userInfo?.rewardToken}
+          </div>
           <div className="absolute right-0 -top-8">
             <Money />
           </div>
