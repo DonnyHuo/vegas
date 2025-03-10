@@ -128,7 +128,7 @@ const AdminHome = () => {
     getRewardTokenInfo();
   }, []);
 
-  const [userInfo2, setUserInfo2] = useState({});
+  const [userInfo2, setUserInfo2] = useState();
 
   const getUserInfo = useCallback(async () => {
     await getContract(
@@ -179,7 +179,7 @@ const AdminHome = () => {
       getList(search);
       getUserInfo(search);
     }
-  }, [search]);
+  }, [getUserInfo, search]);
 
   const NoData = () => {
     return (
@@ -266,12 +266,18 @@ const AdminHome = () => {
             {search && (
               <Delete
                 className="w-[20px] h-[20px]"
-                onClick={() => setSearch("")}
+                onClick={() => {
+                  setSearch("");
+                  setUserInfo();
+                }}
               />
             )}
             <Search
               className="w-[20px] h-[20px]"
-              onClick={() => getList(search)}
+              onClick={() => {
+                getList(search);
+                getUserInfo(search);
+              }}
             />
           </div>
         </div>
@@ -311,39 +317,41 @@ const AdminHome = () => {
                         {userInfo.referrals ? userInfo.referrals?.length : 0} 人
                       </span>
                     </div>
-                    <div className="card mt-[20px] px-[20px] py-3">
-                      <div
-                        className="flex items-center justify-between text-[#98E23C] font-bold"
-                        onClick={() => setShowList((pre) => (pre = !pre))}
-                      >
-                        <span>列表</span>
-                        <Arrow className={!showList && "rotate-180"} />
-                      </div>
-                      {showList && (
-                        <div className="mt-[10px]">
-                          {userInfo.referrals.map((list) => {
-                            return (
-                              <div
-                                key={list.id}
-                                className="flex items-center justify-between font-bold py-2"
-                              >
-                                <span className="text-white">地址</span>
-                                <span className="text-[#FFC300] flex items-center gap-1">
-                                  {shortStr(list.id)}
-                                  <Copy
-                                    onClick={() => {
-                                      copy(list.id);
-                                      toast.success(t("copySuccess"));
-                                    }}
-                                    className="w-[14px] h-[14px] text-white"
-                                  />
-                                </span>
-                              </div>
-                            );
-                          })}
+                    {userInfo.referrals?.length > 0 && (
+                      <div className="card mt-[20px] px-[20px] py-3">
+                        <div
+                          className="flex items-center justify-between text-[#98E23C] font-bold"
+                          onClick={() => setShowList((pre) => (pre = !pre))}
+                        >
+                          <span>列表</span>
+                          <Arrow className={!showList && "rotate-180"} />
                         </div>
-                      )}
-                    </div>
+                        {showList && (
+                          <div className="mt-[10px]">
+                            {userInfo.referrals.map((list) => {
+                              return (
+                                <div
+                                  key={list.id}
+                                  className="flex items-center justify-between font-bold py-2"
+                                >
+                                  <span className="text-white">地址</span>
+                                  <span className="text-[#FFC300] flex items-center gap-1">
+                                    {shortStr(list.id)}
+                                    <Copy
+                                      onClick={() => {
+                                        copy(list.id);
+                                        toast.success(t("copySuccess"));
+                                      }}
+                                      className="w-[14px] h-[14px] text-white"
+                                    />
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="card px-[20px] py-3 mt-[20px] text-[14px]">
@@ -403,7 +411,7 @@ const AdminHome = () => {
                     <div className="flex items-center justify-between py-2">
                       <span>总收益</span>
                       <span className="text-[#98E23C] font-bold">
-                        {userInfo2?.totalRewards
+                        {userInfo2
                           ? (userInfo2?.totalRewards).toFixed(2)
                           : "--"}{" "}
                         {rewardTokenInfo?.symbol}
@@ -412,7 +420,7 @@ const AdminHome = () => {
                     <div className="flex items-center justify-between py-2">
                       <span>待领取收益</span>
                       <span className="text-[#98E23C] font-bold">
-                        {userInfo2?.pendingRewards
+                        {userInfo2
                           ? (userInfo2?.pendingRewards).toFixed(2)
                           : "--"}{" "}
                         {rewardTokenInfo?.symbol}
