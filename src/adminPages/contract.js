@@ -73,8 +73,8 @@ const Contract = () => {
       stakingContractAddress,
       version === 2 ? stakeAbiV2 : stakeAbi,
       "setRewardRate",
-      rewardNumber,
-      rewardRate
+      rewardNumber * 100,
+      rewardRate * 100
     )
       .then(() => {
         toast.success("设置成功");
