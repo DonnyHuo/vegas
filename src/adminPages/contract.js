@@ -56,9 +56,9 @@ const Contract = () => {
   const [rewardRateLoading, setRewardRateLoading] = useState(false);
 
   const setRewardRateFun = async () => {
-    const numberRege = /^(1[0-5]|[1-9])$/;
+    const numberRege = /^(1[0-4]|[0-9])$/;
 
-    const rateRege = /^(100|[1-9][0-9]?)$/;
+    const rateRege = /^([1-9][0-9]?|[0-9])$/;
 
     if (!numberRege.test(rewardNumber)) {
       return toast.error("请输入正确的代数");
@@ -73,7 +73,7 @@ const Contract = () => {
       stakingContractAddress,
       version === 2 ? stakeAbiV2 : stakeAbi,
       "setRewardRate",
-      rewardNumber * 100,
+      rewardNumber,
       rewardRate * 100
     )
       .then(() => {
@@ -265,7 +265,7 @@ const Contract = () => {
               type="text"
               value={rewardNumber}
               className="bg-white rounded-[55px] px-[20px] h-[40px] w-full text-[14px] border border-solid border-black"
-              placeholder="请输入代数 1-15"
+              placeholder="请输入代数 0-14"
               onChange={(e) => setRewardNumber(e.target.value)}
             />
           </div>
@@ -274,7 +274,7 @@ const Contract = () => {
               type="text"
               value={rewardRate}
               className="bg-white rounded-[55px] px-[20px] h-[40px] w-full text-[14px] border border-solid border-black"
-              placeholder="请输入比例 1-100"
+              placeholder="请输入比例 0-99"
               onChange={(e) => setRewardRate(e.target.value)}
             />
           </div>
