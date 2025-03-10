@@ -151,6 +151,9 @@ const Home = () => {
         console.log(res);
         toast.success(t("betSuccess"));
         setStakeValue("");
+        setTimeout(() => {
+          getStaked(address);
+        }, 2000);
       })
       .catch(() => {
         toast.error(t("betFail"));

@@ -10,6 +10,9 @@ import stakeAbi from "../../src/assets/abi/stakingContract.json";
 import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
 import Total from "../../src/assets/img/adminTotal.png";
 import { ReactComponent as Copy } from "../../src/assets/img/copyWhite.svg";
+import { ReactComponent as Delete } from "../../src/assets/img/delete.svg";
+import { ReactComponent as Loading } from "../../src/assets/img/loading.svg";
+import { ReactComponent as Search } from "../../src/assets/img/search.svg";
 import { ReactComponent as Arrow } from "../assets/img/arrow.svg";
 import { fetchData } from "../http/request";
 import { shortStr, getContract, copy } from "../utils";
@@ -51,7 +54,14 @@ const AdminHome = () => {
 
   const [userInfo, setUserInfo] = useState();
 
+  const [listLoading, setListLoading] = useState(false);
+
   const getList = async (address) => {
+    if (!ethers.utils.isAddress(address)) {
+      return toast.error("请输入正确的查询地址");
+    }
+    setListLoading(true);
+
     const data = `query {
             user(id: "${address}"){
                 teamSize
@@ -80,6 +90,8 @@ const AdminHome = () => {
         }
     }`;
     const res = await fetchData(data);
+
+    setListLoading(false);
 
     const inviteInfo = res.user;
 
@@ -240,13 +252,27 @@ const AdminHome = () => {
             操作合约
           </button>
         </Link>
-
-        <input
-          className="bg-black rounded-[32px] w-full my-[20px] h-[40px] px-[20px] text-[14px] placeholder:text-[12px] placeholder:text-[#767676]"
-          type="text"
-          placeholder="请输入搜索地址"
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="my-[20px] w-full bg-black rounded-[32px] flex items-center gap-1">
+          <input
+            className="bg-transparent w-full h-[40px] pl-[20px] text-[14px] placeholder:text-[12px] placeholder:text-[#767676]"
+            type="text"
+            placeholder="请输入搜索地址"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div className="flex items-center justify-end gap-2 mr-[20px] flex-shrink-0">
+            {search && (
+              <Delete
+                className="w-[20px] h-[20px]"
+                onClick={() => setSearch("")}
+              />
+            )}
+            <Search
+              className="w-[20px] h-[20px]"
+              onClick={() => getList(search)}
+            />
+          </div>
+        </div>
 
         <div className="text-[14px] flex gap-2">
           <button
@@ -267,126 +293,136 @@ const AdminHome = () => {
           </button>
         </div>
 
-        {userInfo ? (
+        {listLoading ? (
+          <div className="text-center h-[200px] flex items-center justify-center">
+            <Loading className="w-[24px] h-[24px] animate-spin" />
+          </div>
+        ) : (
           <>
-            {active ? (
-              <div className="text-[14px]">
-                <div className="card mt-[20px] px-[20px] py-3 flex items-center justify-between text-[#98E23C] font-bold">
-                  <span>总人数</span>
-                  <span>
-                    {userInfo.referrals ? userInfo.referrals?.length : 0} 人
-                  </span>
-                </div>
-                <div className="card mt-[20px] px-[20px] py-3">
-                  <div
-                    className="flex items-center justify-between text-[#98E23C] font-bold"
-                    onClick={() => setShowList((pre) => (pre = !pre))}
-                  >
-                    <span>列表</span>
-                    <Arrow className={!showList && "rotate-180"} />
-                  </div>
-                  {showList && (
-                    <div className="mt-[10px]">
-                      {userInfo.referrals.map((list) => {
-                        return (
-                          <div
-                            key={list.id}
-                            className="flex items-center justify-between font-bold py-2"
-                          >
-                            <span className="text-white">地址</span>
-                            <span className="text-[#FFC300] flex items-center gap-1">
-                              {shortStr(list.id)}
-                              <Copy
-                                onClick={() => {
-                                  copy(list.id);
-                                  toast.success(t("copySuccess"));
-                                }}
-                                className="w-[14px] h-[14px] text-white"
-                              />
-                            </span>
-                          </div>
-                        );
-                      })}
+            {userInfo ? (
+              <>
+                {active ? (
+                  <div className="text-[14px]">
+                    <div className="card mt-[20px] px-[20px] py-3 flex items-center justify-between text-[#98E23C] font-bold">
+                      <span>总人数</span>
+                      <span>
+                        {userInfo.referrals ? userInfo.referrals?.length : 0} 人
+                      </span>
                     </div>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div className="card px-[20px] py-3 mt-[20px] text-[14px]">
-                <div className="flex items-center justify-between py-2">
-                  <span>地址</span>
-                  <span className="text-[#FFC300] font-bold">
-                    {shortStr(search)}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span>邀请人</span>
-                  <span className="text-[#FFC300] font-bold flex items-center gap-1">
-                    {userInfo?.referral ? shortStr(userInfo?.referral) : "--"}
+                    <div className="card mt-[20px] px-[20px] py-3">
+                      <div
+                        className="flex items-center justify-between text-[#98E23C] font-bold"
+                        onClick={() => setShowList((pre) => (pre = !pre))}
+                      >
+                        <span>列表</span>
+                        <Arrow className={!showList && "rotate-180"} />
+                      </div>
+                      {showList && (
+                        <div className="mt-[10px]">
+                          {userInfo.referrals.map((list) => {
+                            return (
+                              <div
+                                key={list.id}
+                                className="flex items-center justify-between font-bold py-2"
+                              >
+                                <span className="text-white">地址</span>
+                                <span className="text-[#FFC300] flex items-center gap-1">
+                                  {shortStr(list.id)}
+                                  <Copy
+                                    onClick={() => {
+                                      copy(list.id);
+                                      toast.success(t("copySuccess"));
+                                    }}
+                                    className="w-[14px] h-[14px] text-white"
+                                  />
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="card px-[20px] py-3 mt-[20px] text-[14px]">
+                    <div className="flex items-center justify-between py-2">
+                      <span>地址</span>
+                      <span className="text-[#FFC300] font-bold">
+                        {shortStr(search)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <span>邀请人</span>
+                      <span className="text-[#FFC300] font-bold flex items-center gap-1">
+                        {userInfo?.referral
+                          ? shortStr(userInfo?.referral)
+                          : "--"}
 
-                    {userInfo?.referral && (
-                      <Copy
-                        onClick={() => {
-                          copy(userInfo?.referral);
-                          toast.success(t("copySuccess"));
-                        }}
-                        className="w-[14px] h-[14px] text-white"
-                      />
-                    )}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span>质押金额</span>
-                  <span className="text-[#98E23C] font-bold">
-                    {userInfo?.stakedAmount / 10 ** rewardTokenInfo?.decimals ??
-                      18}{" "}
-                    {rewardTokenInfo?.symbol}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span>推荐奖励</span>
-                  <span className="text-[#98E23C] font-bold">
-                    {userInfo?.totalRefferRewards
-                      ? (
-                          userInfo?.totalRefferRewards /
-                            10 ** rewardTokenInfo?.decimals ?? 18
-                        ).toFixed(2)
-                      : "--"}{" "}
-                    {rewardTokenInfo?.symbol}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span>已提取奖励</span>
-                  <span className="text-[#98E23C] font-bold">
-                    {" "}
-                    {userInfo?.claimedRewards /
-                      10 ** rewardTokenInfo?.decimals ?? 18}{" "}
-                    {rewardTokenInfo?.symbol}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span>总收益</span>
-                  <span className="text-[#98E23C] font-bold">
-                    {userInfo2?.totalRewards
-                      ? (userInfo2?.totalRewards).toFixed(2)
-                      : "--"}{" "}
-                    {rewardTokenInfo?.symbol}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span>待领取收益</span>
-                  <span className="text-[#98E23C] font-bold">
-                    {userInfo2?.pendingRewards
-                      ? (userInfo2?.pendingRewards).toFixed(2)
-                      : "--"}{" "}
-                    {rewardTokenInfo?.symbol}
-                  </span>
-                </div>
-              </div>
+                        {userInfo?.referral && (
+                          <Copy
+                            onClick={() => {
+                              copy(userInfo?.referral);
+                              toast.success(t("copySuccess"));
+                            }}
+                            className="w-[14px] h-[14px] text-white"
+                          />
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <span>质押金额</span>
+                      <span className="text-[#98E23C] font-bold">
+                        {userInfo?.stakedAmount /
+                          10 ** rewardTokenInfo?.decimals ?? 18}{" "}
+                        {rewardTokenInfo?.symbol}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <span>推荐奖励</span>
+                      <span className="text-[#98E23C] font-bold">
+                        {userInfo?.totalRefferRewards
+                          ? (
+                              userInfo?.totalRefferRewards /
+                                10 ** rewardTokenInfo?.decimals ?? 18
+                            ).toFixed(2)
+                          : "--"}{" "}
+                        {rewardTokenInfo?.symbol}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <span>已提取奖励</span>
+                      <span className="text-[#98E23C] font-bold">
+                        {" "}
+                        {userInfo?.claimedRewards /
+                          10 ** rewardTokenInfo?.decimals ?? 18}{" "}
+                        {rewardTokenInfo?.symbol}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <span>总收益</span>
+                      <span className="text-[#98E23C] font-bold">
+                        {userInfo2?.totalRewards
+                          ? (userInfo2?.totalRewards).toFixed(2)
+                          : "--"}{" "}
+                        {rewardTokenInfo?.symbol}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <span>待领取收益</span>
+                      <span className="text-[#98E23C] font-bold">
+                        {userInfo2?.pendingRewards
+                          ? (userInfo2?.pendingRewards).toFixed(2)
+                          : "--"}{" "}
+                        {rewardTokenInfo?.symbol}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <NoData />
             )}
           </>
-        ) : (
-          <NoData />
         )}
       </div>
       <ToastContainer
