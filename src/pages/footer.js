@@ -1,10 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+
+import stakeAbi from "../../src/assets/abi/stakingContract.json";
+import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
+import { getContract } from "../../src/utils";
 
 const Footer = () => {
   const location = useLocation();
   const { t } = useTranslation();
+
+  const address = useSelector((state) => state.address);
+
+  const adminAddress = useSelector((state) => state.adminAddress);
+
+  const version = useSelector((state) => state.version);
+
+  const contractAddress = useSelector((state) =>
+    version === 2
+      ? state.stakingContractAddressV2
+      : state.stakingContractAddress
+  );
+
+  const abi = version === 2 ? stakeAbiV2 : stakeAbi;
+
+  const [showAdmin, setShowAdmin] = useState(false);
+
+  const getOwner = async () => {
+    const owner = await getContract(contractAddress, abi, "owner");
+    setShowAdmin(
+      address.toLowerCase() === owner.toLowerCase() ||
+        adminAddress.includes(address.toLowerCase())
+    );
+  };
+
+  useEffect(() => {
+    if (address) {
+      getOwner();
+    }
+  }, [address]);
 
   return (
     <div className="w-full fixed bottom-0 left-0 h-[48px] flex items-center justify-around bg-[#eeeeee] text-[14px] text-black">
@@ -24,6 +59,17 @@ const Footer = () => {
       >
         {t("invite")}
       </Link>
+
+      {showAdmin && (
+        <Link
+          to="/admin"
+          className={`font-bold ${
+            location.pathname === "/admin" ? "text-black" : "text-[#929292]"
+          }`}
+        >
+          admin
+        </Link>
+      )}
     </div>
   );
 };

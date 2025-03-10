@@ -6,7 +6,11 @@ const initialState = {
   usdtAddress: "0x55d398326f99059fF775485246999027B3197955",
   stakingContractAddressV2: "0x9842e17e5BF4a413feFe0731122E303E2f054f68",
   usdtAddressV2: "0x39A7bc6884bAde50C6b591Dfa57128C4d2a6b1C3",
-  version: 2
+  version: 2,
+  adminAddress: [
+    "0x2a32b1623a7f6431697f7d7643d629aa41db5181",
+    "0xa744118af77e66a193601ea1456d7afb27dc7b5c"
+  ]
 };
 
 const slice = createSlice({
