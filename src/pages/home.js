@@ -588,8 +588,10 @@ const Home = () => {
           }}
         >
           <div className="p-[20px] text-center text-[14px]">
-            {t("acceptInvitation", { address: shortStr(invite) })}
-            {/* 收否接受来自{shortStr(invite)}的邀请 */}
+            <p className="font-bold mb-2">
+              {version === 2 ? t("switchV2") : t("switchV1")}
+            </p>
+            <p>{t("acceptInvitation", { address: shortStr(invite) })}</p>
           </div>
         </Dialog>
 
