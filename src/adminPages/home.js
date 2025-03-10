@@ -8,6 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
 import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
+import Total from "../../src/assets/img/adminTotal.png";
 import { ReactComponent as Copy } from "../../src/assets/img/copyWhite.svg";
 import { ReactComponent as Arrow } from "../assets/img/arrow.svg";
 import { fetchData } from "../http/request";
@@ -178,7 +179,7 @@ const AdminHome = () => {
     <div className="min-h-screen bg-[#181818] text-white">
       <AdminHeader />
       <div className="px-[30px] bg-black py-[30px]">
-        <div className="card px-[30px] py-[20px]">
+        <div className="card px-[30px] py-[20px] relative mt-[50px]">
           <div>总质押金额</div>
           <div>
             <span className="text-[#27B53D] text-[38px] font-bold">
@@ -191,6 +192,9 @@ const AdminHome = () => {
             <span className="text-[#27B53D] text-[12px] ml-1">
               {rewardTokenInfo?.symbol}
             </span>
+          </div>
+          <div className="absolute right-0 -top-[70px]">
+            <img className="w-[170px] h-[170px]" src={Total} alt="" />
           </div>
         </div>
         <div className="flex items-center gap-4 mt-[20px]">
@@ -246,16 +250,16 @@ const AdminHome = () => {
 
         <div className="text-[14px] flex gap-2">
           <button
-            className={`px-[20px] py-1 bg-black font-bold rounded-[32px] ${
-              active === 0 && "bg-[#98E23C] text-black"
+            className={`px-[20px] py-1 font-bold rounded-[32px] ${
+              active === 0 ? "bg-[#98E23C] text-black" : "bg-black text-white"
             }`}
             onClick={() => setActive(0)}
           >
             用户
           </button>
           <button
-            className={`px-[20px] py-1 bg-black font-bold rounded-[32px] ${
-              active === 1 && "bg-[#98E23C] text-black"
+            className={`px-[20px] py-1 font-bold rounded-[32px] ${
+              active === 1 ? "bg-[#98E23C] text-black" : "bg-black text-white"
             }`}
             onClick={() => setActive(1)}
           >
