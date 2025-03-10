@@ -376,28 +376,30 @@ const Contract = () => {
             </div>
           </div>
         )}
-        <div className="adminCard adminCard6  w-full mt-[20px] py-[30px] px-[16px] text-black">
-          <div className="text-[16px] font-bold">设置波比直推门限人数</div>
-          <div className="mt-[10px]">
-            <input
-              type="text"
-              value={minDirectFriendsNums}
-              className="bg-white rounded-[55px] px-[20px] h-[40px] w-full text-[14px] border border-solid border-black"
-              placeholder="请输入波比直推门限人数 0-15"
-              onChange={(e) => setMinDirectFriendsNums(e.target.value)}
-            />
+        {version === 2 && (
+          <div className="adminCard adminCard6  w-full mt-[20px] py-[30px] px-[16px] text-black">
+            <div className="text-[16px] font-bold">设置波比直推门限人数</div>
+            <div className="mt-[10px]">
+              <input
+                type="text"
+                value={minDirectFriendsNums}
+                className="bg-white rounded-[55px] px-[20px] h-[40px] w-full text-[14px] border border-solid border-black"
+                placeholder="请输入波比直推门限人数 0-15"
+                onChange={(e) => setMinDirectFriendsNums(e.target.value)}
+              />
+            </div>
+            <Button
+              loading={minDirectFriendsNumsLoading}
+              onClick={setMinDirectFriendsNumsFun}
+              className="rounded-[55px] h-[40px] w-full bg-black text-[#98E23C] text-[14px] mt-[10px] border-0"
+            >
+              <span className="flex items-center justify-center gap-1">
+                <Setting className="w-[24px] h-[24px]" />
+                <span>设置</span>
+              </span>
+            </Button>
           </div>
-          <Button
-            loading={minDirectFriendsNumsLoading}
-            onClick={setMinDirectFriendsNumsFun}
-            className="rounded-[55px] h-[40px] w-full bg-black text-[#98E23C] text-[14px] mt-[10px] border-0"
-          >
-            <span className="flex items-center justify-center gap-1">
-              <Setting className="w-[24px] h-[24px]" />
-              <span>设置</span>
-            </span>
-          </Button>
-        </div>
+        )}
       </div>
       <ToastContainer
         position="top-center"
