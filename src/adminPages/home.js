@@ -178,8 +178,8 @@ const AdminHome = () => {
   return (
     <div className="min-h-screen bg-[#181818] text-white">
       <AdminHeader />
-      <div className="px-[30px] bg-black py-[30px]">
-        <div className="card px-[30px] py-[20px] relative mt-[50px]">
+      <div className="px-[20px] bg-black py-[30px]">
+        <div className="card px-[20px] py-[20px] relative mt-[50px]">
           <div>总质押金额</div>
           <div>
             <span className="text-[#27B53D] text-[38px] font-bold">
@@ -234,7 +234,7 @@ const AdminHome = () => {
         </div>
       </div>
 
-      <div className="p-[30px]">
+      <div className="py-[30px] px-[20px]">
         <Link to="/admin/contract">
           <button className="bg-[#98E23C] rounded-[8px] text-black w-full h-[48px] font-bold">
             操作合约

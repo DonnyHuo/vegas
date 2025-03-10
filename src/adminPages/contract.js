@@ -227,7 +227,7 @@ const Contract = () => {
   return (
     <div className="bg-black min-h-screen text-white ">
       <AdminHeader />
-      <div className="py-[20px] px-[30px]">
+      <div className="p-[20px]">
         <div className="flex items-center justify-center">
           <Link to="/admin">
             <GoBack className="mr-auto w-[24px] h-[24px]" />
