@@ -62,8 +62,10 @@ const AdminHome = () => {
     }
     setListLoading(true);
 
+    const addr = address.toLowerCase();
+
     const data = `query {
-            user(id: "${address}"){
+            user(id: "${addr}"){
                 teamSize
                 referrer{
                     id
