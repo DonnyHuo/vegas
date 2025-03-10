@@ -8,8 +8,7 @@ import { ethers } from "ethers";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Button, Dialog, Loading, Switch } from "react-vant";
 
@@ -34,6 +33,12 @@ const Home = () => {
     searchParams.delete(key);
     setSearchParams(searchParams);
   };
+
+  const versionFromUrl = searchParams.get("version");
+
+  if (versionFromUrl) {
+    store.dispatch(setVersion(Number(versionFromUrl)));
+  }
 
   const invite = searchParams.get("invite");
 
@@ -368,6 +373,7 @@ const Home = () => {
 
   const changeVersion = (value) => {
     setVersionState(value);
+    setSearchParams({ version: value });
     store.dispatch(setVersion(value));
     switchNetwork();
     setTimeout(() => {
