@@ -488,13 +488,6 @@ const Home = () => {
     version
   ]);
 
-  console.log("stakeInfoV2.referrer", stakeInfoV2?.referrer);
-  console.log("stakeInfoV2.staked", stakeInfoV2?.staked);
-  console.log("stakeInfoV1.referrer", stakeInfoV1?.referrer);
-  console.log("stakeInfoV1.staked", stakeInfoV1?.staked);
-  console.log("version", version);
-  console.log("showChangeVersionBindReffer", showChangeVersionBindReffer);
-
   const [showChangeVersionModal, setShowChangeVersionModal] = useState(false);
 
   useEffect(() => {
