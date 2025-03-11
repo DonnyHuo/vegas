@@ -47,5 +47,7 @@
   "invite": "Invite",
   "noData": "No Data",
   "switchV2": "Official Version",
-  "switchV1": "Beta Version"
+  "switchV1": "Beta Version",
+  "invitationDetected": "A beta invitation relationship has been detected.",
+  "confirmToBind": "Click to confirm and bind with one click."
 }

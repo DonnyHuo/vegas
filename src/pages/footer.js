@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
@@ -27,19 +27,20 @@ const Footer = () => {
 
   const [showAdmin, setShowAdmin] = useState(false);
 
-  const getOwner = async () => {
+  const getOwner = useCallback(async () => {
     const owner = await getContract(contractAddress, abi, "owner");
+    console.log("owner", owner);
     setShowAdmin(
       address.toLowerCase() === owner.toLowerCase() ||
         adminAddress.includes(address.toLowerCase())
     );
-  };
+  }, [abi, address, adminAddress, contractAddress]);
 
   useEffect(() => {
     if (address) {
       getOwner();
     }
-  }, [address]);
+  }, [address, getOwner]);
 
   return (
     <div className="w-full fixed bottom-0 left-0 h-[48px] flex items-center justify-around bg-[#eeeeee] text-[14px] text-black">

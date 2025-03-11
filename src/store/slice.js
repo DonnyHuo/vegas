@@ -4,8 +4,8 @@ const initialState = {
   address: "",
   stakingContractAddress: "0xa7f840B8AFa5830Df6B19a1fCa93FF2dF466b646",
   usdtAddress: "0x55d398326f99059fF775485246999027B3197955",
-  stakingContractAddressV2: "0xFC7F74006309a12c43027101440fCeBB0e9724df",
-  usdtAddressV2: "0x39A7bc6884bAde50C6b591Dfa57128C4d2a6b1C3",
+  stakingContractAddressV2: "0xDe2bed5d3a4d5879A30Abb89657fb737849f161C",
+  usdtAddressV2: "0x55d398326f99059fF775485246999027B3197955",
   version: 2,
   adminAddress: [
     "0x2a32b1623a7f6431697f7d7643d629aa41db5181",

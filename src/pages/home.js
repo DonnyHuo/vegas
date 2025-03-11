@@ -1,9 +1,3 @@
-import {
-  shortStr,
-  getContract,
-  getWriteContractLoad,
-  switchNetwork
-} from "../../src/utils";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,6 +14,7 @@ import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
 import Card from "../../src/assets/img/card.jpeg";
 import { ReactComponent as Click } from "../../src/assets/img/click.svg";
 import { ReactComponent as Money } from "../../src/assets/img/money.svg";
+import { shortStr, getContract, getWriteContractLoad } from "../../src/utils";
 import { fetchData } from "../http/request";
 import { setVersion } from "../store/slice";
 import { store } from "../store";
@@ -48,6 +43,14 @@ const Home = () => {
   const usdtAddress = useSelector((state) =>
     version === 2 ? state.usdtAddressV2 : state.usdtAddress
   );
+
+  const stakingContractAddressV2 = useSelector(
+    (state) => state.stakingContractAddressV2
+  );
+  const stakingContractAddressV1 = useSelector(
+    (state) => state.stakingContractAddress
+  );
+
   const stakingContractAddress = useSelector((state) =>
     version === 2
       ? state.stakingContractAddressV2
@@ -73,7 +76,7 @@ const Home = () => {
     if (address) {
       getAllowance();
     }
-  }, [stakingContractAddress, address, usdtAddress, version]);
+  }, [stakingContractAddress, address, usdtAddress]);
 
   const [approveLoading, setApproveLoading] = useState(false);
 
@@ -240,14 +243,13 @@ const Home = () => {
 
   useEffect(() => {
     if (address) {
-      getUserInfo();
-      const timer = setInterval(() => {
-        getUserInfo();
-      }, 5000);
-
-      return () => clearInterval(timer);
+      // getUserInfo();
+      // const timer = setInterval(() => {
+      //   getUserInfo();
+      // }, 5000);
+      // return () => clearInterval(timer);
     }
-  }, [address, getUserInfo, version]);
+  }, [address]);
 
   const [claimLoading, setClaimLoading] = useState(false);
 
@@ -292,7 +294,7 @@ const Home = () => {
 
   const [bindLoading, setBindLoading] = useState(false);
 
-  const bindReferrerFun = async () => {
+  const bindReferrerFun = async (inviter) => {
     setBindLoading(true);
 
     const overrides = {
@@ -304,7 +306,7 @@ const Home = () => {
       stakingContractAddress,
       version === 2 ? stakeAbiV2 : stakeAbi,
       "bindReferrer",
-      invite.toLocaleLowerCase(),
+      invite.toLocaleLowerCase() || inviter.toLocaleLowerCase(),
       overrides
     )
       .then(() => {
@@ -378,11 +380,79 @@ const Home = () => {
     setVersionState(value);
     setSearchParams({ version: value });
     store.dispatch(setVersion(value));
-    switchNetwork();
     setTimeout(() => {
       window.location.reload();
     });
   };
+
+  // console.log(staked);
+
+  const [stakeInfoV1, setStakeInfoV1] = useState({ referrer: "", staked: "" });
+
+  const [stakeInfoV2, setStakeInfoV2] = useState({ referrer: "", staked: "" });
+
+  const getV1Staked = useCallback(async () => {
+    const amounts = await getContract(
+      stakingContractAddressV1,
+      stakeAbi,
+      "users",
+      address
+    );
+
+    if (amounts.referrer !== ethers.constants.AddressZero) {
+      const res = await getContract(
+        stakingContractAddressV2,
+        stakeAbiV2,
+        "users",
+        amounts.referrer
+      );
+      setStakeInfoV1({
+        referrer: amounts.referrer,
+        staked: res.totalStaked.toString() * 1 > 0
+      });
+    }
+  }, [address, stakingContractAddressV1, stakingContractAddressV2]);
+
+  const getV2Staked = useCallback(async () => {
+    const amounts = await getContract(
+      stakingContractAddressV2,
+      stakeAbiV2,
+      "users",
+      address
+    );
+
+    setStakeInfoV2({
+      referrer: amounts.referrer,
+      staked: amounts.totalStaked.toString() * 1 > 0
+    });
+  }, [address, stakingContractAddressV2]);
+
+  useEffect(() => {
+    if (version === 2 && address) {
+      getV1Staked();
+      getV2Staked();
+    }
+  }, [getV1Staked, getV2Staked, address, version]);
+
+  const showChangeVersionBindReffer = useMemo(() => {
+    return (
+      stakeInfoV2?.referrer === ethers.constants.AddressZero &&
+      !stakeInfoV2.staked &&
+      stakeInfoV1.referrer !== ethers.constants.AddressZero &&
+      stakeInfoV1.staked &&
+      version === 2
+    );
+  }, [
+    stakeInfoV1.referrer,
+    stakeInfoV1.staked,
+    stakeInfoV2?.referrer,
+    stakeInfoV2.staked,
+    version
+  ]);
+
+  const [showChangeVersionModal, setShowChangeVersionModal] = useState(
+    showChangeVersionBindReffer
+  );
 
   return (
     <div className="content-box">
@@ -625,6 +695,25 @@ const Home = () => {
         >
           <div className="p-[20px] text-center text-[14px] font-medium">
             {t("alreadyStaked")}
+          </div>
+        </Dialog>
+
+        <Dialog
+          visible={showChangeVersionModal}
+          showCancelButton
+          cancelButtonText={t("cancel")}
+          confirmButtonText={t("confirm")}
+          onConfirm={() => {
+            bindReferrerFun(stakeInfoV1.referrer);
+          }}
+          onCancel={() => {
+            setShowChangeVersionModal(false);
+          }}
+        >
+          <div className="p-[20px] text-center text-[14px]">
+            <p className="font-bold mb-2">{t("switchV2")}</p>
+            <p>{t("invitationDetected")}</p>
+            <p className="mt-2">{t("confirmToBind")}</p>
           </div>
         </Dialog>
       </div>
