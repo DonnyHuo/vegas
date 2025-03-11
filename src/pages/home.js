@@ -455,6 +455,7 @@ const Home = () => {
   console.log("stakeInfoV1.referrer", stakeInfoV1?.referrer);
   console.log("stakeInfoV1.staked", stakeInfoV1?.staked);
   console.log("version", version);
+  console.log("showChangeVersionBindReffer", showChangeVersionBindReffer);
 
   const [showChangeVersionModal, setShowChangeVersionModal] = useState(
     showChangeVersionBindReffer
