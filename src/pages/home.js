@@ -243,13 +243,13 @@ const Home = () => {
 
   useEffect(() => {
     if (address) {
-      // getUserInfo();
-      // const timer = setInterval(() => {
-      //   getUserInfo();
-      // }, 5000);
-      // return () => clearInterval(timer);
+      getUserInfo();
+      const timer = setInterval(() => {
+        getUserInfo();
+      }, 5000);
+      return () => clearInterval(timer);
     }
-  }, [address]);
+  }, [address, getUserInfo]);
 
   const [claimLoading, setClaimLoading] = useState(false);
 
