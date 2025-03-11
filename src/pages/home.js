@@ -323,8 +323,10 @@ const Home = () => {
       });
   };
 
+  const [reBindLoading, setReBindLoading] = useState(false);
+
   const reBindReferrerFun = async (inviter) => {
-    setBindLoading(true);
+    setReBindLoading(true);
 
     const overrides = {
       gasLimit: 300000
@@ -340,15 +342,14 @@ const Home = () => {
     )
       .then(() => {
         toast.success(t("bindSuccess"));
-        removeParam("invite");
       })
       .catch((err) => {
         console.log("err", err);
         toast.error(t("bindFail"));
       })
       .finally(() => {
-        setVisible(false);
-        setBindLoading(false);
+        setShowChangeVersionModal(false);
+        setReBindLoading(false);
       });
   };
 
@@ -359,6 +360,14 @@ const Home = () => {
       return t("confirm");
     }
   }, [bindLoading]);
+
+  const reConfirmButtonText = useMemo(() => {
+    if (reBindLoading) {
+      return <Loading color="#3f45ff" size="20px" />;
+    } else {
+      return t("confirm");
+    }
+  }, [reBindLoading]);
 
   const [rewardList, setRewardList] = useState([]);
 
@@ -747,7 +756,7 @@ const Home = () => {
           visible={showChangeVersionModal}
           showCancelButton
           cancelButtonText={t("cancel")}
-          confirmButtonText={t("confirm")}
+          confirmButtonText={reConfirmButtonText}
           onConfirm={() => {
             reBindReferrerFun(stakeInfoV1.referrer);
           }}
