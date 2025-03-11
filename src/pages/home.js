@@ -457,9 +457,18 @@ const Home = () => {
   console.log("version", version);
   console.log("showChangeVersionBindReffer", showChangeVersionBindReffer);
 
-  const [showChangeVersionModal, setShowChangeVersionModal] = useState(
-    showChangeVersionBindReffer
-  );
+  const [showChangeVersionModal, setShowChangeVersionModal] = useState(false);
+
+  useEffect(() => {
+    setShowChangeVersionModal(showChangeVersionBindReffer);
+  }, [
+    showChangeVersionBindReffer,
+    stakeInfoV1.referrer,
+    stakeInfoV1.staked,
+    stakeInfoV2.referrer,
+    stakeInfoV2.staked,
+    version
+  ]);
 
   return (
     <div className="content-box">
