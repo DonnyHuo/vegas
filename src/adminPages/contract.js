@@ -5,12 +5,14 @@ import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Button } from "react-vant";
 
+import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
 import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
 import { ReactComponent as Cancel } from "../../src/assets/img/cancel.svg";
 import { ReactComponent as GoBack } from "../../src/assets/img/goBack.svg";
 import { ReactComponent as Hot } from "../../src/assets/img/hot.svg";
 import { ReactComponent as Setting } from "../../src/assets/img/setting.svg";
+import { fetchData } from "../http/request";
 import { getContract, getWriteContractLoad } from "../utils";
 import AdminHeader from "./header";
 
@@ -224,6 +226,69 @@ const Contract = () => {
       });
   };
 
+  const usdtAddress = useSelector((state) =>
+    version === 2 ? state.usdtAddressV2 : state.usdtAddress
+  );
+
+  const [rewardTokenInfo, setRewardTokenInfo] = useState();
+
+  const getRewardTokenInfo = async () => {
+    const decimals = await getContract(usdtAddress, erc20Abi, "decimals");
+    const symbol = await getContract(usdtAddress, erc20Abi, "symbol");
+
+    setRewardTokenInfo({
+      symbol,
+      decimals
+    });
+  };
+
+  useEffect(() => {
+    getRewardTokenInfo();
+  }, []);
+
+  const [total, setTotal] = useState({});
+
+  const getInfo = async () => {
+    const params = `
+      query {
+        systemStats{
+          totalStaked
+          totalRefferRewards
+          totalCliamed
+        }
+      }
+    `;
+    const res = await fetchData(params);
+    if (res.systemStats) {
+      const data = res.systemStats[0];
+      setTotal(data);
+    }
+  };
+
+  useEffect(() => {
+    getInfo();
+  }, []);
+
+  const [withdrawLoading, setWithdrawLoading] = useState(false);
+
+  const withdrawBalance = async () => {
+    setWithdrawLoading(true);
+    await getWriteContractLoad(
+      stakingContractAddress,
+      stakeAbiV2,
+      "withdrawBalance"
+    )
+      .then(() => {
+        toast.success("提币成功");
+      })
+      .catch(() => {
+        toast.error("提币失败");
+      })
+      .finally(() => {
+        setWithdrawLoading(false);
+      });
+  };
+
   return (
     <div className="bg-black min-h-screen text-white ">
       <AdminHeader />
@@ -258,6 +323,34 @@ const Contract = () => {
             </span>
           </Button>
         </div>
+
+        {version === 2 && (
+          <div className="adminCard w-full mt-[20px] py-[30px] px-[16px] text-black">
+            <div className="text-[16px] font-bold">提币</div>
+            <div className="flex items-center justify-between text-[14px] mt-2">
+              <span>总质押金额</span>
+              <span>
+                {total?.totalStaked
+                  ? (
+                      total?.totalStaked / 10 ** rewardTokenInfo?.decimals ?? 18
+                    ).toFixed(2)
+                  : 0}{" "}
+                {rewardTokenInfo?.symbol}
+              </span>
+            </div>
+            <Button
+              onClick={withdrawBalance}
+              loading={withdrawLoading}
+              className="rounded-[55px] h-[40px] w-full bg-black text-[#98E23C] text-[14px] mt-[10px] border-0"
+            >
+              <span className="flex items-center justify-center gap-1">
+                <Hot className="w-[24px] h-[24px]" />
+                <span>提币</span>
+              </span>
+            </Button>
+          </div>
+        )}
+
         <div className="adminCard adminCard2 w-full mt-[20px] py-[30px] px-[16px] text-black">
           <div className="text-[16px] font-bold">设置代数收益比例</div>
           <div className="mt-[10px]">
