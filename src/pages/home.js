@@ -294,7 +294,7 @@ const Home = () => {
 
   const [bindLoading, setBindLoading] = useState(false);
 
-  const bindReferrerFun = async (inviter) => {
+  const bindReferrerFun = async () => {
     setBindLoading(true);
 
     const overrides = {
@@ -306,7 +306,36 @@ const Home = () => {
       stakingContractAddress,
       version === 2 ? stakeAbiV2 : stakeAbi,
       "bindReferrer",
-      invite.toLocaleLowerCase() || inviter.toLocaleLowerCase(),
+      invite.toLocaleLowerCase(),
+      overrides
+    )
+      .then(() => {
+        toast.success(t("bindSuccess"));
+        removeParam("invite");
+      })
+      .catch((err) => {
+        console.log("err", err);
+        toast.error(t("bindFail"));
+      })
+      .finally(() => {
+        setVisible(false);
+        setBindLoading(false);
+      });
+  };
+
+  const reBindReferrerFun = async (inviter) => {
+    setBindLoading(true);
+
+    const overrides = {
+      gasLimit: 300000
+      // gasPrice: ethers.utils.parseUnits("5", "gwei")
+    };
+
+    await getWriteContractLoad(
+      stakingContractAddress,
+      stakeAbiV2,
+      "bindReferrer",
+      inviter.toLocaleLowerCase(),
       overrides
     )
       .then(() => {
@@ -720,7 +749,7 @@ const Home = () => {
           cancelButtonText={t("cancel")}
           confirmButtonText={t("confirm")}
           onConfirm={() => {
-            bindReferrerFun(stakeInfoV1.referrer);
+            reBindReferrerFun(stakeInfoV1.referrer);
           }}
           onCancel={() => {
             setShowChangeVersionModal(false);
