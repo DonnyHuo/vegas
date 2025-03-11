@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-// import VConsole from "vconsole";
+import VConsole from "vconsole";
 
 import App from "./App";
 import "./locales/i18n";
@@ -12,7 +12,7 @@ import { store, persistor } from "./store";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
 
-// new VConsole();
+new VConsole();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
