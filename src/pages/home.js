@@ -425,9 +425,15 @@ const Home = () => {
 
   // console.log(staked);
 
-  const [stakeInfoV1, setStakeInfoV1] = useState({ referrer: "", staked: "" });
+  const [stakeInfoV1, setStakeInfoV1] = useState({
+    referrer: ethers.constants.AddressZero,
+    staked: ""
+  });
 
-  const [stakeInfoV2, setStakeInfoV2] = useState({ referrer: "", staked: "" });
+  const [stakeInfoV2, setStakeInfoV2] = useState({
+    referrer: "",
+    isNotStaked: ""
+  });
 
   const getV1Staked = useCallback(async () => {
     const amounts = await getContract(
@@ -461,7 +467,7 @@ const Home = () => {
 
     setStakeInfoV2({
       referrer: amounts.referrer,
-      staked: amounts.totalStaked.toString() * 1 > 0
+      isNotStaked: amounts.totalStaked.toString() * 1 === 0
     });
   }, [address, stakingContractAddressV2]);
 
@@ -475,7 +481,7 @@ const Home = () => {
   const showChangeVersionBindReffer = useMemo(() => {
     return (
       stakeInfoV2?.referrer === ethers.constants.AddressZero &&
-      !stakeInfoV2.staked &&
+      stakeInfoV2.isNotStaked &&
       stakeInfoV1.referrer !== ethers.constants.AddressZero &&
       stakeInfoV1.staked &&
       version === 2
@@ -484,7 +490,7 @@ const Home = () => {
     stakeInfoV1.referrer,
     stakeInfoV1.staked,
     stakeInfoV2?.referrer,
-    stakeInfoV2.staked,
+    stakeInfoV2.isNotStaked,
     version
   ]);
 
