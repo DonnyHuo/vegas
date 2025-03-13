@@ -141,7 +141,9 @@ const Invite = () => {
           {t("totalEarnings")}
         </div>
         <div className="text-[#98E23C] text-[28px] font-bold">
-          {info?.totalRefferRewards ? info?.totalRefferRewards / 10 ** 18 : 0}{" "}
+          {info?.totalRefferRewards
+            ? (info?.totalRefferRewards / 10 ** 18).toFixed(2)
+            : 0}{" "}
           {rewardToken}
         </div>
       </div>
