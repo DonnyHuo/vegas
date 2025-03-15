@@ -71,7 +71,7 @@ const Header = () => {
         {showLan && (
           <div
             ref={divRef}
-            className="absolute top-[42px] left-2 bg-black text-[12px] p-3 rounded-xl flex flex-col gap-2"
+            className="absolute top-[42px] left-2 bg-black text-[12px] p-3 rounded-xl flex flex-col gap-2 z-30"
           >
             {lanList.map((list) => {
               return (
