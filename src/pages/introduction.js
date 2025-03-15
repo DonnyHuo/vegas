@@ -45,11 +45,11 @@ const Introduction = () => {
         </div>
 
         <div className="mt-[30px] text-[12px]">
-          <div className="text-[#FF9500]">{t("intro.details")}</div>
+          <div className="text-[#FF9500] font-bold">{t("intro.details")}</div>
           <a className="text-[#FF9500]" href="/Vegas.pdf" download="Vegas.pdf">
             <button>Vegas.pdf</button>
           </a>
-          <div className="mt-[10px]">{t("intro.officialDapp")}</div>
+          <div className="mt-[10px] font-bold">{t("intro.officialDapp")}</div>
           <div className="flex items-center justify-center gap-2">
             <span>https://game.wwwvegas.net</span>
             <Copy
@@ -59,7 +59,9 @@ const Introduction = () => {
               }}
             />
           </div>
-          <div className="mt-[10px]">{t("intro.contractAddress")}</div>
+          <div className="mt-[10px] font-bold">
+            {t("intro.contractAddress")}
+          </div>
           <div className="flex items-center justify-center gap-2">
             <span>{shortStr(stakingContractAddressV2)}</span>
             <Copy

@@ -65,7 +65,7 @@ const Header = () => {
     <div className="w-full flex items-center justify-between text-white bg-black px-[20px] py-[10px]">
       <div className="flex items-center gap-2">
         <Lan
-          className="w-5 h-5"
+          className="w-6 h-6"
           onClick={() => setShowLan((pre) => (pre = !pre))}
         />
         {showLan && (
@@ -106,7 +106,10 @@ const Header = () => {
           </button>
         )} */}
 
-        <Link className="text-[12px] text-[#98e23c]" to="/introduction">
+        <Link
+          className="text-[14px] text-[#98e23c] font-bold"
+          to="/introduction"
+        >
           {t("foundationIntroduction")}
         </Link>
       </div>
