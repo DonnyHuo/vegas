@@ -3,6 +3,8 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
 import translationEN from "./en.json";
+import translationJA from "./ja.json";
+import translationKO from "./ko.json";
 import translationZH from "./zh.json";
 
 const resources = {
@@ -14,6 +16,12 @@ const resources = {
   },
   zh: {
     translation: translationZH
+  },
+  ja: {
+    translation: translationJA
+  },
+  ko: {
+    translation: translationKO
   }
 };
 
@@ -26,6 +34,7 @@ i18n
     interpolation: {
       escapeValue: false
     },
+    returnObjects: true,
     detection: {
       order: ["localStorage", "navigator"],
       caches: ["localStorage"]

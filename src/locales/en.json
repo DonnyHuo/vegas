@@ -49,5 +49,23 @@
   "switchV2": "Official Version",
   "switchV1": "Beta Version",
   "invitationDetected": "A beta invitation relationship has been detected.",
-  "confirmToBind": "Click to confirm and bind with one click."
+  "confirmToBind": "Click to confirm and bind with one click.",
+  "foundationIntroduction": "Introduction",
+  "intro": {
+    "backToHome": "Back to Home",
+    "title": "VEGAS Foundation",
+    "subtitle": [
+      "Redefining Traditional Investment Concepts in 2025",
+      "Make your funds flow"
+    ],
+    "description": [
+      "From Las Vegas to the world",
+      "ushering in a new era of wealth"
+    ],
+    "about": "Vegas Foundation is a globally leading innovative financial institution dedicated to providing innovative financial services and asset management solutions for the global casino and gaming industry. The core goal of the foundation is to promote transparency, security, and stable profitability in the gaming industry!",
+    "team": "The founding team of Vegas Foundation includes globally renowned financial experts and an international professional operations team, committed to delivering high returns to partners and investors through its unique fund management system.",
+    "details": "Detailed Description - PDF Download Link",
+    "officialDapp": "Official DAPP",
+    "contractAddress": "Contract Address"
+  }
 }

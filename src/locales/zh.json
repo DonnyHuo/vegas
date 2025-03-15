@@ -49,5 +49,17 @@
   "switchV2": "正式版",
   "switchV1": "测试版",
   "invitationDetected": "检测到测试版的邀请关系",
-  "confirmToBind": "点击确认一键绑定"
+  "confirmToBind": "点击确认一键绑定",
+  "foundationIntroduction": "基金会介绍",
+  "intro": {
+    "backToHome": "返回首页",
+    "title": "VEGAS维加斯基金会",
+    "subtitle": ["2025年重塑传统投资观念", "让你的资金流通起来"],
+    "description": ["從拉斯維加斯到全球", "開啓財富新紀元"],
+    "about": "Vegas Foundation(維加斯基金會)是一家全球領先的創新性金融機構，致力于爲全球赌場和博彩行業提供創新的金融服務和資産管理解决方案。基金會的核心目是推動博彩行業的透明化、安全性和穩定盈利爲基!",
+    "team": "Vegas Foundation的創始團隊包括全球知名金融專家和國際專業的操作團隊，致力于通過其獨特的資金管理系爲合作伙伴和投資者带來高額回報。",
+    "details": "详细说明-PDF下载链接",
+    "officialDapp": "官方唯一DAPP",
+    "contractAddress": "合约地址"
+  }
 }

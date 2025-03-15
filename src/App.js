@@ -22,18 +22,21 @@ function AppContent() {
   const location = useLocation();
 
   const currentRoute = routes.find((route) => route.path === location.pathname);
+  console.log("currentRoute", currentRoute);
 
-  const showHeaderFooter = currentRoute ? currentRoute.showHeaderFooter : true;
+  const showHeader = currentRoute ? currentRoute.showHeader : true;
+
+  const showFooter = currentRoute ? currentRoute.showFooter : true;
 
   return (
     <div>
-      {showHeaderFooter && <Header />}
+      {showHeader && <Header />}
       <Routes>
         {routes.map((route, index) => (
           <Route key={index} path={route.path} element={route.element} />
         ))}
       </Routes>
-      {showHeaderFooter && <Footer />}
+      {showFooter && <Footer />}
     </div>
   );
 }
