@@ -31,7 +31,7 @@ const Header = () => {
     },
     {
       label: "简体中文",
-      value: "zh"
+      value: "zh-CN"
     },
     {
       label: "日本語",
@@ -93,25 +93,6 @@ const Header = () => {
             })}
           </div>
         )}
-        {/* {["zh-CN"].includes(i18n.language) ? (
-          <button className="text-[14px]" onClick={() => changeLanguage("en")}>
-            English
-          </button>
-        ) : (
-          <button
-            className="text-[14px]"
-            onClick={() => changeLanguage("zh-CN")}
-          >
-            简体中文
-          </button>
-        )} */}
-
-        <Link
-          className="text-[14px] text-[#98e23c] font-bold"
-          to="/introduction"
-        >
-          {t("foundationIntroduction")}
-        </Link>
       </div>
       <div>
         {address ? (

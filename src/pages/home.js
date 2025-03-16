@@ -511,8 +511,18 @@ const Home = () => {
     <div className="content-box">
       <div className="home">
         <div className="text-center text-[18px]">
-          <div className="font-bold mt-[10px] mb-[20px] flex items-center justify-between">
-            <span>{t("welcome")}</span>
+          <div className="font-bold mt-[10px] mb-[20px] flex items-start justify-between">
+            <div className="flex flex-col items-start">
+              <p>{t("welcome")}</p>
+              <div>
+                <Link
+                  className="text-[14px] font-bold underline text-[#98E23C]"
+                  to="/introduction"
+                >
+                  {t("foundationIntroduction")}
+                </Link>
+              </div>
+            </div>
             <div className="flex items-center gap-2">
               <Switch
                 size="20px"
