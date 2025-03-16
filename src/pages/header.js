@@ -62,17 +62,14 @@ const Header = () => {
   }, []);
 
   return (
-    <div className="w-full flex items-center justify-between text-white bg-black px-[20px] py-[10px]">
-      <div className="flex items-center gap-2">
+    <div className="w-full flex items-center justify-between text-white bg-black px-[20px] py-[10px] relative">
+      <div className="flex items-center gap-2" ref={divRef}>
         <Lan
           className="w-6 h-6"
           onClick={() => setShowLan((pre) => (pre = !pre))}
         />
         {showLan && (
-          <div
-            ref={divRef}
-            className="absolute top-[42px] left-2 bg-black text-[12px] p-3 rounded-xl flex flex-col gap-2 z-30"
-          >
+          <div className="absolute top-[42px] left-2 bg-black text-[12px] p-3 rounded-xl flex flex-col gap-2 z-30 cursor-pointer">
             {lanList.map((list) => {
               return (
                 <div
