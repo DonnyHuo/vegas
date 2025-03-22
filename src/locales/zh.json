@@ -62,6 +62,7 @@
     "officialDapp": "官方唯一DAPP",
     "contractAddress": "合约地址"
   },
-  "notice": "如果页面一进来不立即滚动，通常是因为 useEffect 的延迟、CSS 动画的初始状态问题，或者容器宽度未正确计算。",
-  "rebet": "复投未开放"
+  "rebet": "复投未开放",
+  "notice": "欢迎来到VEGAS",
+  "announcement": "公告"
 }

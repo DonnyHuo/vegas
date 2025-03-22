@@ -68,5 +68,7 @@
     "officialDapp": "Official DAPP",
     "contractAddress": "Contract Address"
   },
-  "rebet": "Reinvestment is not open"
+  "rebet": "Reinvestment is not open",
+  "notice": "Welcome to VEGAS",
+  "announcement": "Announcement"
 }

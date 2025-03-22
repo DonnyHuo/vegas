@@ -62,5 +62,7 @@
     "officialDapp": "공식 DAPP",
     "contractAddress": "컨트랙트 주소"
   },
-  "rebet": "재투자가 개방되지 않았습니다"
+  "rebet": "재투자가 개방되지 않았습니다",
+  "notice": "VEGAS에 오신 것을 환영합니다",
+  "announcement": "공지"
 }

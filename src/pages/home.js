@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Marquee from "react-fast-marquee";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useSearchParams, Link } from "react-router-dom";
@@ -14,8 +15,8 @@ import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
 import Card from "../../src/assets/img/card.jpeg";
 import { ReactComponent as Click } from "../../src/assets/img/click.svg";
 import { ReactComponent as Money } from "../../src/assets/img/money.svg";
+import { ReactComponent as Notice } from "../../src/assets/img/notice.svg";
 import { shortStr, getContract, getWriteContractLoad } from "../../src/utils";
-import Marquee from "../components/Marquee";
 import { fetchData } from "../http/request";
 import { setVersion } from "../store/slice";
 import { store } from "../store";
@@ -516,7 +517,12 @@ const Home = () => {
 
   return (
     <div className="content-box">
-      {/* <Marquee text={t("notice")} speed="30" /> */}
+      <div className="flex items-center gap-2 px-[20px] py-2">
+        <Notice />
+        <Marquee className="text-[14px] text-[#FF9500] font-bold" speed={80}>
+          {t("notice")}
+        </Marquee>
+      </div>
       <div className="home">
         <div className="text-center text-[18px]">
           <div className="font-bold mt-[10px] mb-[20px] flex items-start justify-between">

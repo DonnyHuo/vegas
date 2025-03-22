@@ -62,5 +62,7 @@
     "officialDapp": "公式DAPP",
     "contractAddress": "コントラクトアドレス"
   },
-  "rebet": "再投資は開放されていません"
+  "rebet": "再投資は開放されていません",
+  "notice": "VEGASへようこそ",
+  "announcement": "お知らせ"
 }
