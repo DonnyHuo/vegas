@@ -517,7 +517,7 @@ const Home = () => {
 
   return (
     <div className="content-box">
-      <div className="flex items-center gap-2 px-[20px] py-2">
+      <div className="flex items-center gap-2 px-[20px] pt-2">
         <Notice />
         <Marquee className="text-[14px] text-[#FF9500] font-bold" speed={80}>
           {t("notice")}
