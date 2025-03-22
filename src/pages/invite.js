@@ -183,7 +183,15 @@ const Invite = () => {
           </span>
 
           <div className="text-[14px] flex items-center justify-between mt-2">
-            <span className="w-11/12 truncate">{referrer}</span>
+            <a
+              href={`https://bscscan.com/address/${referrer}`}
+              target="_blank"
+              className="text-[14px] underline underline-offset-1 w-11/12 truncate"
+              rel="noreferrer"
+            >
+              {referrer}
+            </a>
+
             <Copy
               onClick={() => {
                 copy(referrer);
@@ -206,7 +214,14 @@ const Invite = () => {
                   <div className="flex items-center justify-between py-1">
                     <span className="text-[14px]">{t("address")}</span>
                     <span className="text-[14px] flex items-center gap-1">
-                      {shortStr(list.contributor.id)}
+                      <a
+                        href={`https://bscscan.com/address/${list.contributor.id}`}
+                        target="_blank"
+                        className="text-[14px] underline underline-offset-1 w-11/12 truncate"
+                        rel="noreferrer"
+                      >
+                        {shortStr(list.contributor.id)}
+                      </a>
                       <Copy
                         onClick={() => {
                           copy(list.contributor.id);

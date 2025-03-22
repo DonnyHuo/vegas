@@ -1,3 +1,9 @@
+import {
+  shortStr,
+  getContract,
+  getWriteContractLoad,
+  copy
+} from "../../src/utils";
 import { ethers } from "ethers";
 import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import Marquee from "react-fast-marquee";
@@ -14,9 +20,9 @@ import stakeAbi from "../../src/assets/abi/stakingContract.json";
 import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
 import Card from "../../src/assets/img/card.jpeg";
 import { ReactComponent as Click } from "../../src/assets/img/click.svg";
+import { ReactComponent as Copy } from "../../src/assets/img/copy.svg";
 import { ReactComponent as Money } from "../../src/assets/img/money.svg";
 import { ReactComponent as Notice } from "../../src/assets/img/notice.svg";
-import { shortStr, getContract, getWriteContractLoad } from "../../src/utils";
 import { fetchData } from "../http/request";
 import { setVersion } from "../store/slice";
 import { store } from "../store";
@@ -804,9 +810,23 @@ const Home = () => {
                   </div>
                   <div className="flex items-center justify-between py-1">
                     <span className="text-[14px]">{t("transactionHash")}</span>
-                    <span className="text-[14px] text-[#767676]">
-                      {shortStr(list.transactionHash)}
-                    </span>
+                    <div className="flex items-center gap-1">
+                      <a
+                        href={`https://bscscan.com/tx/${list.transactionHash}`}
+                        target="_blank"
+                        className="text-[14px] text-[#767676] underline underline-offset-1"
+                        rel="noreferrer"
+                      >
+                        {shortStr(list.transactionHash)}
+                      </a>
+                      <Copy
+                        onClick={() => {
+                          copy(list.transactionHash);
+                          toast.success(t("copySuccess"));
+                        }}
+                        className="w-4 h-4"
+                      />
+                    </div>
                   </div>
                 </div>
               );
