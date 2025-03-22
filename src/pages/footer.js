@@ -20,10 +20,12 @@ const Footer = () => {
   const contractAddress = useSelector((state) =>
     version === 2
       ? state.stakingContractAddressV2
+      : version === 3
+      ? state.stakingContractAddressV3
       : state.stakingContractAddress
   );
 
-  const abi = version === 2 ? stakeAbiV2 : stakeAbi;
+  const abi = [2, 3].includes(version) ? stakeAbiV2 : stakeAbi;
 
   const [showAdmin, setShowAdmin] = useState(false);
 

@@ -27,13 +27,13 @@ const routes = [
     path: "/admin",
     element: <AdminHome />,
     showHeader: true,
-    showFooter: true
+    showFooter: false
   },
   {
     path: "/admin/contract",
     element: <AdminContract />,
     showHeader: true,
-    showFooter: true
+    showFooter: false
   }
 ];
 

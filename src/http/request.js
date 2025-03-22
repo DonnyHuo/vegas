@@ -7,6 +7,8 @@ export const fetchData = async (data) => {
   const endpoint =
     version === 2
       ? "https://api.studio.thegraph.com/query/84515/stakingrewardv2/version/latest"
+      : version === 3
+      ? "https://api.studio.thegraph.com/query/84515/stakingrewardv3/v0.0.1/graphql"
       : "https://api.studio.thegraph.com/query/84515/stakingreward/version/latest";
   return request(endpoint, data);
 };

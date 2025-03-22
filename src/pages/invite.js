@@ -21,13 +21,13 @@ const Invite = () => {
 
   const version = useSelector((state) => state.version);
 
-  const usdtAddress = useSelector((state) =>
-    version === 2 ? state.usdtAddressV2 : state.usdtAddress
-  );
+  const usdtAddress = useSelector((state) => state.usdtAddress);
 
   const stakingContractAddress = useSelector((state) =>
     version === 2
       ? state.stakingContractAddressV2
+      : version === 3
+      ? state.stakingContractAddressV3
       : state.stakingContractAddress
   );
 
@@ -38,7 +38,7 @@ const Invite = () => {
   const getUsers = useCallback(async () => {
     const amounts = await getContract(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "users",
       address
     );
@@ -100,7 +100,7 @@ const Invite = () => {
     }`;
     const res = await fetchData(data);
 
-    const inviteInfo = res.user;
+    const inviteInfo = res?.user;
 
     setInfo(inviteInfo);
   };

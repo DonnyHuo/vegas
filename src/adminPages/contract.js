@@ -22,6 +22,8 @@ const Contract = () => {
   const stakingContractAddress = useSelector((state) =>
     version === 2
       ? state.stakingContractAddressV2
+      : version === 3
+      ? state.stakingContractAddressV3
       : state.stakingContractAddress
   );
 
@@ -36,7 +38,7 @@ const Contract = () => {
     setTransferLoading(true);
     await getWriteContractLoad(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "transferOwnership",
       transferOwnerAddress
     )
@@ -73,7 +75,7 @@ const Contract = () => {
     setRewardRateLoading(true);
     await getWriteContractLoad(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "setRewardRate",
       rewardNumber,
       rewardRate * 100
@@ -103,7 +105,7 @@ const Contract = () => {
     setDailyRewardRateLoading(true);
     await getWriteContractLoad(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "setDailyRewardRate",
       dailyRewardRate * 100
     )
@@ -132,7 +134,7 @@ const Contract = () => {
     setMaxGenerationLoading(true);
     await getWriteContractLoad(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "setMaxGeneration",
       maxGeneration
     )
@@ -152,7 +154,7 @@ const Contract = () => {
   const getMaxGeneration = async () => {
     const res = await getContract(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "maxGeneration"
     );
 
@@ -180,7 +182,7 @@ const Contract = () => {
 
     await getWriteContractLoad(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "setBlacklist",
       blacklist,
       isDo
@@ -211,7 +213,7 @@ const Contract = () => {
     setMinDirectFriendsNumsLoading(true);
     await getWriteContractLoad(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "setMinDirectFriendsNums",
       minDirectFriendsNums
     )
@@ -226,9 +228,7 @@ const Contract = () => {
       });
   };
 
-  const usdtAddress = useSelector((state) =>
-    version === 2 ? state.usdtAddressV2 : state.usdtAddress
-  );
+  const usdtAddress = useSelector((state) => state.usdtAddress);
 
   const [rewardTokenInfo, setRewardTokenInfo] = useState();
 
@@ -259,8 +259,8 @@ const Contract = () => {
       }
     `;
     const res = await fetchData(params);
-    if (res.systemStats) {
-      const data = res.systemStats[0];
+    if (res?.systemStats) {
+      const data = res?.systemStats[0];
       setTotal(data);
     }
   };
@@ -324,7 +324,7 @@ const Contract = () => {
           </Button>
         </div>
 
-        {version === 2 && (
+        {[2, 3].includes(version) && (
           <div className="adminCard w-full mt-[20px] py-[30px] px-[16px] text-black">
             <div className="text-[16px] font-bold">提币</div>
             <div className="flex items-center justify-between text-[14px] mt-2">
@@ -382,7 +382,7 @@ const Contract = () => {
             </span>
           </Button>
         </div>
-        {version === 2 && (
+        {[2, 3].includes(version) && (
           <div className="adminCard adminCard3 w-full mt-[20px] py-[30px] px-[16px] text-black">
             <div className="text-[16px] font-bold">设置静态每日收益率</div>
             <div className="mt-[10px]">
@@ -433,7 +433,7 @@ const Contract = () => {
           </Button>
         </div>
 
-        {version === 2 && (
+        {[2, 3].includes(version) && (
           <div className="adminCard adminCard5 w-full mt-[20px] py-[30px] px-[16px] text-black">
             <div className="text-[16px] font-bold">设置黑名单</div>
             <div className="mt-[10px]">
@@ -469,7 +469,7 @@ const Contract = () => {
             </div>
           </div>
         )}
-        {version === 2 && (
+        {[2, 3].includes(version) && (
           <div className="adminCard adminCard6  w-full mt-[20px] py-[30px] px-[16px] text-black">
             <div className="text-[16px] font-bold">设置波比直推门限人数</div>
             <div className="mt-[10px]">

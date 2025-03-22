@@ -42,8 +42,8 @@ const AdminHome = () => {
       }
     `;
     const res = await fetchData(params);
-    if (res.systemStats) {
-      const data = res.systemStats[0];
+    if (res?.systemStats) {
+      const data = res?.systemStats[0];
       setTotal(data);
     }
   };
@@ -95,20 +95,20 @@ const AdminHome = () => {
 
     setListLoading(false);
 
-    const inviteInfo = res.user;
+    const inviteInfo = res?.user;
 
     setUserInfo(inviteInfo);
   };
 
   const version = useSelector((state) => state.version);
 
-  const usdtAddress = useSelector((state) =>
-    version === 2 ? state.usdtAddressV2 : state.usdtAddress
-  );
+  const usdtAddress = useSelector((state) => state.usdtAddress);
 
   const stakingContractAddress = useSelector((state) =>
     version === 2
       ? state.stakingContractAddressV2
+      : version === 3
+      ? state.stakingContractAddressV3
       : state.stakingContractAddress
   );
 
@@ -133,7 +133,7 @@ const AdminHome = () => {
   const getUserInfo = useCallback(async () => {
     await getContract(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "getUserInfo",
       search
     )

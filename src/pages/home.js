@@ -1,13 +1,13 @@
 import { ethers } from "ethers";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import Marquee from "react-fast-marquee";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useSearchParams, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Button, Dialog, Loading, Switch } from "react-vant";
+import { Button, Dialog, Loading, Popover } from "react-vant";
 
-import { GiftO, FireO } from "@react-vant/icons";
+import { GiftO, FireO, ArrowDown } from "@react-vant/icons";
 
 import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
@@ -42,20 +42,24 @@ const Home = () => {
   const address = useSelector((state) => state.address);
   const version = useSelector((state) => state.version);
 
-  const usdtAddress = useSelector((state) =>
-    version === 2 ? state.usdtAddressV2 : state.usdtAddress
-  );
+  const usdtAddress = useSelector((state) => state.usdtAddress);
 
+  const stakingContractAddressV1 = useSelector(
+    (state) => state.stakingContractAddress
+  );
   const stakingContractAddressV2 = useSelector(
     (state) => state.stakingContractAddressV2
   );
-  const stakingContractAddressV1 = useSelector(
-    (state) => state.stakingContractAddress
+
+  const stakingContractAddressV3 = useSelector(
+    (state) => state.stakingContractAddressV3
   );
 
   const stakingContractAddress = useSelector((state) =>
     version === 2
       ? state.stakingContractAddressV2
+      : version === 3
+      ? state.stakingContractAddressV3
       : state.stakingContractAddress
   );
 
@@ -112,7 +116,7 @@ const Home = () => {
   const getUsers = useCallback(async () => {
     const amounts = await getContract(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "users",
       address
     );
@@ -156,7 +160,7 @@ const Home = () => {
     const decimals = await getContract(usdtAddress, erc20Abi, "decimals");
     await getWriteContractLoad(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "stake",
       ethers.utils.parseUnits(stakeValue, decimals)
     )
@@ -211,7 +215,7 @@ const Home = () => {
   const getUserInfo = useCallback(async () => {
     await getContract(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "getUserInfo",
       address
     )
@@ -267,7 +271,7 @@ const Home = () => {
     setClaimLoading(true);
     await getWriteContractLoad(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "claimRewards"
     )
       .then((res) => {
@@ -314,7 +318,7 @@ const Home = () => {
 
     await getWriteContractLoad(
       stakingContractAddress,
-      version === 2 ? stakeAbiV2 : stakeAbi,
+      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
       "bindReferrer",
       invite.toLocaleLowerCase(),
       overrides
@@ -397,7 +401,7 @@ const Home = () => {
       }`;
 
     const res = await fetchData(data);
-    setRewardList(res.rewardClaimeds);
+    setRewardList(res?.rewardClaimeds);
   };
 
   const getStaked = async (address) => {
@@ -408,7 +412,7 @@ const Home = () => {
     }`;
     const res = await fetchData(data);
 
-    const stakedAmount = res.user?.stakedAmount;
+    const stakedAmount = res?.user?.stakedAmount;
 
     setStakedAmount(stakedAmount ? stakedAmount / 10 ** 18 : 0);
   };
@@ -420,17 +424,6 @@ const Home = () => {
     }
   }, [address, version]);
 
-  const [versionState, setVersionState] = useState(version);
-
-  const changeVersion = (value) => {
-    setVersionState(value);
-    setSearchParams({ version: value });
-    store.dispatch(setVersion(value));
-    setTimeout(() => {
-      window.location.reload();
-    });
-  };
-
   // console.log(staked);
 
   const [stakeInfoV1, setStakeInfoV1] = useState({
@@ -439,6 +432,11 @@ const Home = () => {
   });
 
   const [stakeInfoV2, setStakeInfoV2] = useState({
+    referrer: "",
+    isNotStaked: ""
+  });
+
+  const [stakeInfoV3, setStakeInfoV3] = useState({
     referrer: "",
     isNotStaked: ""
   });
@@ -473,33 +471,80 @@ const Home = () => {
       address
     );
 
-    setStakeInfoV2({
+    if (version === 2) {
+      setStakeInfoV2({
+        referrer: amounts.referrer,
+        isNotStaked: amounts.totalStaked.toString() * 1 === 0
+      });
+    }
+    if (version === 3) {
+      if (amounts.referrer !== ethers.constants.AddressZero) {
+        const res = await getContract(
+          stakingContractAddressV3,
+          stakeAbiV2,
+          "users",
+          amounts.referrer
+        );
+
+        setStakeInfoV2({
+          referrer: amounts.referrer,
+          staked: res.totalStaked.toString() * 1 > 0
+        });
+      }
+    }
+  }, [address, stakingContractAddressV2, stakingContractAddressV3, version]);
+
+  const getV3Staked = useCallback(async () => {
+    const amounts = await getContract(
+      stakingContractAddressV3,
+      stakeAbiV2,
+      "users",
+      address
+    );
+
+    setStakeInfoV3({
       referrer: amounts.referrer,
       isNotStaked: amounts.totalStaked.toString() * 1 === 0
     });
-  }, [address, stakingContractAddressV2]);
+  }, [address, stakingContractAddressV3]);
 
   useEffect(() => {
     if (version === 2 && address) {
       getV1Staked();
       getV2Staked();
     }
-  }, [getV1Staked, getV2Staked, address, version]);
+    if (version === 3 && address) {
+      getV2Staked();
+      getV3Staked();
+    }
+  }, [getV1Staked, getV2Staked, address, version, getV3Staked]);
 
   const showChangeVersionBindReffer = useMemo(() => {
-    return (
-      stakeInfoV2?.referrer === ethers.constants.AddressZero &&
-      stakeInfoV2.isNotStaked &&
-      stakeInfoV1.referrer !== ethers.constants.AddressZero &&
-      stakeInfoV1.staked &&
-      version === 2
-    );
+    if (version === 2) {
+      return (
+        stakeInfoV2?.referrer === ethers.constants.AddressZero &&
+        stakeInfoV2.isNotStaked &&
+        stakeInfoV1.referrer !== ethers.constants.AddressZero &&
+        stakeInfoV1.staked
+      );
+    }
+    if (version === 3) {
+      return (
+        stakeInfoV3?.referrer === ethers.constants.AddressZero &&
+        stakeInfoV3.isNotStaked &&
+        stakeInfoV2.referrer !== ethers.constants.AddressZero &&
+        stakeInfoV2.staked
+      );
+    }
   }, [
+    version,
+    stakeInfoV2.referrer,
+    stakeInfoV2.isNotStaked,
+    stakeInfoV2.staked,
     stakeInfoV1.referrer,
     stakeInfoV1.staked,
-    stakeInfoV2?.referrer,
-    stakeInfoV2.isNotStaked,
-    version
+    stakeInfoV3?.referrer,
+    stakeInfoV3.isNotStaked
   ]);
 
   const [showChangeVersionModal, setShowChangeVersionModal] = useState(false);
@@ -512,8 +557,30 @@ const Home = () => {
     stakeInfoV1.staked,
     stakeInfoV2.referrer,
     stakeInfoV2.staked,
+    stakeInfoV2.isNotStaked,
+    stakeInfoV3?.referrer,
+    stakeInfoV3.isNotStaked,
     version
   ]);
+
+  const [versionState, setVersionState] = useState(version);
+
+  const actions = [
+    { key: 1, text: t("switchV1") },
+    { key: 2, text: t("switchV2") },
+    { key: 3, text: t("switchV3") }
+  ];
+
+  const select = (value) => {
+    setVersionState(value);
+    setSearchParams({ version: value });
+    store.dispatch(setVersion(value));
+    setTimeout(() => {
+      window.location.reload();
+    });
+  };
+
+  const popover = useRef(null);
 
   return (
     <div className="content-box">
@@ -538,18 +605,43 @@ const Home = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Switch
-                size="20px"
-                activeColor={"#000000"}
-                inactiveColor={"#98E23C"}
-                defaultChecked={versionState}
-                activeValue={2}
-                inactiveValue={1}
-                onChange={changeVersion}
-              />
-              <span className="text-[12px]">
-                {version === 1 ? <>{t("switchV1")}</> : <>{t("switchV2")}</>}
-              </span>
+              <Popover
+                ref={popover}
+                theme="dark"
+                placement={"bottom-end"}
+                reference={
+                  <div className="flex items-center gap-1 mt-1">
+                    <span className="text-[14px]">
+                      {version === 1 ? (
+                        <>{t("switchV1")}</>
+                      ) : version === 2 ? (
+                        <>{t("switchV2")}</>
+                      ) : (
+                        <>{t("switchV3")}</>
+                      )}
+                    </span>
+                    <ArrowDown className="w-3 h-3" />
+                  </div>
+                }
+              >
+                <div className="bg-[#000] px-4 py-2 text-left">
+                  {actions.map((list) => {
+                    return (
+                      <div
+                        onClick={() => select(list.key)}
+                        className={`text-[12px] py-[6px] ${
+                          versionState === list.key
+                            ? "text-[#98e23c]"
+                            : "text-white"
+                        }`}
+                        key={list.key}
+                      >
+                        {list.text}
+                      </div>
+                    );
+                  })}
+                </div>
+              </Popover>
             </div>
           </div>
           <img className="rounded-[24px]" src={Card} alt="" />
@@ -625,7 +717,18 @@ const Home = () => {
             {t("accelerateEarnings")}
             <Click className="absolute -right-4 -bottom-6" />
           </Link>
-          <div className="flex items-center justify-between text-[12px] mt-[20px]">
+          {version === 3 && (
+            <div className="flex items-center justify-between text-[12px] mt-[20px]">
+              <span>{"总投入金额"}</span>
+              <span>
+                <span className="text-[#27B53D] text-[18px] font-bold">
+                  {Number(userInfo?.rewardLimit / 2 ?? 0).toFixed(6)}
+                </span>{" "}
+                {userInfo?.rewardToken}
+              </span>
+            </div>
+          )}
+          <div className="flex items-center justify-between text-[12px] mt-[10px]">
             <span>{t("claimedReward")}</span>
             <span>
               <span className="text-[#27B53D] text-[18px] font-bold">
@@ -745,7 +848,11 @@ const Home = () => {
         >
           <div className="p-[20px] text-center text-[14px]">
             <p className="font-bold mb-2">
-              {version === 2 ? t("switchV2") : t("switchV1")}
+              {version === 2
+                ? t("switchV2")
+                : version === 3
+                ? t("switchV3")
+                : t("switchV1")}
             </p>
             <p>{t("acceptInvitation", { address: shortStr(invite) })}</p>
           </div>
@@ -787,7 +894,9 @@ const Home = () => {
           cancelButtonText={t("cancel")}
           confirmButtonText={reConfirmButtonText}
           onConfirm={() => {
-            reBindReferrerFun(stakeInfoV1.referrer);
+            reBindReferrerFun(
+              version === 2 ? stakeInfoV1.referrer : stakeInfoV2.referrer
+            );
           }}
           onCancel={() => {
             setShowChangeVersionModal(false);
