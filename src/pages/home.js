@@ -149,7 +149,7 @@ const Home = () => {
   }, [rewardTokenInfo?.balance, stakeValue, stakedAmount, version]);
 
   const stakeFun = async () => {
-    if (stakedAmount) {
+    if (stakedAmount && version === 1) {
       return;
     }
     setStakeLoading(true);
