@@ -15,6 +15,7 @@ import Card from "../../src/assets/img/card.jpeg";
 import { ReactComponent as Click } from "../../src/assets/img/click.svg";
 import { ReactComponent as Money } from "../../src/assets/img/money.svg";
 import { shortStr, getContract, getWriteContractLoad } from "../../src/utils";
+import Marquee from "../components/Marquee";
 import { fetchData } from "../http/request";
 import { setVersion } from "../store/slice";
 import { store } from "../store";
@@ -59,7 +60,7 @@ const Home = () => {
 
   const [allowance, setAllowance] = useState(0);
 
-  const getAllowance = useCallback(async () => {
+  const getAllowance = async () => {
     const amounts = await getContract(
       usdtAddress,
       erc20Abi,
@@ -70,13 +71,13 @@ const Home = () => {
     const decimals = await getContract(usdtAddress, erc20Abi, "decimals");
     const allowance = ethers.utils.formatUnits(amounts, decimals) * 1;
     setAllowance(allowance);
-  }, [address, stakingContractAddress, usdtAddress]);
+  };
 
   useEffect(() => {
     if (address) {
       getAllowance();
     }
-  }, [stakingContractAddress, address, usdtAddress, getAllowance]);
+  }, [stakingContractAddress, address, usdtAddress]);
 
   const [approveLoading, setApproveLoading] = useState(false);
 
@@ -515,6 +516,7 @@ const Home = () => {
 
   return (
     <div className="content-box">
+      {/* <Marquee text={t("notice")} /> */}
       <div className="home">
         <div className="text-center text-[18px]">
           <div className="font-bold mt-[10px] mb-[20px] flex items-start justify-between">
