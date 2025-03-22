@@ -233,7 +233,7 @@ const Invite = () => {
                       )}
                     </span>
                   </div>
-                  <div className="absolute top-[20px] left-[100px]">
+                  <div className="absolute top-[20px] left-1/4">
                     <img
                       className="w-[60px] h-[70px]"
                       src={require(`../assets/img/15/${list?.generation}.png`)}
