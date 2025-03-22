@@ -128,6 +128,8 @@ const Home = () => {
 
   const [rewardTokenInfo, setRewardTokenInfo] = useState({});
 
+  const [stakedAmount, setStakedAmount] = useState(0);
+
   const canStake = useMemo(() => {
     if (stakeValue * 1 > rewardTokenInfo?.balance) {
       return false;
@@ -138,10 +140,16 @@ const Home = () => {
     if (stakeValue * 1 < 500) {
       return false;
     }
+    if (stakedAmount) {
+      return false;
+    }
     return true;
-  }, [rewardTokenInfo?.balance, stakeValue]);
+  }, [rewardTokenInfo?.balance, stakeValue, stakedAmount]);
 
   const stakeFun = async () => {
+    if (stakedAmount) {
+      return;
+    }
     setStakeLoading(true);
     const decimals = await getContract(usdtAddress, erc20Abi, "decimals");
     await getWriteContractLoad(
@@ -389,8 +397,6 @@ const Home = () => {
     const res = await fetchData(data);
     setRewardList(res.rewardClaimeds);
   };
-
-  const [stakedAmount, setStakedAmount] = useState(0);
 
   const getStaked = async (address) => {
     const data = `query {
