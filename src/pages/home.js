@@ -59,7 +59,7 @@ const Home = () => {
 
   const [allowance, setAllowance] = useState(0);
 
-  const getAllowance = async () => {
+  const getAllowance = useCallback(async () => {
     const amounts = await getContract(
       usdtAddress,
       erc20Abi,
@@ -70,13 +70,13 @@ const Home = () => {
     const decimals = await getContract(usdtAddress, erc20Abi, "decimals");
     const allowance = ethers.utils.formatUnits(amounts, decimals) * 1;
     setAllowance(allowance);
-  };
+  }, [address, stakingContractAddress, usdtAddress]);
 
   useEffect(() => {
     if (address) {
       getAllowance();
     }
-  }, [stakingContractAddress, address, usdtAddress]);
+  }, [stakingContractAddress, address, usdtAddress, getAllowance]);
 
   const [approveLoading, setApproveLoading] = useState(false);
 
