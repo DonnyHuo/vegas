@@ -61,5 +61,6 @@
     "details": "상세 설명 - PDF 다운로드 링크",
     "officialDapp": "공식 DAPP",
     "contractAddress": "컨트랙트 주소"
-  }
+  },
+  "rebet": "재투자가 개방되지 않았습니다"
 }

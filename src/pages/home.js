@@ -516,7 +516,7 @@ const Home = () => {
 
   return (
     <div className="content-box">
-      {/* <Marquee text={t("notice")} /> */}
+      {/* <Marquee text={t("notice")} speed="30" /> */}
       <div className="home">
         <div className="text-center text-[18px]">
           <div className="font-bold mt-[10px] mb-[20px] flex items-start justify-between">
@@ -585,10 +585,16 @@ const Home = () => {
                 onClick={stakeFun}
                 disabled={!canStake}
               >
-                <span className="flex items-center justify-center gap-2">
-                  <FireO fontSize={"20px"} />
-                  <span>{t("bet")}</span>
-                </span>
+                {stakedAmount && version === 1 ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span>{t("rebet")}</span>
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    <FireO fontSize={"20px"} />
+                    <span>{t("bet")}</span>
+                  </span>
+                )}
               </Button>
             ) : (
               <Button
