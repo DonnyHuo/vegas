@@ -140,11 +140,11 @@ const Home = () => {
     if (stakeValue * 1 < 500) {
       return false;
     }
-    if (stakedAmount) {
+    if (stakedAmount && version === 1) {
       return false;
     }
     return true;
-  }, [rewardTokenInfo?.balance, stakeValue, stakedAmount]);
+  }, [rewardTokenInfo?.balance, stakeValue, stakedAmount, version]);
 
   const stakeFun = async () => {
     if (stakedAmount) {
