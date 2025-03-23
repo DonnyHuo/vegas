@@ -65,33 +65,65 @@ const AdminHome = () => {
 
     const addr = address.toLowerCase();
 
-    const data = `query {
-            user(id: "${addr}"){
-                teamSize
-                referrer{
+    let data = "";
+    if (version === 3) {
+      data = `query {
+        user(id: "${addr}"){
+            teamSize
+            referrer{
+                id
+            }
+            referrals{
+                id 
+            }
+            teamSize
+            stakedAmount
+            currentStakedAmount
+            totalRefferRewards
+            claimedRewards
+            contributions(orderBy: timestamp, orderDirection: desc,first:20){
+                id 
+                contributor{
                     id
                 }
-                referrals{
-                    id 
-                }
-                teamSize
-                stakedAmount
-                totalRefferRewards
-                claimedRewards
-                contributions(orderBy: timestamp, orderDirection: desc,first:20){
-                    id 
-                    contributor{
-                        id
-                    }
-                generation
-                amount
-                referralRecord{
-                    transactionHash
-                }
-                timestamp
-            }   
+            generation
+            amount
+            referralRecord{
+                transactionHash
+            }
+            timestamp
+          }   
         }
-    }`;
+      }`;
+    } else {
+      data = `query {
+        user(id: "${addr}"){
+            teamSize
+            referrer{
+                id
+            }
+            referrals{
+                id 
+            }
+            teamSize
+            stakedAmount
+            totalRefferRewards
+            claimedRewards
+            contributions(orderBy: timestamp, orderDirection: desc,first:20){
+                id 
+                contributor{
+                    id
+                }
+            generation
+            amount
+            referralRecord{
+                transactionHash
+            }
+            timestamp
+          }   
+        }
+      }`;
+    }
     const res = await fetchData(data);
 
     setListLoading(false);
@@ -380,8 +412,22 @@ const AdminHome = () => {
                         )}
                       </span>
                     </div>
+                    {version === 3 && (
+                      <div className="flex items-center justify-between py-2">
+                        <span>当前质押金额</span>
+                        <span className="text-[#98E23C] font-bold">
+                          {userInfo?.currentStakedAmount /
+                            10 ** rewardTokenInfo?.decimals ?? 18}{" "}
+                          {rewardTokenInfo?.symbol}
+                        </span>
+                      </div>
+                    )}
                     <div className="flex items-center justify-between py-2">
-                      <span>质押金额</span>
+                      {version === 3 ? (
+                        <span>历史质押金额</span>
+                      ) : (
+                        <span>质押金额</span>
+                      )}
                       <span className="text-[#98E23C] font-bold">
                         {userInfo?.stakedAmount /
                           10 ** rewardTokenInfo?.decimals ?? 18}{" "}
