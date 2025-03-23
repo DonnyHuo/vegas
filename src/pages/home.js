@@ -119,23 +119,6 @@ const Home = () => {
 
   const [staked, setStaked] = useState(false);
 
-  const getUsers = useCallback(async () => {
-    const amounts = await getContract(
-      stakingContractAddress,
-      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
-      "users",
-      address
-    );
-    setReferrer(amounts.referrer);
-    setStaked(amounts.totalStaked.toString() * 1 > 0);
-  }, [stakingContractAddress, address, version]);
-
-  useEffect(() => {
-    if (address) {
-      getUsers();
-    }
-  }, [address, getUsers, version]);
-
   const [stakeValue, setStakeValue] = useState("");
 
   const [rewardTokenInfo, setRewardTokenInfo] = useState({});
@@ -379,7 +362,7 @@ const Home = () => {
     } else {
       return t("confirm");
     }
-  }, [bindLoading]);
+  }, [bindLoading, t]);
 
   const reConfirmButtonText = useMemo(() => {
     if (reBindLoading) {
@@ -387,7 +370,7 @@ const Home = () => {
     } else {
       return t("confirm");
     }
-  }, [reBindLoading]);
+  }, [reBindLoading, t]);
 
   const [rewardList, setRewardList] = useState([]);
 
@@ -411,16 +394,37 @@ const Home = () => {
   };
 
   const getStaked = async (address) => {
-    const data = `query {
-      user(id: "${address}"){
-          stakedAmount
-      }   
-    }`;
+    let data = "";
+    if (version === 3) {
+      data = `query {
+        user(id: "${address}"){
+            currentStakedAmount
+            referrer{
+              id
+            }
+        }   
+      }`;
+    } else {
+      data = `query {
+        user(id: "${address}"){
+            stakedAmount
+            referrer{
+              id
+            }
+        }   
+      }`;
+    }
+
     const res = await fetchData(data);
 
-    const stakedAmount = res?.user?.stakedAmount;
+    const stakedAmount =
+      version === 3 ? res?.user?.currentStakedAmount : res?.user?.stakedAmount;
 
     setStakedAmount(stakedAmount ? stakedAmount / 10 ** 18 : 0);
+
+    setReferrer(res?.user?.referrer?.id);
+
+    setStaked(!!stakedAmount);
   };
 
   useEffect(() => {
