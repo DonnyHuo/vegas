@@ -281,20 +281,23 @@ const Home = () => {
 
   const [showTips, setShowTips] = useState(false);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (invite) {
-      if (staked) {
-        setShowTips(true);
-      } else {
-        referrer ? setVisibleTip(true) : setVisible(true);
-        // if (referrer) {
-        //   referrer === ethers.constants.AddressZero
-        //     ? setVisible(true)
-        //     : setVisibleTip(true);
-        // }
+      if (!loading) {
+        if (staked) {
+          setShowTips(true);
+        } else {
+          if (Boolean(referrer)) {
+            setVisibleTip(true);
+          } else {
+            setVisible(true);
+          }
+        }
       }
     }
-  }, [referrer, invite, t, staked, version]);
+  }, [referrer, invite, t, staked, version, loading]);
 
   const [bindLoading, setBindLoading] = useState(false);
 
@@ -395,6 +398,7 @@ const Home = () => {
   };
 
   const getStaked = async (address) => {
+    setLoading(true);
     let data = "";
     if (version === 3) {
       data = `query {
@@ -426,6 +430,10 @@ const Home = () => {
     setReferrer(res?.user?.referrer?.id);
 
     setStaked(!!stakedAmount);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   useEffect(() => {
@@ -562,17 +570,7 @@ const Home = () => {
 
   useEffect(() => {
     setShowChangeVersionModal(showChangeVersionBindReffer);
-  }, [
-    showChangeVersionBindReffer,
-    stakeInfoV1.referrer,
-    stakeInfoV1.staked,
-    stakeInfoV2.referrer,
-    stakeInfoV2.staked,
-    stakeInfoV2.isNotStaked,
-    stakeInfoV3?.referrer,
-    stakeInfoV3.isNotStaked,
-    version
-  ]);
+  }, [showChangeVersionBindReffer]);
 
   const [versionState, setVersionState] = useState(version);
 
@@ -718,7 +716,6 @@ const Home = () => {
             )}
           </div>
         </div>
-
         <div className="relative mt-[20px] p-[20px] bg-white rounded-lg border border-solid border-black">
           <span className="text-[16px] font-bold">{t("rewardInfo")}</span>
           <Link
@@ -792,7 +789,6 @@ const Home = () => {
             {t("claimTips", { name: userInfo?.rewardToken })}
           </div>
         </div>
-
         <div className="mt-[20px] p-[20px] bg-white rounded-lg border border-solid border-black">
           <div className="text-black text-[16px] font-bold mb-[10px]">
             {t("earningsRecord")}
@@ -842,7 +838,6 @@ const Home = () => {
             </div>
           )}
         </div>
-
         <ToastContainer
           position="top-center"
           autoClose={1000}
@@ -857,7 +852,6 @@ const Home = () => {
           closeButton={false}
           className={"text-[14px] font-bold !text-[#98e23c] !font-Montserrat"}
         />
-
         <Dialog
           visible={visible}
           showCancelButton
@@ -882,7 +876,6 @@ const Home = () => {
             <p>{t("acceptInvitation", { address: shortStr(invite) })}</p>
           </div>
         </Dialog>
-
         <Dialog
           visible={visibleTip}
           showCancelButton
@@ -897,7 +890,6 @@ const Home = () => {
             {t("alreadyAccepted")}
           </div>
         </Dialog>
-
         <Dialog
           visible={showTips}
           showCancelButton
@@ -912,7 +904,6 @@ const Home = () => {
             {t("alreadyStaked")}
           </div>
         </Dialog>
-
         <Dialog
           visible={showChangeVersionModal}
           showCancelButton
