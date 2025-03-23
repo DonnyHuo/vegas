@@ -286,11 +286,12 @@ const Home = () => {
       if (staked) {
         setShowTips(true);
       } else {
-        if (referrer) {
-          referrer === ethers.constants.AddressZero
-            ? setVisible(true)
-            : setVisibleTip(true);
-        }
+        referrer ? setVisibleTip(true) : setVisible(true);
+        // if (referrer) {
+        //   referrer === ethers.constants.AddressZero
+        //     ? setVisible(true)
+        //     : setVisibleTip(true);
+        // }
       }
     }
   }, [referrer, invite, t, staked, version]);
