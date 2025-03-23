@@ -34,7 +34,7 @@ const AdminHome = () => {
   const getInfo = async () => {
     const params = `
       query {
-        systemStats{
+        systemStats {
           totalStaked
           totalRefferRewards
           totalCliamed
@@ -42,6 +42,7 @@ const AdminHome = () => {
       }
     `;
     const res = await fetchData(params);
+    console.log("res", res);
     if (res?.systemStats) {
       const data = res?.systemStats[0];
       setTotal(data);
