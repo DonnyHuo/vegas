@@ -715,6 +715,7 @@ const Home = () => {
                 type="default"
                 loading={approveLoading}
                 onClick={approveFun}
+                disabled={loading}
               >
                 {t("approve")}
               </Button>
