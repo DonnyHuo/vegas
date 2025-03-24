@@ -688,7 +688,7 @@ const Home = () => {
             onChange={(e) => setStakeValue(e.target.value)}
           />
           <div className="mt-[20px]">
-            {allowance ? (
+            {allowance && !loading ? (
               <Button
                 className="w-full bg-black text-[#98e23c]"
                 round
@@ -732,7 +732,7 @@ const Home = () => {
           </Link>
           {version === 3 && (
             <div className="flex items-center justify-between text-[12px] mt-[20px]">
-              <span>{"总投入金额"}</span>
+              <span>{t("totalAmount")}</span>
               <span>
                 <span className="text-[#27B53D] text-[18px] font-bold">
                   {Number(userInfo?.rewardLimit / 2 ?? 0).toFixed(6)}
