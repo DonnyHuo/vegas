@@ -397,18 +397,19 @@ const AdminHome = () => {
                     <div className="flex items-center justify-between py-2">
                       <span>邀请人</span>
                       <span className="text-[#FFC300] font-bold flex items-center gap-1">
-                        {userInfo?.referral
-                          ? shortStr(userInfo?.referral)
-                          : "--"}
-
-                        {userInfo?.referral && (
-                          <Copy
-                            onClick={() => {
-                              copy(userInfo?.referral);
-                              toast.success(t("copySuccess"));
-                            }}
-                            className="w-[14px] h-[14px] text-white"
-                          />
+                        {userInfo?.referrer?.id ? (
+                          <>
+                            {shortStr(userInfo.referrer.id)}
+                            <Copy
+                              onClick={() => {
+                                copy(userInfo.referrer.id);
+                                toast.success(t("copySuccess"));
+                              }}
+                              className="w-[14px] h-[14px] text-white"
+                            />
+                          </>
+                        ) : (
+                          "--"
                         )}
                       </span>
                     </div>

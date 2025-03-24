@@ -8,6 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
 import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
+import stakeAbiV3 from "../../src/assets/abi/stakingContractV3.json";
 import { ReactComponent as Copy } from "../../src/assets/img/copy.svg";
 import { ReactComponent as Hello } from "../../src/assets/img/hello.svg";
 import { ReactComponent as Money2 } from "../../src/assets/img/money2.svg";
@@ -38,10 +39,11 @@ const Invite = () => {
   const getUsers = useCallback(async () => {
     const amounts = await getContract(
       stakingContractAddress,
-      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
+      version === 2 ? stakeAbiV2 : version === 3 ? stakeAbiV3 : stakeAbi,
       "users",
       address
     );
+
     setReferrer(amounts.referrer);
     setStaked(amounts.totalStaked.toString() * 1 > 0);
   }, [stakingContractAddress, address, version]);
