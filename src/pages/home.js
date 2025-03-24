@@ -19,6 +19,7 @@ import erc20Abi from "../../src/assets/abi/erc20.json";
 import stakeAbi from "../../src/assets/abi/stakingContract.json";
 import stakeAbiV2 from "../../src/assets/abi/stakingContractV2.json";
 import Card from "../../src/assets/img/card.jpeg";
+import Card2 from "../../src/assets/img/card2.jpg";
 import { ReactComponent as Click } from "../../src/assets/img/click.svg";
 import { ReactComponent as Copy } from "../../src/assets/img/copy.svg";
 import { ReactComponent as Money } from "../../src/assets/img/money.svg";
@@ -135,14 +136,14 @@ const Home = () => {
     if (stakeValue * 1 < 500) {
       return false;
     }
-    if (stakedAmount && version === 1) {
+    if (stakedAmount && [1, 2].includes(version)) {
       return false;
     }
     return true;
   }, [rewardTokenInfo?.balance, stakeValue, stakedAmount, version]);
 
   const stakeFun = async () => {
-    if (stakedAmount && version === 1) {
+    if (stakedAmount && [1, 2].includes(version)) {
       return;
     }
     setStakeLoading(true);
@@ -653,7 +654,11 @@ const Home = () => {
               </Popover>
             </div>
           </div>
-          <img className="rounded-[24px]" src={Card} alt="" />
+          <img
+            className="rounded-[24px]"
+            src={version === 3 ? Card2 : Card}
+            alt=""
+          />
         </div>
         <div className="relative bg-black mt-[20px] rounded-[12px] text-[#98E23C] font-bold px-[24px] py-[12px]">
           <div className="text-[16px]">{t("participatedAmount")}</div>
@@ -692,7 +697,7 @@ const Home = () => {
                 onClick={stakeFun}
                 disabled={!canStake}
               >
-                {stakedAmount && version === 1 ? (
+                {stakedAmount && [1, 2].includes(version) ? (
                   <span className="flex items-center justify-center gap-2">
                     <span>{t("rebet")}</span>
                   </span>
