@@ -597,7 +597,7 @@ const Home = () => {
       <div className="flex items-center gap-2 px-[20px] pt-2">
         <Notice />
         <Marquee className="text-[14px] text-[#FF9500] font-bold" speed={80}>
-          📢📢📢 {t("notice")} 💪💪💪 <div className="w-[100px]"></div>
+          📢📢📢 {t("notice")} <div className="w-[100px]"></div>
         </Marquee>
       </div>
       <div className="home">
