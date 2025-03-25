@@ -11,8 +11,8 @@ import { copy, shortStr } from "../utils";
 const Introduction = () => {
   const { t } = useTranslation();
 
-  const stakingContractAddressV2 = useSelector(
-    (state) => state.stakingContractAddressV2
+  const stakingContractAddressV3 = useSelector(
+    (state) => state.stakingContractAddressV3
   );
 
   return (
@@ -63,10 +63,10 @@ const Introduction = () => {
             {t("intro.contractAddress")}
           </div>
           <div className="flex items-center justify-center gap-2">
-            <span>{shortStr(stakingContractAddressV2)}</span>
+            <span>{shortStr(stakingContractAddressV3)}</span>
             <Copy
               onClick={() => {
-                copy(stakingContractAddressV2);
+                copy(stakingContractAddressV3);
                 toast.success(t("copySuccess"));
               }}
             />
