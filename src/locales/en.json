@@ -71,7 +71,7 @@
     "contractAddress": "Contract Address"
   },
   "rebet": "Reinvestment is not open",
-  "notice": "Dear Vegas Family: The upgrade has been successfully completed. Version V1 will soon be discontinued. Family members who experienced loss of principal on their first bet, please send 1 USDT to the official payment address, and we will refund the principal to your earnings address. The V2 beta version has disabled reinvestment, direct referral earnings, and differential earnings. All family members are requested to use the official version for betting, which recognizes network relationships. Earnings will function normally, while differential earnings will be gradually opened by generation (3rd, 7th, 10th, and 15th) in the following month. We hope to provide you with a pleasant experience. Wishing everyone happy betting! - Vegas Foundation Technical Department",
+  "notice": "Dear Vegas Family: The upgrade has been successfully completed. The V1 version will soon be discontinued. For family members who experienced a loss of their initial deposit on their first bet, please send 1 USDT to the official payment address, and we will refund the principal to your earnings address. The V2 beta version has disabled reinvestment, direct referral earnings, and differential earnings. All family members are requested to use the official version for betting, as it correctly identifies network relationships and ensures normal earnings. Differential earnings will be gradually unlocked in the following month based on the 3rd, 7th, 10th, and 15th generations. We hope to provide you with a pleasant experience. Wishing everyone happy betting! – Vegas Foundation Technical Department",
   "announcement": "Announcement",
   "totalAmount": "Total Amount Invested"
 }
