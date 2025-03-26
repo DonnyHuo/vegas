@@ -49,7 +49,7 @@
   "switchV1": "Beta Version V1",
   "switchV2": "Beta Version V2",
   "switchV3": "Official Version",
-
+  "switch": "Beta Version",
   "invitationDetected": "A beta invitation relationship has been detected.",
   "confirmToBind": "Click to confirm and bind with one click.",
   "foundationIntroduction": "Introduction",
