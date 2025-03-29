@@ -71,7 +71,7 @@
     "contractAddress": "Contract Address"
   },
   "rebet": "Reinvestment is not open",
-  "notice": "Dear Vegas Family, The Foundation's technical team has successfully completed the upgrade, optimizing the blockchain betting system to a highly efficient level. In the beta version, we will conduct data testing on daily returns before restoring them to the standard 5%. Additionally, we have activated the intelligent detection system and traceability algorithm to identify malicious duplicate accounts. We hope to provide you with a smooth and enjoyable experience. Your continued support for the Foundation's development is greatly appreciated. Wishing everyone happy betting!—Vegas Foundation Technical Department",
+  "notice": "To the Vegas Family: The beta version will conduct data testing on daily returns. After testing is completed, it will return to the normal 5% daily return. At the same time, the intelligent detection system for malicious account linking will activate a retrospective algorithm. The official version, launching on April 3rd, will reduce the daily return to 4% and introduce a 7-tier differential earnings system (automatically activated by directly referring five people). Those who have not yet placed bets, seize the opportunity! Wishing everyone happy betting!—Vegas Foundation Technical Department",
   "announcement": "Announcement",
   "totalAmount": "Total Amount Invested"
 }
