@@ -71,7 +71,7 @@
     "contractAddress": "Contract Address"
   },
   "rebet": "Reinvestment is not open",
-  "notice": "Vegas Family: Beta version is testing daily return data while launching smart detection for malicious accounts. Official version (April 3) adjusts daily returns to 4% with 7-tier differential rewards (auto-activated via 5 direct referrals). Monthly generational rewards will reduce daily returns progressively. Join now! Vegas Foundation Tech Team",
+  "notice": "To the Vegas Family: The beta version offers a 1% daily return, and the system will stop after 2x withdrawal. We've activated an intelligent malicious account detection system. The official version launches April 3 with 4% daily return, featuring 7-level differential earnings (auto-activated after 5 direct referrals). Daily returns decrease as monthly generational rewards unlock. Invest now! Wishing pleasant betting! - Vegas Foundation Tech Team",
   "announcement": "Announcement",
   "totalAmount": "Total Amount Invested"
 }
