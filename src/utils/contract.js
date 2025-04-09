@@ -3,6 +3,9 @@ import { ethers } from "ethers";
 import { setAddress } from "../store/slice";
 import { store } from "../store";
 
+// const customRpcUrl =
+//   "https://bsc.blockpi.network/v1/rpc/cb875e94899d9a9114a3ddd4a2b624215d407ab7";
+
 export async function setupListeners() {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
 
