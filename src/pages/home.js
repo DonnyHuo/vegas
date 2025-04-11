@@ -194,11 +194,6 @@ const Home = () => {
   useEffect(() => {
     if (address) {
       getRewardTokenInfo();
-      const timer = setInterval(() => {
-        getRewardTokenInfo();
-      });
-
-      return () => clearInterval(timer);
     }
   }, [address, version]);
 
