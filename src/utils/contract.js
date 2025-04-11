@@ -112,7 +112,6 @@ export function getContract(contractAddress, abi, funcName, ...params) {
   return new Promise((resolve, reject) => {
     contract[funcName](...params).then(
       (response) => {
-        console.log("funcName:::", funcName, response);
         resolve(response);
       },
       (err) => {
