@@ -893,6 +893,7 @@ const Home = () => {
           }}
         >
           <div className="p-[20px] text-center text-[14px]">
+            <p className="font-bold mb-2">{version === 3 && t("switchV3")}</p>
             <p>{t("invitationDetected")}</p>
             <p className="mt-2">{t("confirmToBind")}</p>
           </div>
