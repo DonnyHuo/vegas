@@ -194,6 +194,11 @@ const Home = () => {
   useEffect(() => {
     if (address) {
       getRewardTokenInfo();
+      const timer = setInterval(() => {
+        getRewardTokenInfo();
+      }, 3000);
+
+      return () => clearInterval(timer);
     }
   }, [address, version]);
 
@@ -280,7 +285,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (invite) {
+    if (invite && [2, 3].includes(version)) {
       if (!loading) {
         if (staked) {
           setShowTips(true);
@@ -837,7 +842,7 @@ const Home = () => {
           <div className="p-[20px] text-center text-[14px]">
             <p className="font-bold mb-2">
               {version === 2
-                ? t("switchV2")
+                ? t("switch")
                 : version === 3
                 ? t("switchV3")
                 : t("switchV1")}
@@ -888,7 +893,9 @@ const Home = () => {
           }}
         >
           <div className="p-[20px] text-center text-[14px]">
-            <p className="font-bold mb-2">{t("switchV2")}</p>
+            <p className="font-bold mb-2">
+              {version === 2 ? t("switch") : t("switchv3")}
+            </p>
             <p>{t("invitationDetected")}</p>
             <p className="mt-2">{t("confirmToBind")}</p>
           </div>
