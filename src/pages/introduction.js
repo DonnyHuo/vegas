@@ -76,30 +76,42 @@ const Introduction = () => {
           </div>
         </div>
 
+        <div>
+          <div className="text-[14px] font-bold text-center mt-2 mb-1">
+            {t("customerSupportEmail")}
+          </div>
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-[12px]">vegasvip008@gmail.com</span>
+            <Copy
+              onClick={() => {
+                copy("vegasvip008@gmail.com");
+                toast.success(t("copySuccess"));
+              }}
+            />
+          </div>
+        </div>
+
         <div className="mt-4">
           <div className="text-[14px] font-bold text-center mb-3">
             {t("contactInfo")}
           </div>
           <div className="text-[12px] flex items-center justify-center gap-[60px] text-center">
             <a
-              target="_balank"
+              target="_blank"
               className="text-[12px] font-bold underline text-[#98E23C]"
               href="https://t.me/VegasGroup1"
+              rel="noreferrer"
             >
               <Telegram className="w-[20px] h-[20px]" />
             </a>
             <a
-              target="_balank"
+              target="_blank"
               className="text-[12px] font-bold underline text-[#98E23C]"
               href="https://x.com/Vegas_net"
+              rel="noreferrer"
             >
               <X className="w-[16px] h-[16px]" />
             </a>
-            <p className="flex items-center justify-center gap-2">
-              <a target="_balank" href="mailto:https://vegasvip008@gmail.com">
-                <Email className="w-[20px] h-[20px]" />
-              </a>
-            </p>
           </div>
         </div>
       </div>
