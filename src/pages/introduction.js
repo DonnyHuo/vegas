@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
 import { ReactComponent as Copy } from "../../src/assets/img/copyWhite.svg";
+import { ReactComponent as Email } from "../../src/assets/img/email.svg";
 import { ReactComponent as GoBack } from "../../src/assets/img/goBack.svg";
 import { ReactComponent as IntroLogo } from "../../src/assets/img/introLogo.svg";
+import { ReactComponent as Telegram } from "../../src/assets/img/telegram.svg";
+import { ReactComponent as X } from "../../src/assets/img/X.svg";
 import { copy, shortStr } from "../utils";
 
 const Introduction = () => {
@@ -70,6 +73,33 @@ const Introduction = () => {
                 toast.success(t("copySuccess"));
               }}
             />
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <div className="text-[14px] font-bold text-center mb-3">
+            {t("contactInfo")}
+          </div>
+          <div className="text-[12px] flex items-center justify-center gap-[60px] text-center">
+            <a
+              target="_balank"
+              className="text-[12px] font-bold underline text-[#98E23C]"
+              href="https://t.me/VegasGroup1"
+            >
+              <Telegram className="w-[20px] h-[20px]" />
+            </a>
+            <a
+              target="_balank"
+              className="text-[12px] font-bold underline text-[#98E23C]"
+              href="https://x.com/Vegas_net"
+            >
+              <X className="w-[16px] h-[16px]" />
+            </a>
+            <p className="flex items-center justify-center gap-2">
+              <a target="_balank" href="mailto:vegasvip008@gmail.com">
+                <Email className="w-[20px] h-[20px]" />
+              </a>
+            </p>
           </div>
         </div>
       </div>
