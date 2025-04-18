@@ -59,6 +59,14 @@ function padLeftZero(str) {
   return ("00" + str).substr(str.length);
 }
 
+export const formatDecimal = (num) => {
+  const decimalPart = String(num).split(".")[1] || "";
+  if (decimalPart.length <= 4) {
+    return num;
+  }
+  return Number(num.toFixed(4));
+};
+
 export {
   getContract,
   getWriteContract,

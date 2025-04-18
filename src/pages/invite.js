@@ -12,7 +12,7 @@ import stakeAbiV3 from "../../src/assets/abi/stakingContractV3.json";
 import { ReactComponent as Copy } from "../../src/assets/img/copy.svg";
 import { ReactComponent as Hello } from "../../src/assets/img/hello.svg";
 import { ReactComponent as Money2 } from "../../src/assets/img/money2.svg";
-import { copy, getContract, shortStr } from "../../src/utils";
+import { copy, getContract, shortStr, formatDecimal } from "../../src/utils";
 import { fetchData } from "../http/request";
 
 const Invite = () => {
@@ -237,7 +237,7 @@ const Invite = () => {
                     <span className="text-[14px]">{t("amount")}</span>
                     <span>
                       <span className="text-[#27B53D] font-bold text-[18px]">
-                        {list.amount / 10 ** 18}
+                        {formatDecimal(list.amount / 10 ** 18)}
                       </span>{" "}
                       <span className="text-[14px]">{rewardToken}</span>
                     </span>

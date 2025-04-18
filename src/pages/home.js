@@ -622,6 +622,44 @@ const Home = () => {
               </span>
             </div>
           </div>
+          <div className="mb-4">
+            <div className="text-[14px] font-bold text-left mb-2">
+              {t("contactInfo")}
+            </div>
+            <div className="text-[12px] flex flex-col gap-2 text-left">
+              <p>
+                <span>{t("telegram")}：</span>
+                <a
+                  target="_balank"
+                  className="text-[12px] font-bold underline text-[#98E23C]"
+                  href="https://t.me/VegasGroup1"
+                >
+                  https://t.me/VegasGroup1
+                </a>
+              </p>
+              <p>
+                <span>{t("twitter")}：</span>
+                <a
+                  target="_balank"
+                  className="text-[12px] font-bold underline text-[#98E23C]"
+                  href="https://x.com/Vegas_net"
+                >
+                  https://x.com/Vegas_net
+                </a>
+              </p>
+              <p className="flex items-center gap-2">
+                <span>{t("customerSupportEmail")}：</span>
+                <span>vegasvip008@gmail.com</span>
+                <Copy
+                  onClick={() => {
+                    copy("vegasvip008@gmail.com");
+                    toast.success(t("copySuccess"));
+                  }}
+                  className="w-[14px] h-[14px]"
+                />
+              </p>
+            </div>
+          </div>
           <img
             className="rounded-[24px]"
             src={version === 3 ? Card2 : Card}
