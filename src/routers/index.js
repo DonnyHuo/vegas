@@ -20,7 +20,7 @@ const routes = [
   {
     path: "/introduction",
     element: <Introduction />,
-    showHeader: true,
+    showHeader: false,
     showFooter: false
   },
   {

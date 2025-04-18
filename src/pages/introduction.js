@@ -20,7 +20,7 @@ const Introduction = () => {
 
   return (
     <div className="introduction">
-      <div className="bg-[rgba(0,0,0,0.9)] min-h-[calc(100vh-44px)] p-[20px] text-white text-center text-[14px]">
+      <div className="bg-[rgba(0,0,0,0.9)] min-h-[100vh] p-[20px] text-white text-center text-[14px]">
         <Link to="/" className="flex items-center gap-1">
           <GoBack className="w-5 h-5" />
           <span className="text-[12px] text-[#98E23C]">
