@@ -96,7 +96,7 @@ const Introduction = () => {
               <X className="w-[16px] h-[16px]" />
             </a>
             <p className="flex items-center justify-center gap-2">
-              <a target="_balank" href="mailto:vegasvip008@gmail.com">
+              <a target="_balank" href="mailto:https://vegasvip008@gmail.com">
                 <Email className="w-[20px] h-[20px]" />
               </a>
             </p>
