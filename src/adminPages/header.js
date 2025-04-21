@@ -23,8 +23,7 @@ const AdminHeader = () => {
   }
 
   const actions = [
-    { key: 1, text: t("switchV1") },
-    { key: 2, text: t("switchV2") },
+    { key: 2, text: t("switch") },
     { key: 3, text: t("switchV3") }
   ];
 
@@ -57,13 +56,7 @@ const AdminHeader = () => {
             reference={
               <div className="flex items-center gap-1">
                 <span className="text-[14px]">
-                  {version === 1 ? (
-                    <>{t("switchV1")}</>
-                  ) : version === 2 ? (
-                    <>{t("switchV2")}</>
-                  ) : (
-                    <>{t("switchV3")}</>
-                  )}
+                  {actions.filter((list) => list.key === versionState)[0].text}
                 </span>
                 <ArrowDown className="w-3 h-3" />
               </div>
