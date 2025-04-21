@@ -15,7 +15,7 @@ import { ReactComponent as Loading } from "../../src/assets/img/loading.svg";
 import { ReactComponent as Search } from "../../src/assets/img/search.svg";
 import { ReactComponent as Arrow } from "../assets/img/arrow.svg";
 import { fetchData } from "../http/request";
-import { shortStr, getContract, copy } from "../utils";
+import { shortStr, getContract, copy, formatDecimal } from "../utils";
 import AdminHeader from "./header";
 
 import "./style.css";
@@ -231,9 +231,10 @@ const AdminHome = () => {
           <div>
             <span className="text-[#27B53D] text-[38px] font-bold">
               {total?.totalStaked
-                ? (
-                    total?.totalStaked / 10 ** rewardTokenInfo?.decimals ?? 18
-                  ).toFixed(2)
+                ? formatDecimal(
+                    total?.totalStaked / 10 ** rewardTokenInfo?.decimals ?? 18,
+                    2
+                  )
                 : "--"}
             </span>
             <span className="text-[#27B53D] text-[12px] ml-1">
@@ -250,10 +251,11 @@ const AdminHome = () => {
             <div>
               <p className="text-[#27B53D] text-[26px] font-bold max-w-full">
                 {total?.totalCliamed
-                  ? (
+                  ? formatDecimal(
                       total?.totalCliamed / 10 ** rewardTokenInfo?.decimals ??
-                      18
-                    ).toFixed(2)
+                        18,
+                      2
+                    )
                   : "--"}
               </p>
               <p className="text-[#27B53D] text-[12px]">
@@ -267,10 +269,11 @@ const AdminHome = () => {
             <div>
               <p className="text-[#27B53D] text-[26px] font-bold max-w-full truncate">
                 {total?.totalRefferRewards
-                  ? (
+                  ? formatDecimal(
                       total?.totalRefferRewards /
-                        10 ** rewardTokenInfo?.decimals ?? 18
-                    ).toFixed(2)
+                        10 ** rewardTokenInfo?.decimals ?? 18,
+                      2
+                    )
                   : "--"}
               </p>
               <p className="text-[#27B53D] text-[12px]">
@@ -417,8 +420,10 @@ const AdminHome = () => {
                       <div className="flex items-center justify-between py-2">
                         <span>当前质押金额</span>
                         <span className="text-[#98E23C] font-bold">
-                          {userInfo?.currentStakedAmount /
-                            10 ** rewardTokenInfo?.decimals ?? 18}{" "}
+                          {formatDecimal(
+                            userInfo?.currentStakedAmount /
+                              10 ** rewardTokenInfo?.decimals ?? 18
+                          )}{" "}
                           {rewardTokenInfo?.symbol}
                         </span>
                       </div>
@@ -430,8 +435,10 @@ const AdminHome = () => {
                         <span>质押金额</span>
                       )}
                       <span className="text-[#98E23C] font-bold">
-                        {userInfo?.stakedAmount /
-                          10 ** rewardTokenInfo?.decimals ?? 18}{" "}
+                        {formatDecimal(
+                          userInfo?.stakedAmount /
+                            10 ** rewardTokenInfo?.decimals ?? 18
+                        )}{" "}
                         {rewardTokenInfo?.symbol}
                       </span>
                     </div>
@@ -439,10 +446,10 @@ const AdminHome = () => {
                       <span>推荐奖励</span>
                       <span className="text-[#98E23C] font-bold">
                         {userInfo?.totalRefferRewards
-                          ? (
+                          ? formatDecimal(
                               userInfo?.totalRefferRewards /
                                 10 ** rewardTokenInfo?.decimals ?? 18
-                            ).toFixed(2)
+                            )
                           : "--"}{" "}
                         {rewardTokenInfo?.symbol}
                       </span>
@@ -451,8 +458,10 @@ const AdminHome = () => {
                       <span>已提取奖励</span>
                       <span className="text-[#98E23C] font-bold">
                         {" "}
-                        {userInfo?.claimedRewards /
-                          10 ** rewardTokenInfo?.decimals ?? 18}{" "}
+                        {formatDecimal(
+                          userInfo?.claimedRewards /
+                            10 ** rewardTokenInfo?.decimals ?? 18
+                        )}{" "}
                         {rewardTokenInfo?.symbol}
                       </span>
                     </div>
@@ -460,7 +469,7 @@ const AdminHome = () => {
                       <span>总收益</span>
                       <span className="text-[#98E23C] font-bold">
                         {userInfo2
-                          ? (userInfo2?.totalRewards).toFixed(2)
+                          ? formatDecimal(userInfo2?.totalRewards)
                           : "--"}{" "}
                         {rewardTokenInfo?.symbol}
                       </span>
@@ -469,7 +478,7 @@ const AdminHome = () => {
                       <span>待领取收益</span>
                       <span className="text-[#98E23C] font-bold">
                         {userInfo2
-                          ? (userInfo2?.pendingRewards).toFixed(2)
+                          ? formatDecimal(userInfo2?.pendingRewards)
                           : "--"}{" "}
                         {rewardTokenInfo?.symbol}
                       </span>

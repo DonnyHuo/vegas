@@ -59,12 +59,12 @@ function padLeftZero(str) {
   return ("00" + str).substr(str.length);
 }
 
-export const formatDecimal = (num) => {
+export const formatDecimal = (num, decimals = 4) => {
   const decimalPart = String(num).split(".")[1] || "";
-  if (decimalPart.length <= 4) {
+  if (decimalPart.length < decimals) {
     return num;
   }
-  return Number(num.toFixed(4));
+  return Number(num.toFixed(decimals));
 };
 
 export {
