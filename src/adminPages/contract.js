@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -170,6 +170,26 @@ const Contract = () => {
   const [blacklistLoading, setBlacklistLoading] = useState(false);
 
   const [status, setStatus] = useState();
+
+  const [inBlackList, setInBlackList] = useState(false);
+
+  const getInBlackList = useCallback(async () => {
+    if (ethers.utils.isAddress(blacklist)) {
+      await getContract(
+        stakingContractAddress,
+        [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
+        "isInBlacklist",
+        blacklist
+      ).then((res) => {
+        console.log("res", res);
+        setInBlackList(res);
+      });
+    }
+  }, [blacklist, stakingContractAddress, version]);
+
+  useEffect(() => {
+    getInBlackList();
+  }, [getInBlackList]);
 
   const setBlacklistFun = async (isDo) => {
     if (!ethers.utils.isAddress(blacklist)) {
@@ -435,7 +455,16 @@ const Contract = () => {
 
         {[2, 3].includes(version) && (
           <div className="adminCard adminCard5 w-full mt-[20px] py-[30px] px-[16px] text-black">
-            <div className="text-[16px] font-bold">设置黑名单</div>
+            <div className="text-[16px] font-bold flex justify-between">
+              <span>设置黑名单</span>{" "}
+              <>
+                {blacklist ? (
+                  <span className="text-[14px]">
+                    {inBlackList ? "在黑名单" : "不在黑名单"}
+                  </span>
+                ) : null}
+              </>
+            </div>
             <div className="mt-[10px]">
               <input
                 type="text"
