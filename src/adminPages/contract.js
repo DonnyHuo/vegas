@@ -62,7 +62,7 @@ const Contract = () => {
   const setRewardRateFun = async () => {
     const numberRege = /^(1[0-4]|[0-9])$/;
 
-    const rateRege = /^(0|[1-9]\d?)(\.\d{2})?$/;
+    const rateRege = /^(0|[1-9]\d?)(\.\d{1,2})?$/;
 
     if (!numberRege.test(rewardNumber)) {
       return toast.error("请输入正确的代数");
