@@ -150,7 +150,7 @@ const Home = () => {
     const decimals = await getContract(usdtAddress, erc20Abi, "decimals");
     await getWriteContractLoad(
       stakingContractAddress,
-      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
+      [3].includes(version) ? stakeAbiV2 : stakeAbi,
       "stake",
       ethers.utils.parseUnits(stakeValue, decimals)
     )
@@ -205,7 +205,7 @@ const Home = () => {
   const getUserInfo = useCallback(async () => {
     await getContract(
       stakingContractAddress,
-      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
+      [3].includes(version) ? stakeAbiV2 : stakeAbi,
       "getUserInfo",
       address
     )
@@ -261,7 +261,7 @@ const Home = () => {
     setClaimLoading(true);
     await getWriteContractLoad(
       stakingContractAddress,
-      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
+      [3].includes(version) ? stakeAbiV2 : stakeAbi,
       "claimRewards"
     )
       .then((res) => {
@@ -285,7 +285,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (invite && [2, 3].includes(version)) {
+    if (invite && [3].includes(version)) {
       if (!loading) {
         if (staked) {
           setShowTips(true);
@@ -312,7 +312,7 @@ const Home = () => {
 
     await getWriteContractLoad(
       stakingContractAddress,
-      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
+      [3].includes(version) ? stakeAbiV2 : stakeAbi,
       "bindReferrer",
       invite.toLocaleLowerCase(),
       overrides

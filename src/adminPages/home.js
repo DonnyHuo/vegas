@@ -166,7 +166,7 @@ const AdminHome = () => {
   const getUserInfo = useCallback(async () => {
     await getContract(
       stakingContractAddress,
-      [2, 3].includes(version) ? stakeAbiV2 : stakeAbi,
+      [3].includes(version) ? stakeAbiV2 : stakeAbi,
       "getUserInfo",
       search
     )

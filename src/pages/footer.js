@@ -25,7 +25,7 @@ const Footer = () => {
       : state.stakingContractAddress
   );
 
-  const abi = [2, 3].includes(version) ? stakeAbiV2 : stakeAbi;
+  const abi = [3].includes(version) ? stakeAbiV2 : stakeAbi;
 
   const [showAdmin, setShowAdmin] = useState(false);
 
