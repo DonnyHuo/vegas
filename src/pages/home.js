@@ -606,7 +606,7 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <Switch
                 size="20px"
                 activeColor={"#000000"}
@@ -620,7 +620,7 @@ const Home = () => {
                 {version === 2 && <>{t("switch")}</>}
                 {version === 3 && <>{t("switchV3")}</>}
               </span>
-            </div>
+            </div> */}
           </div>
 
           <img

@@ -67,8 +67,8 @@ const Invite = () => {
   }, [referrer]);
 
   const inviteLink = useMemo(() => {
-    return `${window.location.origin}?invite=${address}&version=${version}`;
-  }, [address, version]);
+    return `${window.location.origin}?invite=${address}`;
+  }, [address]);
 
   const [info, setInfo] = useState({});
 
