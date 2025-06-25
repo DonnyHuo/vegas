@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useSearchParams, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Button, Dialog, Loading, Switch } from "react-vant";
+import { Button, Dialog, Loading } from "react-vant";
 
 import { GiftO, FireO } from "@react-vant/icons";
 
@@ -573,16 +573,16 @@ const Home = () => {
     setShowChangeVersionModal(showChangeVersionBindReffer);
   }, [showChangeVersionBindReffer]);
 
-  const [versionState, setVersionState] = useState(version);
+  // const [versionState, setVersionState] = useState(version);
 
-  const changeVersion = (value) => {
-    setVersionState(value);
-    setSearchParams({ version: value });
-    store.dispatch(setVersion(value));
-    setTimeout(() => {
-      window.location.reload();
-    });
-  };
+  // const changeVersion = (value) => {
+  //   setVersionState(value);
+  //   setSearchParams({ version: value });
+  //   store.dispatch(setVersion(value));
+  //   setTimeout(() => {
+  //     window.location.reload();
+  //   });
+  // };
 
   return (
     <div className="content-box">
