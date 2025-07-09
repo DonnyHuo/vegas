@@ -9,7 +9,9 @@ const initialState = {
   version: 3,
   adminAddress: [
     "0x2a32b1623a7f6431697f7d7643d629aa41db5181",
-    "0xa744118af77e66a193601ea1456d7afb27dc7b5c"
+    "0xa744118af77e66a193601ea1456d7afb27dc7b5c",
+    "0x5f8406AaBCD255Bc1A6047DAE400d0ad108C462b",
+    "0x1797b93c52C3BC8b614f2c9f9B07BF8cbfc2ef6D"
   ]
 };
 
