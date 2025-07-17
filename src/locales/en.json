@@ -71,7 +71,7 @@
     "contractAddress": "Contract Address"
   },
   "rebet": "Reinvestment is not open",
-  "notice": "1. From July 10th, the daily return rate is 5%; simultaneously, a 7-day cycle of daily returns (5%, 4%, 3%, 2%, 1%) will be implemented, with the '54321' cycle distributing gambling profit bonuses; dynamic boosts static with a 2x exit multiplier; direct referral rewards are 10%; generational rewards: refer 3 to earn 3 generations, refer 5 for 7 generations, refer 8 for 10 generations, refer 10 for 12 generations, refer 15 for 15 generations (auto-activated upon meeting requirements); increasing generational rewards lowers the return rate by one tier. 2. The malicious multi-account detection & tracking system is now active; linked accounts are scanned in real-time, and system-locked accounts cannot be manually unlocked. Happy betting! – Vegas Foundation Tech Dept.",
+  "notice": "1.Starting July 17th, daily yield is set at 4%, with a 7-day cycle implementing 5%/4%/3%/2%/1% yields respectively (repeating 5-4-3-2-1 pattern for gaming bonuses). Dynamic boost enables 2x static withdrawal. Direct referral bonus is 10%. Generation rewards: 3 referrals=3 generations, 5=7 generations, 8=10 generations, 10=12 generations, 15=15 generations (auto-activated when requirements met). Higher generation rewards come with one-level yield reduction. 2.Smart multi-account detection system is now active. Fund-linked accounts are monitored in real-time - system-banned accounts cannot be manually unlocked. Enjoy your betting! - Vegas Foundation Tech Dept.",
   "announcement": "Announcement",
   "totalAmount": "Total Amount Invested",
   "contactInfo": "Contact Information",
